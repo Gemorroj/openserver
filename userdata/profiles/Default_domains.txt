@@ -1,6 +1,0 @@
-forum.loc;\forum.loc
-magazine.loc;\magazine.loc\public
-magazine-new-api-platform.loc;\magazine-new-api-platform.loc\public
-magazine-new-maprequestpayload.loc;\magazine-new-maprequestpayload.loc\public
-saas-shipping-backend.loc;\saas-shipping-backend.loc\public
-wapinet.loc;\wapinet.loc\public
