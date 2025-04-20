@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<messages>
+<sv1> Run server</sv1>
+<sv2> Restart server</sv2>
+<sv3> Stop server</sv3>
+<sv4> My projects</sv4>
+<sv5> Advanced</sv5>
+<sv6> PhpMyAdmin</sv6>
+<sv7> PhpPgAdmin</sv7>
+<sv8> MemcacheAdmin</sv8>
+<sv9> SQL manager</sv9>
+<sv10> PostgreSQLAdmin</sv10>
+<sv11> PHP Adminer</sv11>
+<sv12> PHP profiler</sv12>
+<sv13> PHP info</sv13>
+<sv15> Documentation</sv15>
+<sv16> Configuration</sv16>
+<sv17> Project folder             </sv17>
+<sv18> View logs</sv18>
+<sv19> Settings</sv19>
+<sv20> About program</sv20>
+<sv21> Exit</sv21>
+<sv120> Win settings</sv120>
+<sv129> My profiles</sv129>
+<sv130> IDN converter</sv130>
+<sv154> Programs</sv154>
+<sv116> My favorites</sv116>
+<sv23>Portable server platform and software environment for web developers</sv23>
+<sv24>View logs</sv24>
+<sv25>Update</sv25>
+<sv26>Clean</sv26>
+<sv27>Clear all logs</sv27>
+<sv28>Primary</sv28>
+<sv29>Unable to start the web-based control panel</sv29>
+<sv31>PHP debugging</sv31>
+<sv32> queries</sv32>
+<sv33> debugging</sv33>
+<sv34>Mail</sv34>
+<sv35>FTP server</sv35>
+<sv36>Close</sv36>
+<sv37>Save</sv37>
+<sv39>Email sender</sv39>
+<sv40>SMTP server</sv40>
+<sv41>POP3 server</sv41>
+<sv42>Way to send e-mail:</sv42>
+<sv43>User name</sv43>
+<sv44>Port</sv44>
+<sv45>Run server in an aggressive mode</sv45>
+<sv46>Password</sv46>
+<sv47>Encryption</sv47>
+<sv48>No</sv48>
+<sv49>Auto</sv49>
+<sv50>Save emails to folder userdata/temp/email/</sv50>
+<sv51>Send mail through a remote SMTP server</sv51>
+<sv52>Main</sv52>
+<sv53>Modules</sv53>
+<sv54>Encoding</sv54>
+<sv55>Aliases</sv55>
+<sv56>Menu</sv56>
+<sv57>FTP server</sv57>
+<sv58>Add</sv58>
+<sv59>Source domain</sv59>
+<sv60>Target domain</sv60>
+<sv61>IP-address of server</sv61>
+<sv62>Starting server</sv62>
+<sv63>Stopping server</sv63>
+<sv64>Beginning of procedure quick stop server</sv64>
+<sv65>Server has successfully stopped in </sv65>
+<sv651>Server has successfully stopped!</sv651>
+<sv66>Beginning of procedure to stop server</sv66>
+<sv67>Stopping system modules</sv67>
+<sv68>Turning off a virtual drive</sv68>
+<sv69>Start server start-up procedure</sv69>
+<sv70>Wait, stop running...</sv70>
+<sv71>Wait, you run...</sv71>
+<sv72>File</sv72>
+<sv74>Failed to start!</sv74>
+<sv75>Incompatibility configuration: domain/alias localhost can be used only with IP address 127.0.0.1</sv75>
+<sv76>Windows Services</sv76>
+<sv77>Block size read log files (in KB)</sv77>
+<sv78>Disable the HOSTS file or set correct permissions</sv78>
+<sv79>Domain name</sv79>
+<sv80>Setting Path variable use</sv80>
+<sv81>Root domain directory</sv81>
+<sv82>Do not use virtual disk</sv82>
+<sv83>Autodetect needs drive</sv83>
+<sv84>Always use a virtual drive</sv84>
+<sv85>Own Path</sv85>
+<sv86>Own Path + Win Path</sv86>
+<sv87>Own Path + userdata/config/path.txt</sv87>
+<sv88>Own Path + userdata/config/path.txt + Win Path</sv88>
+<sv89>Server</sv89>
+<sv90>Updating Hosts file</sv90>
+<sv91>Letter</sv91>
+<sv93>Creating a virtual disk</sv93>
+<sv94>Unable to create a virtual disk</sv94>
+<sv95>Updating configuration</sv95>
+<sv96>Updating configuration of Sendmail</sv96>
+<sv97>Updating configuration of FTP server</sv97>
+<sv98>Updating configuration PHPMyAdmin</sv98>
+<sv99>Updating configuration PHPPgAdmin</sv99>
+<sv100>Unable to take port</sv100>
+<sv102>Launch</sv102>
+<sv103>Starting FTP Server</sv103>
+<sv104>Checking server status</sv104>
+<sv105>Server is successfully started in </sv105>
+<sv1051>Server is successfully started!</sv1051>
+<sv136> seconds!</sv136>
+<sv106>Failed to start</sv106>
+<sv107>Starting server in current folder without virtual disk is not possible</sv107>
+<sv108>Welcome to </sv108>
+<sv109>Do not show this window</sv109>
+<sv110>Automatically check for new versions</sv110>
+<sv111>Download Page:</sv111>
+<sv112>New version is available</sv112>
+<sv113>Show pop-up messages in system tray</sv113>
+<sv114>Show icons for menu items</sv114>
+<sv115>Open the folder in the specified file manager</sv115>
+<sv117>Theme</sv117>
+<sv119>Information</sv119>
+<sv121>Enable query log</sv121>
+<sv123>Permissions</sv123>
+<sv124>Read-only</sv124>
+<sv125>Reading and Writing</sv125>
+<sv126>Connection Timeout</sv126>
+<sv127>Inactivity timeout</sv127>
+<sv128>Show sites in main menu</sv128>
+<sv131>Punycode converter (IDN)</sv131>
+<sv132>Enter a domain name in national language:</sv132>
+<sv133>Result of converting to punycode format:</sv133>
+<sv134>Copy result</sv134>
+<sv135>Run server in debug mode</sv135>
+<sv137>Configuration profiles</sv137>
+<sv138>Profile name</sv138>
+<sv139>Create profile</sv139>
+<sv140>Load profile</sv140>
+<sv141>Delete profile</sv141>
+<sv142>Profile</sv142>
+<sv143>Profile with that name already exists!</sv143>
+<sv144>You can not delete a profile to use!</sv144>
+<sv145>Do not remind me about this version</sv145>
+<sv146>Installation failed!%Installer has not been granted the necessary privileges</sv146>
+<sv147>Folder</sv147>
+<sv148>Run</sv148>
+<sv149>Category</sv149>
+<sv150>Name of bookmark</sv150>
+<sv151>Do not provide a name or subject of a bookmark!</sv151>
+<sv152>Bookmark with same name already exists!</sv152>
+<sv153>Bookmarks</sv153>
+<sv155>Graphics</sv155>
+<sv156>Internet</sv156>
+<sv157>Office</sv157>
+<sv158>System</sv158>
+<sv159>Miscellaneous</sv159>
+<sv160>You can not create domain index on itself</sv160>
+<sv161>Not specified login or user directory</sv161>
+<sv162>This user already exists</sv162>
+<sv163>Invalid value for the field:</sv163>
+<sv164>This alias for source domain already exists</sv164>
+<sv165>Hosts file            </sv165>
+<sv166>Select a folder or file...</sv166>
+<sv167>HTTP server</sv167>
+<sv168>MySQL server</sv168>
+<sv169>Encoding HTTP server (by default)</sv169>
+<sv170>Encoding of MySQL server (by default)</sv170>
+<sv171>Not specified</sv171>
+<sv172>Run an FTP server</sv172>
+<sv173>Open web pages in that browser</sv173>
+<sv174>Open configuration files in specified text editor</sv174>
+<sv175>Domain folder</sv175>
+<sv176>File</sv176>
+<sv177>Select File</sv177>
+<sv178>Executable files</sv178>
+<sv179>Reset</sv179>
+<sv180>Autostart server</sv180>
+<sv181>Language</sv181>
+<sv182>Setting up a virtual drive / Letter</sv182>
+<sv183>Clean logs when server starts</sv183>
+<sv184>HTTP</sv184>
+<sv185>PHP</sv185>
+<sv187>: Error!</sv187>
+<sv188>Attention! Configuration files specific to each module. Be careful when changing versions of the modules separately and edit the settings for each of them.</sv188>
+<sv189>Simultaneous launch and use%multiple copies of program is inpossible.%%Please close all copies%of program and try again.</sv189>
+<sv190>Program is running without administrator%rights and will be closed!</sv190>
+<sv191>Server response without specifying encoding: [Content-Type: text/html]%Server responded with an indication of encoding: [Content-Type: text/html; charset=UTF-8]%Default value - not specified (recommended).</sv191>
+<sv192>Default encoding for newly created databases and tables, connections, requests and responses MySQL server.%Default value - utf8_general_ci ( recommended).</sv192>
+<sv193>Select root folder for FTP user</sv193>
+<sv194>Install Microsoft Visual C++ Runtime &amp; Patches?</sv194>
+<sv195>Reset options?%%Default configuration of program will be restored.%Options window will be open again.</sv195>
+<sv196>You must restart your computer to apply%the changes. Before rebooting save your work%and close all open applications.%%Restart your computer now?</sv196>
+<sv197>Name</sv197>
+<sv198>Show bookmarks instead of the site</sv198>
+<sv199>Show bookmarks in the main menu</sv199>
+<sv200>Show program in the main menu</sv200>
+<sv201>Port settings</sv201>
+<sv202>Delete profile?</sv202>
+<sv203>Remove the domain and its folder on the disk?</sv203>
+<sv204>Domains</sv204>
+<sv205>Server will be restarted!%Run saving settings?</sv205>
+<sv206>Server will be restarted!%Switch your profile?</sv206>
+<sv207>Server will be restarted!%Create a Profile?</sv207>
+<sv208>Domain with that name already exists!</sv208>
+<sv209>Select domain folder</sv209>
+<sv210>Can not delete folder domain!%There are open files or subfolders...</sv210>
+<sv211>Domain can not be IP-address!%%Use aliases for binding%certain IP-address with the correct domain.</sv211>
+<sv212>Donate for project</sv212>
+<sv213>Running on this computer for the first time!</sv213>
+<sv214>Thank you!</sv214>
+<sv215>Task scheduler</sv215>
+<sv216>Minute</sv216>
+<sv217>Hour</sv217>
+<sv218>Date</sv218>
+<sv219>Month</sv219>
+<sv220>Day of the Week</sv220>
+<sv221>Time</sv221>
+<sv222>Select root folder of domains</sv222>
+<sv223>Can not delete file</sv223>
+<sv224>Unable to delete folder</sv224>
+<sv225>Manual control</sv225>
+<sv226>Autosearch</sv226>
+<sv258>Manual + Autosearch</sv258>
+<sv259>Domain management</sv259>
+<sv260>Auto root domain (in space)</sv260>
+<sv227>No permission to work in this folder</sv227>
+<sv228>Show versions of modules in the hint</sv228>
+<sv229> Donate...</sv229>
+<sv230>To require the Administrator account</sv230>
+<sv231>Program run without Administrator rights!%Restart to request the necessary privileges?</sv231>
+<sv232>Protect web server from external access</sv232>
+<sv233>Number of checks server startup (interval 1 second, at least 5 checks)</sv233>
+<sv234>Number of FastCGI PHP processes</sv234>
+<sv235>Mem size for Memcache/Redis (MB)</sv235>
+<sv236>Extension for Email messages</sv236>
+<sv237>Web-based control panel (profile-independent option)</sv237>
+<sv238>Other</sv238>
+<sv240>Startup</sv240>
+<sv241>Login</sv241>
+<sv242>Сontrol panel</sv242>
+<sv243>Enable Web management</sv243>
+<sv244>Off</sv244>
+<sv245>On</sv245>
+<sv246>Command is executed</sv246>
+<sv247>Number of domains</sv247>
+<sv248>Server status</sv248>
+<sv249>* To exit the panel close your browser window</sv249>
+<sv250> Calculator</sv250>
+<sv251>Update icon cache...</sv251>
+<sv252>Recreate the icon cache</sv252>
+<sv253> My Computer</sv253>
+<sv254>delay (sec)</sv254>
+<sv255>Start with Windows</sv255>
+<sv256>Profile-independent settings</sv256>
+<sv257>Do not make changes to the HOSTS file</sv257>
+<sv261> Console                     </sv261>
+<sv262>Unsupported version of Windows%Program will be closed!</sv262>
+<sv263>Local computer</sv263>
+<sv264>Work on all available IP</sv264>
+<sv265>All available IP</sv265>
+<sv266>IP address 0.0.0.0 is not found in the system</sv266>
+<sv267>DNS server</sv267>
+<sv268>Can not find</sv268>
+<sv269>Remove domain</sv269>
+<sv270>Remove domain with its directory on disk</sv270>
+<sv271>Restart the server without confirmation when changing the profile from the menu</sv271>
+<sv272>IPv6 is not switched off, PHP can be problems!</sv272>
+<sv273> can work only with Apache 2.4 or Nginx</sv273>
+<sv274> can work only with PHP 5.5 or  PHP 5.6</sv274>
+<sv275>Module</sv275>
+<sv276> can run only on Windows 7 or above</sv276>
+<sv277>Maximum number of requests a server process serves (0 - unlimited)</sv277>
+<sv278> First run</sv278>
+<sv279>Do not use</sv279>
+<sv280>Use extended logging in processing email messages</sv280>
+<sv281>Without query log</sv281>
+<sv282> can run only on 64-bit Windows</sv282>
+<sv285>Installing</sv285>
+<sv286>On</sv286>
+<sv287>Program startup delay in seconds (0 - no delay)</sv287>
+<sv288>ATTENTION! This is a temporary file, edit it does not make sense!</sv288>
+<sv101>because it is already in use</sv101>
+<sv92>already in use real or virtual disk in system</sv92>
+<sv73>not available to write</sv73>
+<sv38>Fill out only if you need POP3 before SMTP authentication</sv38>
+</messages>

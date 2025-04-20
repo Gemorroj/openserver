@@ -1,0 +1,32 @@
+<User Name="%user%">
+    %pass%
+    <Option Name="Bypass server userlimit">1</Option>
+        <Option Name="Comments"></Option>
+        <Option Name="Enabled">1</Option>
+        <Option Name="ForceSsl">0</Option>
+        <Option Name="Group"></Option>
+    <Option Name="IP Limit">0</Option>
+    <Option Name="User Limit">0</Option>
+    <IpFilter>
+        <Disallowed />
+        <Allowed />
+    </IpFilter>
+    <Permissions>
+        <Permission Dir="%dir%">
+            <Option Name="AutoCreate">0</Option>
+            <Option Name="DirCreate">%rights%</Option>
+            <Option Name="DirDelete">%rights%</Option>
+            <Option Name="DirList">1</Option>
+            <Option Name="DirSubdirs">1</Option>
+            <Option Name="FileAppend">%rights%</Option>
+            <Option Name="FileDelete">%rights%</Option>
+            <Option Name="FileRead">1</Option>
+            <Option Name="FileWrite">%rights%</Option>
+            <Option Name="IsHome">1</Option>
+        </Permission>
+    </Permissions>
+    <SpeedLimits>
+        <Download />
+        <Upload />
+    </SpeedLimits>
+</User>

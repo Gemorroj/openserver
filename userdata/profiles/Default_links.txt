@@ -1,0 +1,19 @@
+﻿Архитектура;Документация;https://ospanel.io/docs/#arhitektura
+"Внешнее управление";Документация;https://ospanel.io/docs/#vneshnee-upravlenie
+"Внешний доступ";Документация;https://ospanel.io/docs/#vneshnij-dostup
+"Вопросы и ответы";Документация;https://ospanel.io/docs/#voprosy-i-otvety
+"Домены и алиасы";Документация;https://ospanel.io/docs/#domeny-i-aliasy
+"Запуск и установка";Документация;https://ospanel.io/docs/#ustanovka
+"Защита сервера";Документация;https://ospanel.io/docs/#zashhita-servera
+"Меню закладок";Документация;https://ospanel.io/docs/#menju-zakladok
+"Меню программ";Документация;https://ospanel.io/docs/#menju-programm
+"Настройка DNS";Документация;https://ospanel.io/docs/#dns-server
+"Ограниченный режим";Документация;https://ospanel.io/docs/#ogranichennyj-rezhim
+"Отправка почты";Документация;https://ospanel.io/docs/#smtp
+"Первый запуск";-;%progdir%\modules\system\open_server_panel_sp_tool_5_4_3.exe
+"Планировщик (Cron)";Документация;https://ospanel.io/docs/#planirovshhik
+Подключение;Документация;https://ospanel.io/docs/#podkljuchenie
+"Работа в консоли";Документация;https://ospanel.io/docs/#rabota-v-konsoli
+"Работа с Composer";Документация;https://ospanel.io/docs/#rabota-s-composer
+"Работа с MySQL";Документация;https://ospanel.io/docs/#rabota-s-mysql
+"Решение проблем";Документация;https://ospanel.io/docs/#reshenie-problem

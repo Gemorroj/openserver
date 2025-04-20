@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang='ru'>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+    <title>Как вы здесь оказались?</title>
+    <style>
+    a {
+        background-color: transparent;
+        -webkit-text-decoration-skip: objects
+    }
+
+    a:active,
+    a:hover {
+        outline-width: 0
+    }
+
+    *,
+    *:after,
+    *:before {
+        box-sizing: inherit;
+        margin: 0;
+        padding: 0;
+        color: #000;
+    }
+
+    html {
+        box-sizing: border-box;
+        font-size: 1px !important;
+    }
+
+    body {
+        font: normal 14rem/21rem Arial, 'Helvetica CY', 'Nimbus Sans L', sans-serif;
+        background-color: #E5EEF5;
+    }
+
+    .outer {
+        display: table;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+    }
+
+    .middle {
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    .inner {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 570rem;
+        min-width: 360rem;
+        padding: 20rem;
+    }
+
+    h1 {
+        line-height: 48rem;
+        font-size: 48rem;
+        margin-bottom: 45rem;
+    }
+    </style>
+</head>
+
+<body>
+    <div class='outer'>
+        <div class='middle'>
+            <div class='inner' id='t1'>
+                <h1>Как вы здесь оказались?</h1>Это служебный раздел для доступа к веб-инструментам. Добавьте нужный URL к адресу или откройте веб-инструмент из меню программы.
+            </div>
+        </div>
+    </div>
+    <script>
+    var userLang = navigator.language || navigator.userLanguage;
+    var userLang_detected = userLang.toLowerCase();
+    if (userLang_detected != 'ru-ru' && userLang_detected != 'ru') {
+        document.title = 'How did you get here?';
+        document.getElementById('t1').innerHTML = '<h1>How did you get here?</h1>This is a service section for accessing web tools. Add the required URL to the address or open the web tool from the program menu.';
+    }
+    </script>
+</body>
+
+</html>
