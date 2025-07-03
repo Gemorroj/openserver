@@ -1,9 +1,9 @@
 This snapshot was automatically generated on
-Wed, 04 Jun 2025 21:50:28 +0000
+Tue, 01 Jul 2025 17:46:02 +0000
 
-Version: 8.3.22
+Version: 8.3.23
 Branch: HEAD
-Build: C:\a\php-ftw\php-ftw\php\vs16\x64\obj\Release_TS
+Build: D:\a\php-ftw\php-ftw\php\vs16\x64\obj\Release_TS
 
 Built-in Extensions
 ===========================
@@ -18,13 +18,13 @@ iconv
 json
 SPL
 pcre
+random
 readline
 Reflection
 session
 standard
 mysqlnd
 tokenizer
-zip
 zlib
 libxml
 dom
@@ -40,6 +40,7 @@ sqlite3
 Phar
 mbstring
 mysqli
+zip
 
 
 Dependency information:
