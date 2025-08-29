@@ -1,9 +1,9 @@
 This snapshot was automatically generated on
-Tue, 29 Jul 2025 16:52:32 +0000
+Tue, 26 Aug 2025 21:38:33 +0000
 
-Version: 8.3.24
+Version: 8.3.25
 Branch: HEAD
-Build: D:\a\php-ftw\php-ftw\php\vs16\x64\obj\Release_TS
+Build: C:\Users\runneradmin\AppData\Local\Temp\4c61a628-d8ef-42a7-8401-5735f655248d\config\vs16\x64\obj\Release_TS
 
 Built-in Extensions
 ===========================
