@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>F.29. pg_overexplain — allow EXPLAIN to dump even more details</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="pglogicalinspect.html" title="F.28. pg_logicalinspect — logical decoding components inspection" /><link rel="next" href="pgprewarm.html" title="F.30. pg_prewarm — preload relation data into buffer caches" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">F.29. pg_overexplain — allow EXPLAIN to dump even more details</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="pglogicalinspect.html" title="F.28. pg_logicalinspect — logical decoding components inspection">Prev</a> </td><td width="10%" align="left"><a accesskey="u" href="contrib.html" title="Appendix F. Additional Supplied Modules and Extensions">Up</a></td><th width="60%" align="center">Appendix F. Additional Supplied Modules and Extensions</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="PostgreSQL 18.0 Documentation">Home</a></td><td width="10%" align="right"> <a accesskey="n" href="pgprewarm.html" title="F.30. pg_prewarm — preload relation data into buffer caches">Next</a></td></tr></table><hr /></div><div class="sect1" id="PGOVEREXPLAIN"><div class="titlepage"><div><div><h2 class="title" style="clear: both">F.29. pg_overexplain — allow EXPLAIN to dump even more details <a href="#PGOVEREXPLAIN" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="pgoverexplain.html#PGOVEREXPLAIN-DEBUG">F.29.1. EXPLAIN (DEBUG)</a></span></dt><dt><span class="sect2"><a href="pgoverexplain.html#PGOVEREXPLAIN-RANGE-TABLE">F.29.2. EXPLAIN (RANGE_TABLE)</a></span></dt><dt><span class="sect2"><a href="pgoverexplain.html#PGOVEREXPLAIN-AUTHOR">F.29.3. Author</a></span></dt></dl></div><a id="id-1.11.7.39.2" class="indexterm"></a><p>
+  The <code class="filename">pg_overexplain</code> module extends <code class="command">EXPLAIN</code>
+  with new options that provide additional output. It is mostly intended to
+  assist with debugging of and development of the planner, rather than for
+  general use. Since this module displays internal details of planner data
+  structures, it may be necessary to refer to the source code to make sense
+  of the output. Furthermore, the output is likely to change whenever (and as
+  often as) those data structures change.
+ </p><p>
+  To use it, simply load it into the server.  You can load it into an
+  individual session:
+
+</p><pre class="programlisting">
+LOAD 'pg_overexplain';
+</pre><p>
+
+  You can also preload it into some or all sessions by including
+  <code class="literal">pg_overexplain</code> in
+  <a class="xref" href="runtime-config-client.html#GUC-SESSION-PRELOAD-LIBRARIES">session_preload_libraries</a> or
+  <a class="xref" href="runtime-config-client.html#GUC-SHARED-PRELOAD-LIBRARIES">shared_preload_libraries</a> in
+  <code class="filename">postgresql.conf</code>.
+ </p><div class="sect2" id="PGOVEREXPLAIN-DEBUG"><div class="titlepage"><div><div><h3 class="title">F.29.1. EXPLAIN (DEBUG) <a href="#PGOVEREXPLAIN-DEBUG" class="id_link">#</a></h3></div></div></div><p>
+   The <code class="literal">DEBUG</code> option displays miscellaneous information from
+   the plan tree that is not normally shown because it is not expected to be
+   of general interest. For each individual plan node, it will display the
+   following fields.  See <code class="literal">Plan</code> in
+   <code class="literal">nodes/plannodes.h</code> for additional documentation of these
+   fields.
+  </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+     <code class="literal">Disabled Nodes</code>. Normal <code class="command">EXPLAIN</code>
+     determines whether a node is disabled by checking whether the node's
+     count of disabled nodes is larger than the sum of the counts for the
+     underlying nodes. This option shows the raw counter value.
+    </p></li><li class="listitem"><p>
+     <code class="literal">Parallel Safe</code>. Indicates whether it would be safe for
+     a plan tree node to appear beneath a <code class="literal">Gather</code> or
+     <code class="literal">Gather Merge</code> node, regardless of whether it is
+     actually below such a node.
+    </p></li><li class="listitem"><p>
+     <code class="literal">Plan Node ID</code>. An internal ID number that should be
+     unique for every node in the plan tree. It is used to coordinate parallel
+     query activity.
+    </p></li><li class="listitem"><p>
+     <code class="literal">extParam</code> and <code class="literal">allParam</code>. Information
+     about which numbered parameters affect this plan node or its children. In
+     text mode, these fields are only displayed if they are non-empty sets.
+    </p></li></ul></div><p>
+   Once per query, the <code class="literal">DEBUG</code> option will display the
+   following fields. See <code class="literal">PlannedStmt</code> in
+   <code class="literal">nodes/plannodes.h</code> for additional detail.
+  </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+     <code class="literal">Command Type</code>. For example, <code class="literal">select</code>
+     or <code class="literal">update</code>.
+    </p></li><li class="listitem"><p>
+     <code class="literal">Flags</code>. A comma-separated list of Boolean structure
+     member names from the <code class="literal">PlannedStmt</code> that are set to
+     <code class="literal">true</code>. It covers the following structure members:
+     <code class="literal">hasReturning</code>, <code class="literal">hasModifyingCTE</code>,
+     <code class="literal">canSetTag</code>, <code class="literal">transientPlan</code>,
+     <code class="literal">dependsOnRole</code>, <code class="literal">parallelModeNeeded</code>.
+    </p></li><li class="listitem"><p>
+     <code class="literal">Subplans Needing Rewind</code>. Integer IDs of subplans that
+     may need to be rewound by the executor.
+    </p></li><li class="listitem"><p>
+     <code class="literal">Relation OIDs</code>. OIDs of relations upon which this plan
+     depends.
+    </p></li><li class="listitem"><p>
+     <code class="literal">Executor Parameter Types</code>. Type OID for each executor parameter
+     (e.g. when a nested loop is chosen and a parameter is used to pass a value down
+     to an inner index scan). Does not include parameters supplied to a prepared
+     statement by the user.
+    </p></li><li class="listitem"><p>
+     <code class="literal">Parse Location</code>. Location within the query string
+     supplied to the planner where this query's text can be found. May be
+     <code class="literal">Unknown</code> in some contexts. Otherwise, may be
+     <code class="literal">NNN to end</code> for some integer <code class="literal">NNN</code> or
+     <code class="literal">NNN for MMM bytes</code> for some integers
+     <code class="literal">NNN</code> and <code class="literal">MMM</code>.
+    </p></li></ul></div></div><div class="sect2" id="PGOVEREXPLAIN-RANGE-TABLE"><div class="titlepage"><div><div><h3 class="title">F.29.2. EXPLAIN (RANGE_TABLE) <a href="#PGOVEREXPLAIN-RANGE-TABLE" class="id_link">#</a></h3></div></div></div><p>
+   The <code class="literal">RANGE_TABLE</code> option displays information from the
+   plan tree specifically concerning the query's range table. Range table
+   entries correspond roughly to items appearing in the query's
+   <code class="literal">FROM</code> clause, but with numerous exceptions. For example,
+   subqueries that are proved unnecessary may be deleted from the range table
+   entirely, while inheritance expansion adds range table entries for child
+   tables that are not named directly in the query.
+  </p><p>
+   Range table entries are generally referenced within the query plan by a
+   range table index, or RTI. Plan nodes that reference one or more RTIs will
+   be labelled accordingly, using one of the following fields: <code class="literal">Scan
+   RTI</code>, <code class="literal">Nominal RTI</code>, <code class="literal">Exclude Relation
+   RTI</code>, <code class="literal">Append RTIs</code>.
+  </p><p>
+   In addition, the query as a whole may maintain lists of range table indexes
+   that are needed for various purposes. These lists will be displayed once
+   per query, labelled as appropriate as <code class="literal">Unprunable RTIs</code> or
+   <code class="literal">Result RTIs</code>. In text mode, these fields are only
+   displayed if they are non-empty sets.
+  </p><p>
+   Finally, but most importantly, the <code class="literal">RANGE_TABLE</code> option
+   will display a dump of the query's entire range table. Each range table
+   entry is labelled with the appropriate range table index, the kind of range
+   table entry (e.g.  <code class="literal">relation</code>,
+   <code class="literal">subquery</code>, or <code class="literal">join</code>), followed by the
+   contents of various range table entry fields that are not normally part of
+   <code class="literal">EXPLAIN</code> output. Some of these fields are only displayed
+   for certain kinds of range table entries. For example,
+   <code class="literal">Eref</code> is displayed for all types of range table entries,
+   but <code class="literal">CTE Name</code> is displayed only for range table entries
+   of type <code class="literal">cte</code>.
+  </p><p>
+   For more information about range table entries, see the definition of
+   <code class="literal">RangeTblEntry</code> in <code class="literal">nodes/plannodes.h</code>.
+  </p></div><div class="sect2" id="PGOVEREXPLAIN-AUTHOR"><div class="titlepage"><div><div><h3 class="title">F.29.3. Author <a href="#PGOVEREXPLAIN-AUTHOR" class="id_link">#</a></h3></div></div></div><p>
+   Robert Haas <code class="email">&lt;<a class="email" href="mailto:rhaas@postgresql.org">rhaas@postgresql.org</a>&gt;</code>
+  </p></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="pglogicalinspect.html" title="F.28. pg_logicalinspect — logical decoding components inspection">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="contrib.html" title="Appendix F. Additional Supplied Modules and Extensions">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="pgprewarm.html" title="F.30. pg_prewarm — preload relation data into buffer caches">Next</a></td></tr><tr><td width="40%" align="left" valign="top">F.28. pg_logicalinspect — logical decoding components inspection </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="PostgreSQL 18.0 Documentation">Home</a></td><td width="40%" align="right" valign="top"> F.30. pg_prewarm — preload relation data into buffer caches</td></tr></table></div></body></html>

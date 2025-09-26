@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>20.15. OAuth Authorization/Authentication</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="auth-bsd.html" title="20.14. BSD Authentication" /><link rel="next" href="client-authentication-problems.html" title="20.16. Authentication Problems" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">20.15. OAuth Authorization/Authentication</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="auth-bsd.html" title="20.14. BSD Authentication">Prev</a> </td><td width="10%" align="left"><a accesskey="u" href="client-authentication.html" title="Chapter 20. Client Authentication">Up</a></td><th width="60%" align="center">Chapter 20. Client Authentication</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="PostgreSQL 18.0 Documentation">Home</a></td><td width="10%" align="right"> <a accesskey="n" href="client-authentication-problems.html" title="20.16. Authentication Problems">Next</a></td></tr></table><hr /></div><div class="sect1" id="AUTH-OAUTH"><div class="titlepage"><div><div><h2 class="title" style="clear: both">20.15. OAuth Authorization/Authentication <a href="#AUTH-OAUTH" class="id_link">#</a></h2></div></div></div><a id="id-1.6.7.22.2" class="indexterm"></a><p>
+    OAuth 2.0 is an industry-standard framework, defined in
+    <a class="ulink" href="https://datatracker.ietf.org/doc/html/rfc6749" target="_top">RFC 6749</a>,
+    to enable third-party applications to obtain limited access to a protected
+    resource.
+
+    OAuth client support has to be enabled when <span class="productname">PostgreSQL</span>
+    is built, see <a class="xref" href="installation.html" title="Chapter 17. Installation from Source Code">Chapter 17</a> for more information.
+   </p><p>
+    This documentation uses the following terminology when discussing the OAuth
+    ecosystem:
+
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Resource Owner (or End User)</span></dt><dd><p>
+        The user or system who owns protected resources and can grant access to
+        them. This documentation also uses the term <span class="emphasis"><em>end user</em></span>
+        when the resource owner is a person. When you use
+        <span class="application">psql</span> to connect to the database using OAuth,
+        you are the resource owner/end user.
+       </p></dd><dt><span class="term">Client</span></dt><dd><p>
+        The system which accesses the protected resources using access
+        tokens. Applications using libpq, such as <span class="application">psql</span>,
+        are the OAuth clients when connecting to a
+        <span class="productname">PostgreSQL</span> cluster.
+       </p></dd><dt><span class="term">Resource Server</span></dt><dd><p>
+        The system hosting the protected resources which are
+        accessed by the client. The <span class="productname">PostgreSQL</span>
+        cluster being connected to is the resource server.
+       </p></dd><dt><span class="term">Provider</span></dt><dd><p>
+        The organization, product vendor, or other entity which develops and/or
+        administers the OAuth authorization servers and clients for a given application.
+        Different providers typically choose different implementation details
+        for their OAuth systems; a client of one provider is not generally
+        guaranteed to have access to the servers of another.
+       </p><p>
+        This use of the term "provider" is not standard, but it seems to be in
+        wide use colloquially. (It should not be confused with OpenID's similar
+        term "Identity Provider". While the implementation of OAuth in
+        <span class="productname">PostgreSQL</span> is intended to be interoperable
+        and compatible with OpenID Connect/OIDC, it is not itself an OIDC client
+        and does not require its use.)
+       </p></dd><dt><span class="term">Authorization Server</span></dt><dd><p>
+        The system which receives requests from, and issues access tokens to,
+        the client after the authenticated resource owner has given approval.
+        <span class="productname">PostgreSQL</span> does not provide an authorization
+        server; it is the responsibility of the OAuth provider.
+       </p></dd><dt><span class="term" id="AUTH-OAUTH-ISSUER">Issuer</span></dt><dd><p>
+        An identifier for an authorization server, printed as an
+        <code class="literal">https://</code> URL, which provides a trusted "namespace"
+        for OAuth clients and applications. The issuer identifier allows a
+        single authorization server to talk to the clients of mutually
+        untrusting entities, as long as they maintain separate issuers.
+       </p></dd></dl></div><p>
+
+    </p><div class="note"><h3 class="title">Note</h3><p>
+      For small deployments, there may not be a meaningful distinction between
+      the "provider", "authorization server", and "issuer". However, for more
+      complicated setups, there may be a one-to-many (or many-to-many)
+      relationship: a provider may rent out multiple issuer identifiers to
+      separate tenants, then provide multiple authorization servers, possibly
+      with different supported feature sets, to interact with their clients.
+     </p></div><p>
+   </p><p>
+    <span class="productname">PostgreSQL</span> supports bearer tokens, defined in
+    <a class="ulink" href="https://datatracker.ietf.org/doc/html/rfc6750" target="_top">RFC 6750</a>,
+    which are a type of access token used with OAuth 2.0 where the token is an
+    opaque string.  The format of the access token is implementation specific
+    and is chosen by each authorization server.
+   </p><p>
+    The following configuration options are supported for OAuth:
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">issuer</code></span></dt><dd><p>
+        An HTTPS URL which is either the exact
+        <a class="link" href="auth-oauth.html#AUTH-OAUTH-ISSUER">issuer identifier</a> of the
+        authorization server, as defined by its discovery document, or a
+        well-known URI that points directly to that discovery document. This
+        parameter is required.
+       </p><p>
+        When an OAuth client connects to the server, a URL for the discovery
+        document will be constructed using the issuer identifier. By default,
+        this URL uses the conventions of OpenID Connect Discovery: the path
+        <code class="literal">/.well-known/openid-configuration</code> will be appended
+        to the end of the issuer identifier. Alternatively, if the
+        <code class="literal">issuer</code> contains a <code class="literal">/.well-known/</code>
+        path segment, that URL will be provided to the client as-is.
+       </p><div class="warning"><h3 class="title">Warning</h3><p>
+         The OAuth client in libpq requires the server's issuer setting to
+         exactly match the issuer identifier which is provided in the discovery
+         document, which must in turn match the client's
+         <a class="xref" href="libpq-connect.html#LIBPQ-CONNECT-OAUTH-ISSUER">oauth_issuer</a> setting. No variations in
+         case or formatting are permitted.
+        </p></div></dd><dt><span class="term"><code class="literal">scope</code></span></dt><dd><p>
+        A space-separated list of the OAuth scopes needed for the server to
+        both authorize the client and authenticate the user.  Appropriate values
+        are determined by the authorization server and the OAuth validation
+        module used (see <a class="xref" href="oauth-validators.html" title="Chapter 50. OAuth Validator Modules">Chapter 50</a> for more
+        information on validators).  This parameter is required.
+       </p></dd><dt><span class="term"><code class="literal">validator</code></span></dt><dd><p>
+        The library to use for validating bearer tokens. If given, the name must
+        exactly match one of the libraries listed in
+        <a class="xref" href="runtime-config-connection.html#GUC-OAUTH-VALIDATOR-LIBRARIES">oauth_validator_libraries</a>.  This parameter is
+        optional unless <code class="literal">oauth_validator_libraries</code> contains
+        more than one library, in which case it is required.
+       </p></dd><dt><span class="term"><code class="literal">map</code></span></dt><dd><p>
+        Allows for mapping between OAuth identity provider and database user
+        names.  See <a class="xref" href="auth-username-maps.html" title="20.2. User Name Maps">Section 20.2</a> for details.  If a
+        map is not specified, the user name associated with the token (as
+        determined by the OAuth validator) must exactly match the role name
+        being requested.  This parameter is optional.
+       </p></dd><dt><span class="term" id="AUTH-OAUTH-DELEGATE-IDENT-MAPPING">
+       <code class="literal">delegate_ident_mapping</code>
+      </span></dt><dd><p>
+        An advanced option which is not intended for common use.
+       </p><p>
+        When set to <code class="literal">1</code>, standard user mapping with
+        <code class="filename">pg_ident.conf</code> is skipped, and the OAuth validator
+        takes full responsibility for mapping end user identities to database
+        roles.  If the validator authorizes the token, the server trusts that
+        the user is allowed to connect under the requested role, and the
+        connection is allowed to proceed regardless of the authentication
+        status of the user.
+       </p><p>
+        This parameter is incompatible with <code class="literal">map</code>.
+       </p><div class="warning"><h3 class="title">Warning</h3><p>
+         <code class="literal">delegate_ident_mapping</code> provides additional
+         flexibility in the design of the authentication system, but it also
+         requires careful implementation of the OAuth validator, which must
+         determine whether the provided token carries sufficient end-user
+         privileges in addition to the <a class="link" href="oauth-validators.html" title="Chapter 50. OAuth Validator Modules">standard
+         checks</a> required of all validators.  Use with caution.
+        </p></div></dd></dl></div><p>
+   </p></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="auth-bsd.html" title="20.14. BSD Authentication">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="client-authentication.html" title="Chapter 20. Client Authentication">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="client-authentication-problems.html" title="20.16. Authentication Problems">Next</a></td></tr><tr><td width="40%" align="left" valign="top">20.14. BSD Authentication </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="PostgreSQL 18.0 Documentation">Home</a></td><td width="40%" align="right" valign="top"> 20.16. Authentication Problems</td></tr></table></div></body></html>

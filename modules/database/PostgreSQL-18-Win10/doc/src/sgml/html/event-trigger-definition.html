@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>38.1. Overview of Event Trigger Behavior</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="event-triggers.html" title="Chapter 38. Event Triggers" /><link rel="next" href="event-trigger-interface.html" title="38.2. Writing Event Trigger Functions in C" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">38.1. Overview of Event Trigger Behavior</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="event-triggers.html" title="Chapter 38. Event Triggers">Prev</a> </td><td width="10%" align="left"><a accesskey="u" href="event-triggers.html" title="Chapter 38. Event Triggers">Up</a></td><th width="60%" align="center">Chapter 38. Event Triggers</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="PostgreSQL 18.0 Documentation">Home</a></td><td width="10%" align="right"> <a accesskey="n" href="event-trigger-interface.html" title="38.2. Writing Event Trigger Functions in C">Next</a></td></tr></table><hr /></div><div class="sect1" id="EVENT-TRIGGER-DEFINITION"><div class="titlepage"><div><div><h2 class="title" style="clear: both">38.1. Overview of Event Trigger Behavior <a href="#EVENT-TRIGGER-DEFINITION" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="event-trigger-definition.html#EVENT-TRIGGER-LOGIN">38.1.1. login</a></span></dt><dt><span class="sect2"><a href="event-trigger-definition.html#EVENT-TRIGGER-DDL_COMMAND_START">38.1.2. ddl_command_start</a></span></dt><dt><span class="sect2"><a href="event-trigger-definition.html#EVENT-TRIGGER-DDL_COMMAND_END">38.1.3. ddl_command_end</a></span></dt><dt><span class="sect2"><a href="event-trigger-definition.html#EVENT-TRIGGER-SQL_DROP">38.1.4. sql_drop</a></span></dt><dt><span class="sect2"><a href="event-trigger-definition.html#EVENT-TRIGGER-TABLE_REWRITE">38.1.5. table_rewrite</a></span></dt><dt><span class="sect2"><a href="event-trigger-definition.html#EVENT-TRIGGER-ABORTED-TRANSACTIONS">38.1.6. Event Triggers in Aborted Transactions</a></span></dt><dt><span class="sect2"><a href="event-trigger-definition.html#EVENT-TRIGGER-CREATING">38.1.7. Creating Event Triggers</a></span></dt></dl></div><p>
+     An event trigger fires whenever the event with which it is associated
+     occurs in the database in which it is defined. Currently, the
+     supported events are
+     <code class="literal">login</code>,
+     <code class="literal">ddl_command_start</code>,
+     <code class="literal">ddl_command_end</code>,
+     <code class="literal">table_rewrite</code>
+     and <code class="literal">sql_drop</code>.
+     Support for additional events may be added in future releases.
+   </p><div class="sect2" id="EVENT-TRIGGER-LOGIN"><div class="titlepage"><div><div><h3 class="title">38.1.1. login <a href="#EVENT-TRIGGER-LOGIN" class="id_link">#</a></h3></div></div></div><p>
+     The <code class="literal">login</code> event occurs when an authenticated user logs
+     into the system. Any bug in a trigger procedure for this event may
+     prevent successful login to the system. Such bugs may be worked around by
+     setting <a class="xref" href="runtime-config-client.html#GUC-EVENT-TRIGGERS">event_triggers</a> to <code class="literal">false</code>
+     either in a connection string or configuration file. Alternatively, you can
+     restart the system in single-user mode (as event triggers are
+     disabled in this mode). See the <a class="xref" href="app-postgres.html" title="postgres"><span class="refentrytitle"><span class="application">postgres</span></span></a> reference
+     page for details about using single-user mode.
+     The <code class="literal">login</code> event will also fire on standby servers.
+     To prevent servers from becoming inaccessible, such triggers must avoid
+     writing anything to the database when running on a standby.
+     Also, it's recommended to avoid long-running queries in
+     <code class="literal">login</code> event triggers.  Note that, for instance,
+     canceling a connection in <span class="application">psql</span> will not cancel
+     the in-progress <code class="literal">login</code> trigger.
+   </p><p>
+     For an example on how to use the <code class="literal">login</code> event trigger,
+     see <a class="xref" href="event-trigger-database-login-example.html" title="38.5. A Database Login Event Trigger Example">Section 38.5</a>.
+   </p></div><div class="sect2" id="EVENT-TRIGGER-DDL_COMMAND_START"><div class="titlepage"><div><div><h3 class="title">38.1.2. ddl_command_start <a href="#EVENT-TRIGGER-DDL_COMMAND_START" class="id_link">#</a></h3></div></div></div><p>
+     The <code class="literal">ddl_command_start</code> event occurs just before the
+     execution of a DDL command.  DDL commands in this context are:
+     </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><code class="literal">CREATE</code></p></li><li class="listitem"><p><code class="literal">ALTER</code></p></li><li class="listitem"><p><code class="literal">DROP</code></p></li><li class="listitem"><p><code class="literal">COMMENT</code></p></li><li class="listitem"><p><code class="literal">GRANT</code></p></li><li class="listitem"><p><code class="literal">IMPORT FOREIGN SCHEMA</code></p></li><li class="listitem"><p><code class="literal">REINDEX</code></p></li><li class="listitem"><p><code class="literal">REFRESH MATERIALIZED VIEW</code></p></li><li class="listitem"><p><code class="literal">REVOKE</code></p></li><li class="listitem"><p><code class="literal">SECURITY LABEL</code></p></li></ul></div><p>
+     <code class="literal">ddl_command_start</code> also occurs just before the
+     execution of a <code class="literal">SELECT INTO</code> command, since this is
+     equivalent to <code class="literal">CREATE TABLE AS</code>.
+   </p><p>
+     As an exception, this event does not occur for DDL commands targeting
+     shared objects:
+     </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>databases</p></li><li class="listitem"><p>roles (role definitions and role memberships)</p></li><li class="listitem"><p>tablespaces</p></li><li class="listitem"><p>parameter privileges</p></li><li class="listitem"><p><code class="command">ALTER SYSTEM</code></p></li></ul></div><p>
+     This event also does not occur for commands targeting event triggers
+     themselves.
+   </p><p>
+     No check whether the affected object exists or doesn't exist is performed
+     before the event trigger fires.
+   </p></div><div class="sect2" id="EVENT-TRIGGER-DDL_COMMAND_END"><div class="titlepage"><div><div><h3 class="title">38.1.3. ddl_command_end <a href="#EVENT-TRIGGER-DDL_COMMAND_END" class="id_link">#</a></h3></div></div></div><p>
+    The <code class="literal">ddl_command_end</code> event occurs just after the execution of
+    the same set of commands as <code class="literal">ddl_command_start</code>.  To
+    obtain more details on the <acronym class="acronym">DDL</acronym>
+    operations that took place, use the set-returning function
+    <code class="literal">pg_event_trigger_ddl_commands()</code> from the
+    <code class="literal">ddl_command_end</code> event trigger code (see
+    <a class="xref" href="functions-event-triggers.html" title="9.30. Event Trigger Functions">Section 9.30</a>).  Note that the trigger fires
+    after the actions have taken place (but before the transaction commits),
+    and thus the system catalogs can be read as already changed.
+   </p></div><div class="sect2" id="EVENT-TRIGGER-SQL_DROP"><div class="titlepage"><div><div><h3 class="title">38.1.4. sql_drop <a href="#EVENT-TRIGGER-SQL_DROP" class="id_link">#</a></h3></div></div></div><p>
+    The <code class="literal">sql_drop</code> event occurs just before the
+    <code class="literal">ddl_command_end</code> event trigger for any operation that drops
+    database objects.  Note that besides the obvious <code class="literal">DROP</code>
+    commands, some <code class="literal">ALTER</code> commands can also trigger an
+    <code class="literal">sql_drop</code> event.
+   </p><p>
+    To list the objects that have been dropped, use the
+    set-returning function <code class="literal">pg_event_trigger_dropped_objects()</code> from the
+    <code class="literal">sql_drop</code> event trigger code (see
+    <a class="xref" href="functions-event-triggers.html" title="9.30. Event Trigger Functions">Section 9.30</a>). Note that
+    the trigger is executed after the objects have been deleted from the
+    system catalogs, so it's not possible to look them up anymore.
+   </p></div><div class="sect2" id="EVENT-TRIGGER-TABLE_REWRITE"><div class="titlepage"><div><div><h3 class="title">38.1.5. table_rewrite <a href="#EVENT-TRIGGER-TABLE_REWRITE" class="id_link">#</a></h3></div></div></div><p>
+    The <code class="literal">table_rewrite</code> event occurs just before a table is
+    rewritten by some actions of the commands <code class="literal">ALTER TABLE</code> and
+    <code class="literal">ALTER TYPE</code>.  While other
+    control statements are available to rewrite a table,
+    like <code class="literal">CLUSTER</code> and <code class="literal">VACUUM</code>,
+    the <code class="literal">table_rewrite</code> event is not triggered by them.
+    To find the OID of the table that was rewritten, use the function
+    <code class="literal">pg_event_trigger_table_rewrite_oid()</code>, to discover the
+    reason(s) for the rewrite, use the function
+    <code class="literal">pg_event_trigger_table_rewrite_reason()</code> (see <a class="xref" href="functions-event-triggers.html" title="9.30. Event Trigger Functions">Section 9.30</a>).
+   </p></div><div class="sect2" id="EVENT-TRIGGER-ABORTED-TRANSACTIONS"><div class="titlepage"><div><div><h3 class="title">38.1.6. Event Triggers in Aborted Transactions <a href="#EVENT-TRIGGER-ABORTED-TRANSACTIONS" class="id_link">#</a></h3></div></div></div><p>
+     Event triggers (like other functions) cannot be executed in an aborted
+     transaction.  Thus, if a DDL command fails with an error, any associated
+     <code class="literal">ddl_command_end</code> triggers will not be executed.  Conversely,
+     if a <code class="literal">ddl_command_start</code> trigger fails with an error, no
+     further event triggers will fire, and no attempt will be made to execute
+     the command itself.  Similarly, if a <code class="literal">ddl_command_end</code> trigger
+     fails with an error, the effects of the DDL statement will be rolled
+     back, just as they would be in any other case where the containing
+     transaction aborts.
+   </p></div><div class="sect2" id="EVENT-TRIGGER-CREATING"><div class="titlepage"><div><div><h3 class="title">38.1.7. Creating Event Triggers <a href="#EVENT-TRIGGER-CREATING" class="id_link">#</a></h3></div></div></div><p>
+     Event triggers are created using the command <a class="xref" href="sql-createeventtrigger.html" title="CREATE EVENT TRIGGER"><span class="refentrytitle">CREATE EVENT TRIGGER</span></a>.
+     In order to create an event trigger, you must first create a function with
+     the special return type <code class="literal">event_trigger</code>.  This function
+     need not (and may not) return a value; the return type serves merely as
+     a signal that the function is to be invoked as an event trigger.
+   </p><p>
+     If more than one event trigger is defined for a particular event, they will
+     fire in alphabetical order by trigger name.
+   </p><p>
+     A trigger definition can also specify a <code class="literal">WHEN</code>
+     condition so that, for example, a <code class="literal">ddl_command_start</code>
+     trigger can be fired only for particular commands which the user wishes
+     to intercept. A common use of such triggers is to restrict the range of
+     DDL operations which users may perform.
+   </p></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="event-triggers.html" title="Chapter 38. Event Triggers">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="event-triggers.html" title="Chapter 38. Event Triggers">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="event-trigger-interface.html" title="38.2. Writing Event Trigger Functions in C">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 38. Event Triggers </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="PostgreSQL 18.0 Documentation">Home</a></td><td width="40%" align="right" valign="top"> 38.2. Writing Event Trigger Functions in C</td></tr></table></div></body></html>

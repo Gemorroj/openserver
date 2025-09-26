@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>32.20. OAuth Support</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="libpq-ssl.html" title="32.19. SSL Support" /><link rel="next" href="libpq-threading.html" title="32.21. Behavior in Threaded Programs" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">32.20. OAuth Support</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="libpq-ssl.html" title="32.19. SSL Support">Prev</a> </td><td width="10%" align="left"><a accesskey="u" href="libpq.html" title="Chapter 32. libpq — C Library">Up</a></td><th width="60%" align="center">Chapter 32. <span class="application">libpq</span> — C Library</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="PostgreSQL 18.0 Documentation">Home</a></td><td width="10%" align="right"> <a accesskey="n" href="libpq-threading.html" title="32.21. Behavior in Threaded Programs">Next</a></td></tr></table><hr /></div><div class="sect1" id="LIBPQ-OAUTH"><div class="titlepage"><div><div><h2 class="title" style="clear: both">32.20. OAuth Support <a href="#LIBPQ-OAUTH" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="libpq-oauth.html#LIBPQ-OAUTH-AUTHDATA-HOOKS">32.20.1. Authdata Hooks</a></span></dt><dt><span class="sect2"><a href="libpq-oauth.html#LIBPQ-OAUTH-DEBUGGING">32.20.2. Debugging and Developer Settings</a></span></dt></dl></div><p>
+   <span class="application">libpq</span> implements support for the OAuth v2 Device Authorization client flow,
+   documented in
+   <a class="ulink" href="https://datatracker.ietf.org/doc/html/rfc8628" target="_top">RFC 8628</a>,
+   as an optional module. See the <a class="link" href="install-make.html#CONFIGURE-OPTION-WITH-LIBCURL">
+   installation documentation</a> for information on how to enable support
+   for Device Authorization as a builtin flow.
+  </p><p>
+   When support is enabled and the optional module installed, <span class="application">libpq</span>
+   will use the builtin flow by default if the server
+   <a class="link" href="auth-oauth.html" title="20.15. OAuth Authorization/Authentication">requests a bearer token</a> during
+   authentication. This flow can be utilized even if the system running the
+   client application does not have a usable web browser, for example when
+   running a client via <acronym class="acronym">SSH</acronym>.
+  </p><p>
+   The builtin flow will, by default, print a URL to visit and a user code to
+   enter there:
+</p><pre class="programlisting">
+$ psql 'dbname=postgres oauth_issuer=https://example.com oauth_client_id=...'
+Visit https://example.com/device and enter the code: ABCD-EFGH
+</pre><p>
+   (This prompt may be
+   <a class="link" href="libpq-oauth.html#LIBPQ-OAUTH-AUTHDATA-PROMPT-OAUTH-DEVICE">customized</a>.)
+   The user will then log into their OAuth provider, which will ask whether
+   to allow libpq and the server to perform actions on their behalf. It is always
+   a good idea to carefully review the URL and permissions displayed, to ensure
+   they match expectations, before continuing. Permissions should not be given
+   to untrusted third parties.
+  </p><p>
+   Client applications may implement their own flows to customize interaction
+   and integration with applications. See <a class="xref" href="libpq-oauth.html#LIBPQ-OAUTH-AUTHDATA-HOOKS" title="32.20.1. Authdata Hooks">Section 32.20.1</a>
+   for more information on how add a custom flow to <span class="application">libpq</span>.
+  </p><p>
+   For an OAuth client flow to be usable, the connection string must at minimum
+   contain <a class="xref" href="libpq-connect.html#LIBPQ-CONNECT-OAUTH-ISSUER">oauth_issuer</a> and
+   <a class="xref" href="libpq-connect.html#LIBPQ-CONNECT-OAUTH-CLIENT-ID">oauth_client_id</a>. (These settings are
+   determined by your organization's OAuth provider.) The builtin flow
+   additionally requires the OAuth authorization server to publish a device
+   authorization endpoint.
+  </p><div class="note"><h3 class="title">Note</h3><p>
+    The builtin Device Authorization flow is not currently supported on Windows.
+    Custom client flows may still be implemented.
+   </p></div><div class="sect2" id="LIBPQ-OAUTH-AUTHDATA-HOOKS"><div class="titlepage"><div><div><h3 class="title">32.20.1. Authdata Hooks <a href="#LIBPQ-OAUTH-AUTHDATA-HOOKS" class="id_link">#</a></h3></div></div></div><p>
+    The behavior of the OAuth flow may be modified or replaced by a client using
+    the following hook API:
+
+    </p><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-PQSETAUTHDATAHOOK"><span class="term"><code class="function">PQsetAuthDataHook</code><a id="id-1.7.3.27.8.2.1.1.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQSETAUTHDATAHOOK" class="id_link">#</a></dt><dd><p>
+        Sets the <code class="symbol">PGauthDataHook</code>, overriding
+        <span class="application">libpq</span>'s handling of one or more aspects of
+        its OAuth client flow.
+</p><pre class="synopsis">
+void PQsetAuthDataHook(PQauthDataHook_type hook);
+</pre><p>
+        If <em class="replaceable"><code>hook</code></em> is <code class="literal">NULL</code>, the
+        default handler will be reinstalled. Otherwise, the application passes
+        a pointer to a callback function with the signature:
+</p><pre class="programlisting">
+int hook_fn(PGauthData type, PGconn *conn, void *data);
+</pre><p>
+        which <span class="application">libpq</span> will call when an action is
+        required of the application. <em class="replaceable"><code>type</code></em> describes
+        the request being made, <em class="replaceable"><code>conn</code></em> is the
+        connection handle being authenticated, and <em class="replaceable"><code>data</code></em>
+        points to request-specific metadata. The contents of this pointer are
+        determined by <em class="replaceable"><code>type</code></em>; see
+        <a class="xref" href="libpq-oauth.html#LIBPQ-OAUTH-AUTHDATA-HOOKS-TYPES" title="32.20.1.1. Hook Types">Section 32.20.1.1</a> for the supported
+        list.
+       </p><p>
+        Hooks can be chained together to allow cooperative and/or fallback
+        behavior. In general, a hook implementation should examine the incoming
+        <em class="replaceable"><code>type</code></em> (and, potentially, the request metadata
+        and/or the settings for the particular <em class="replaceable"><code>conn</code></em>
+        in use) to decide whether or not to handle a specific piece of authdata.
+        If not, it should delegate to the previous hook in the chain
+        (retrievable via <code class="function">PQgetAuthDataHook</code>).
+       </p><p>
+        Success is indicated by returning an integer greater than zero.
+        Returning a negative integer signals an error condition and abandons the
+        connection attempt. (A zero value is reserved for the default
+        implementation.)
+       </p></dd><dt id="LIBPQ-PQGETAUTHDATAHOOK"><span class="term"><code class="function">PQgetAuthDataHook</code><a id="id-1.7.3.27.8.2.1.2.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQGETAUTHDATAHOOK" class="id_link">#</a></dt><dd><p>
+        Retrieves the current value of <code class="symbol">PGauthDataHook</code>.
+</p><pre class="synopsis">
+PQauthDataHook_type PQgetAuthDataHook(void);
+</pre><p>
+        At initialization time (before the first call to
+        <code class="function">PQsetAuthDataHook</code>), this function will return
+        <code class="symbol">PQdefaultAuthDataHook</code>.
+       </p></dd></dl></div><p>
+   </p><div class="sect3" id="LIBPQ-OAUTH-AUTHDATA-HOOKS-TYPES"><div class="titlepage"><div><div><h4 class="title">32.20.1.1. Hook Types <a href="#LIBPQ-OAUTH-AUTHDATA-HOOKS-TYPES" class="id_link">#</a></h4></div></div></div><p>
+     The following <code class="symbol">PGauthData</code> types and their corresponding
+     <em class="replaceable"><code>data</code></em> structures are defined:
+
+     </p><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-OAUTH-AUTHDATA-PROMPT-OAUTH-DEVICE"><span class="term">
+        <code class="symbol">PQAUTHDATA_PROMPT_OAUTH_DEVICE</code>
+        <a id="id-1.7.3.27.8.3.2.3.1.1.2" class="indexterm"></a>
+       </span> <a href="#LIBPQ-OAUTH-AUTHDATA-PROMPT-OAUTH-DEVICE" class="id_link">#</a></dt><dd><p>
+         Replaces the default user prompt during the builtin device
+         authorization client flow. <em class="replaceable"><code>data</code></em> points to
+         an instance of <code class="symbol">PGpromptOAuthDevice</code>:
+</p><pre class="synopsis">
+typedef struct _PGpromptOAuthDevice
+{
+    const char *verification_uri;   /* verification URI to visit */
+    const char *user_code;          /* user code to enter */
+    const char *verification_uri_complete;  /* optional combination of URI and
+                                             * code, or NULL */
+    int         expires_in;         /* seconds until user code expires */
+} PGpromptOAuthDevice;
+</pre><p>
+        </p><p>
+         The OAuth Device Authorization flow which
+         <a class="link" href="install-make.html#CONFIGURE-OPTION-WITH-LIBCURL">can be included</a>
+         in <span class="application">libpq</span>
+         requires the end user to visit a URL with a browser, then enter a code
+         which permits <span class="application">libpq</span> to connect to the server
+         on their behalf. The default prompt simply prints the
+         <code class="literal">verification_uri</code> and <code class="literal">user_code</code>
+         on standard error. Replacement implementations may display this
+         information using any preferred method, for example with a GUI.
+        </p><p>
+         This callback is only invoked during the builtin device
+         authorization flow. If the application installs a
+         <a class="link" href="libpq-oauth.html#LIBPQ-OAUTH-AUTHDATA-OAUTH-BEARER-TOKEN">custom OAuth
+         flow</a>, or <span class="application">libpq</span> was not built with
+         support for the builtin flow, this authdata type will not be used.
+        </p><p>
+         If a non-NULL <code class="structfield">verification_uri_complete</code> is
+         provided, it may optionally be used for non-textual verification (for
+         example, by displaying a QR code). The URL and user code should still
+         be displayed to the end user in this case, because the code will be
+         manually confirmed by the provider, and the URL lets users continue
+         even if they can't use the non-textual method. For more information,
+         see section 3.3.1 in
+         <a class="ulink" href="https://datatracker.ietf.org/doc/html/rfc8628#section-3.3.1" target="_top">RFC 8628</a>.
+        </p></dd><dt id="LIBPQ-OAUTH-AUTHDATA-OAUTH-BEARER-TOKEN"><span class="term">
+        <code class="symbol">PQAUTHDATA_OAUTH_BEARER_TOKEN</code>
+        <a id="id-1.7.3.27.8.3.2.3.2.1.2" class="indexterm"></a>
+       </span> <a href="#LIBPQ-OAUTH-AUTHDATA-OAUTH-BEARER-TOKEN" class="id_link">#</a></dt><dd><p>
+         Adds a custom implementation of a flow, replacing the builtin flow if
+         it is <a class="link" href="install-make.html#CONFIGURE-OPTION-WITH-LIBCURL">installed</a>.
+         The hook should either directly return a Bearer token for the current
+         user/issuer/scope combination, if one is available without blocking, or
+         else set up an asynchronous callback to retrieve one.
+        </p><p>
+         <em class="replaceable"><code>data</code></em> points to an instance
+         of <code class="symbol">PGoauthBearerRequest</code>, which should be filled in
+         by the implementation:
+</p><pre class="synopsis">
+typedef struct PGoauthBearerRequest
+{
+    /* Hook inputs (constant across all calls) */
+    const char *openid_configuration; /* OIDC discovery URL */
+    const char *scope;                /* required scope(s), or NULL */
+
+    /* Hook outputs */
+
+    /* Callback implementing a custom asynchronous OAuth flow. */
+    PostgresPollingStatusType (*async) (PGconn *conn,
+                                        struct PGoauthBearerRequest *request,
+                                        SOCKTYPE *altsock);
+
+    /* Callback to clean up custom allocations. */
+    void        (*cleanup) (PGconn *conn, struct PGoauthBearerRequest *request);
+
+    char       *token;   /* acquired Bearer token */
+    void       *user;    /* hook-defined allocated data */
+} PGoauthBearerRequest;
+</pre><p>
+        </p><p>
+         Two pieces of information are provided to the hook by
+         <span class="application">libpq</span>:
+         <em class="replaceable"><code>openid_configuration</code></em> contains the URL of an
+         OAuth discovery document describing the authorization server's
+         supported flows, and <em class="replaceable"><code>scope</code></em> contains a
+         (possibly empty) space-separated list of OAuth scopes which are
+         required to access the server. Either or both may be
+         <code class="literal">NULL</code> to indicate that the information was not
+         discoverable. (In this case, implementations may be able to establish
+         the requirements using some other preconfigured knowledge, or they may
+         choose to fail.)
+        </p><p>
+         The final output of the hook is <em class="replaceable"><code>token</code></em>, which
+         must point to a valid Bearer token for use on the connection. (This
+         token should be issued by the
+         <a class="xref" href="libpq-connect.html#LIBPQ-CONNECT-OAUTH-ISSUER">oauth_issuer</a> and hold the requested
+         scopes, or the connection will be rejected by the server's validator
+         module.) The allocated token string must remain valid until
+         <span class="application">libpq</span> is finished connecting; the hook
+         should set a <em class="replaceable"><code>cleanup</code></em> callback which will be
+         called when <span class="application">libpq</span> no longer requires it.
+        </p><p>
+         If an implementation cannot immediately produce a
+         <em class="replaceable"><code>token</code></em> during the initial call to the hook,
+         it should set the <em class="replaceable"><code>async</code></em> callback to handle
+         nonblocking communication with the authorization server.
+         <a href="#ftn.id-1.7.3.27.8.3.2.3.2.2.5.3" class="footnote"><sup class="footnote" id="id-1.7.3.27.8.3.2.3.2.2.5.3">[16]</sup></a>
+         This will be called to begin the flow immediately upon return from the
+         hook. When the callback cannot make further progress without blocking,
+         it should return either <code class="symbol">PGRES_POLLING_READING</code> or
+         <code class="symbol">PGRES_POLLING_WRITING</code> after setting
+         <code class="literal">*pgsocket</code> to the file descriptor that will be marked
+         ready to read/write when progress can be made again. (This descriptor
+         is then provided to the top-level polling loop via
+         <code class="function">PQsocket()</code>.) Return <code class="symbol">PGRES_POLLING_OK</code>
+         after setting <em class="replaceable"><code>token</code></em> when the flow is
+         complete, or <code class="symbol">PGRES_POLLING_FAILED</code> to indicate failure.
+        </p><p>
+         Implementations may wish to store additional data for bookkeeping
+         across calls to the <em class="replaceable"><code>async</code></em> and
+         <em class="replaceable"><code>cleanup</code></em> callbacks. The
+         <em class="replaceable"><code>user</code></em> pointer is provided for this purpose;
+         <span class="application">libpq</span> will not touch its contents and the
+         application may use it at its convenience. (Remember to free any
+         allocations during token cleanup.)
+        </p></dd></dl></div><p>
+    </p></div></div><div class="sect2" id="LIBPQ-OAUTH-DEBUGGING"><div class="titlepage"><div><div><h3 class="title">32.20.2. Debugging and Developer Settings <a href="#LIBPQ-OAUTH-DEBUGGING" class="id_link">#</a></h3></div></div></div><p>
+    A "dangerous debugging mode" may be enabled by setting the environment
+    variable <code class="envar">PGOAUTHDEBUG=UNSAFE</code>. This functionality is provided
+    for ease of local development and testing only. It does several things that
+    you will not want a production system to do:
+
+    </p><div class="itemizedlist"><ul class="itemizedlist compact" style="list-style-type: disc; "><li class="listitem"><p>
+       permits the use of unencrypted HTTP during the OAuth provider exchange
+      </p></li><li class="listitem"><p>
+       allows the system's trusted CA list to be completely replaced using the
+       <code class="envar">PGOAUTHCAFILE</code> environment variable
+      </p></li><li class="listitem"><p>
+       prints HTTP traffic (containing several critical secrets) to standard
+       error during the OAuth flow
+      </p></li><li class="listitem"><p>
+       permits the use of zero-second retry intervals, which can cause the
+       client to busy-loop and pointlessly consume CPU
+      </p></li></ul></div><p>
+   </p><div class="warning"><h3 class="title">Warning</h3><p>
+     Do not share the output of the OAuth flow traffic with third parties. It
+     contains secrets that can be used to attack your clients and servers.
+    </p></div></div><div class="footnotes"><br /><hr style="width:100; text-align:left;margin-left: 0" /><div id="ftn.id-1.7.3.27.8.3.2.3.2.2.5.3" class="footnote"><p><a href="#id-1.7.3.27.8.3.2.3.2.2.5.3" class="para"><sup class="para">[16] </sup></a>
+           Performing blocking operations during the
+           <code class="symbol">PQAUTHDATA_OAUTH_BEARER_TOKEN</code> hook callback will
+           interfere with nonblocking connection APIs such as
+           <code class="function">PQconnectPoll</code> and prevent concurrent connections
+           from making progress. Applications which only ever use the
+           synchronous connection primitives, such as
+           <code class="function">PQconnectdb</code>, may synchronously retrieve a token
+           during the hook instead of implementing the
+           <em class="replaceable"><code>async</code></em> callback, but they will necessarily
+           be limited to one connection at a time.
+          </p></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="libpq-ssl.html" title="32.19. SSL Support">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="libpq.html" title="Chapter 32. libpq — C Library">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="libpq-threading.html" title="32.21. Behavior in Threaded Programs">Next</a></td></tr><tr><td width="40%" align="left" valign="top">32.19. SSL Support </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="PostgreSQL 18.0 Documentation">Home</a></td><td width="40%" align="right" valign="top"> 32.21. Behavior in Threaded Programs</td></tr></table></div></body></html>
