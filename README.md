@@ -1,7 +1,7 @@
 # OpenServer 5 with updated modules
 
-- MariaDB 11.7
-- MongoDB 8.0
+- MariaDB 11.8
+- MongoDB 8.2
 - MySQL 8.4
 - PostgreSQL 18
 - Apache 2.4
