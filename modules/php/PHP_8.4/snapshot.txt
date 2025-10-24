@@ -1,9 +1,9 @@
 This snapshot was automatically generated on
-Tue, 23 Sep 2025 14:42:41 +0000
+Tue, 21 Oct 2025 19:43:09 +0000
 
-Version: 8.4.13
+Version: 8.4.14
 Branch: HEAD
-Build: C:\Users\runneradmin\AppData\Local\Temp\0bb21ceb-0e35-4bce-9516-678af2d30222\config\vs17\x64\obj\Release_TS
+Build: C:\Users\runneradmin\AppData\Local\Temp\0d236db7-c625-4506-949c-a2cf245620e0\config\vs17\x64\obj\Release_TS
 
 Built-in Extensions
 ===========================
