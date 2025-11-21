@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>19.4. Resource Consumption</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="runtime-config-connection.html" title="19.3. Connections and Authentication" /><link rel="next" href="runtime-config-wal.html" title="19.5. Write Ahead Log" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">19.4. Resource Consumption</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="runtime-config-connection.html" title="19.3. Connections and Authentication">Prev</a> </td><td width="10%" align="left"><a accesskey="u" href="runtime-config.html" title="Chapter 19. Server Configuration">Up</a></td><th width="60%" align="center">Chapter 19. Server Configuration</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="PostgreSQL 18.0 Documentation">Home</a></td><td width="10%" align="right"> <a accesskey="n" href="runtime-config-wal.html" title="19.5. Write Ahead Log">Next</a></td></tr></table><hr /></div><div class="sect1" id="RUNTIME-CONFIG-RESOURCE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">19.4. Resource Consumption <a href="#RUNTIME-CONFIG-RESOURCE" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-MEMORY">19.4.1. Memory</a></span></dt><dt><span class="sect2"><a href="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-DISK">19.4.2. Disk</a></span></dt><dt><span class="sect2"><a href="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-KERNEL">19.4.3. Kernel Resource Usage</a></span></dt><dt><span class="sect2"><a href="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-BACKGROUND-WRITER">19.4.4. Background Writer</a></span></dt><dt><span class="sect2"><a href="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-IO">19.4.5. I/O</a></span></dt><dt><span class="sect2"><a href="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-WORKER-PROCESSES">19.4.6. Worker Processes</a></span></dt></dl></div><div class="sect2" id="RUNTIME-CONFIG-RESOURCE-MEMORY"><div class="titlepage"><div><div><h3 class="title">19.4.1. Memory <a href="#RUNTIME-CONFIG-RESOURCE-MEMORY" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-SHARED-BUFFERS"><span class="term"><code class="varname">shared_buffers</code> (<code class="type">integer</code>)
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>19.4. Resource Consumption</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="runtime-config-connection.html" title="19.3. Connections and Authentication" /><link rel="next" href="runtime-config-wal.html" title="19.5. Write Ahead Log" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">19.4. Resource Consumption</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="runtime-config-connection.html" title="19.3. Connections and Authentication">Prev</a> </td><td width="10%" align="left"><a accesskey="u" href="runtime-config.html" title="Chapter 19. Server Configuration">Up</a></td><th width="60%" align="center">Chapter 19. Server Configuration</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="PostgreSQL 18.1 Documentation">Home</a></td><td width="10%" align="right"> <a accesskey="n" href="runtime-config-wal.html" title="19.5. Write Ahead Log">Next</a></td></tr></table><hr /></div><div class="sect1" id="RUNTIME-CONFIG-RESOURCE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">19.4. Resource Consumption <a href="#RUNTIME-CONFIG-RESOURCE" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-MEMORY">19.4.1. Memory</a></span></dt><dt><span class="sect2"><a href="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-DISK">19.4.2. Disk</a></span></dt><dt><span class="sect2"><a href="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-KERNEL">19.4.3. Kernel Resource Usage</a></span></dt><dt><span class="sect2"><a href="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-BACKGROUND-WRITER">19.4.4. Background Writer</a></span></dt><dt><span class="sect2"><a href="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-IO">19.4.5. I/O</a></span></dt><dt><span class="sect2"><a href="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-WORKER-PROCESSES">19.4.6. Worker Processes</a></span></dt></dl></div><div class="sect2" id="RUNTIME-CONFIG-RESOURCE-MEMORY"><div class="titlepage"><div><div><h3 class="title">19.4.1. Memory <a href="#RUNTIME-CONFIG-RESOURCE-MEMORY" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-SHARED-BUFFERS"><span class="term"><code class="varname">shared_buffers</code> (<code class="type">integer</code>)
       <a id="id-1.6.6.7.2.2.1.1.3" class="indexterm"></a>
       </span> <a href="#GUC-SHARED-BUFFERS" class="id_link">#</a></dt><dd><p>
         Sets the amount of memory the database server uses for shared
@@ -35,7 +35,8 @@
       </span> <a href="#GUC-HUGE-PAGES" class="id_link">#</a></dt><dd><p>
         Controls whether huge pages are requested for the main shared memory
         area. Valid values are <code class="literal">try</code> (the default),
-        <code class="literal">on</code>, and <code class="literal">off</code>.  With
+        <code class="literal">on</code>, and <code class="literal">off</code>.
+        This parameter can only be set at server start. With
         <code class="varname">huge_pages</code> set to <code class="literal">try</code>, the
         server will try to request huge pages, but fall back to the default if
         that fails. With <code class="literal">on</code>, failure to request huge pages
@@ -362,6 +363,7 @@
         the <code class="literal">sysv</code> option, which is not the default on any
         platform, is generally discouraged because it typically requires
         non-default kernel settings to allow for large allocations (see <a class="xref" href="kernel-resources.html#SYSVIPC" title="18.4.1. Shared Memory and Semaphores">Section 18.4.1</a>).
+        This parameter can only be set at server start.
        </p></dd><dt id="GUC-DYNAMIC-SHARED-MEMORY-TYPE"><span class="term"><code class="varname">dynamic_shared_memory_type</code> (<code class="type">enum</code>)
       <a id="id-1.6.6.7.2.2.21.1.3" class="indexterm"></a>
       </span> <a href="#GUC-DYNAMIC-SHARED-MEMORY-TYPE" class="id_link">#</a></dt><dd><p>
@@ -380,6 +382,7 @@
         however, it may be useful for debugging, when the
         <code class="literal">pg_dynshmem</code> directory is stored on a RAM disk, or when
         other shared memory facilities are not available.
+        This parameter can only be set at server start.
        </p></dd><dt id="GUC-MIN-DYNAMIC-SHARED-MEMORY"><span class="term"><code class="varname">min_dynamic_shared_memory</code> (<code class="type">integer</code>)
       <a id="id-1.6.6.7.2.2.22.1.3" class="indexterm"></a>
       </span> <a href="#GUC-MIN-DYNAMIC-SHARED-MEMORY" class="id_link">#</a></dt><dd><p>
@@ -437,6 +440,7 @@
         <a class="xref" href="sql-notify.html" title="NOTIFY"><span class="refentrytitle">NOTIFY</span></a> / <a class="xref" href="sql-listen.html" title="LISTEN"><span class="refentrytitle">LISTEN</span></a> queue.
         The default value is 1048576. For 8 KB pages it allows to consume
         up to 8 GB of disk space.
+        This parameter can only be set at server start.
        </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-RESOURCE-KERNEL"><div class="titlepage"><div><div><h3 class="title">19.4.3. Kernel Resource Usage <a href="#RUNTIME-CONFIG-RESOURCE-KERNEL" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-MAX-FILES-PER-PROCESS"><span class="term"><code class="varname">max_files_per_process</code> (<code class="type">integer</code>)
       <a id="id-1.6.6.7.4.2.1.1.3" class="indexterm"></a>
       </span> <a href="#GUC-MAX-FILES-PER-PROCESS" class="id_link">#</a></dt><dd><p>
@@ -603,9 +607,9 @@
        </span> <a href="#GUC-IO-MAX-COMBINE-LIMIT" class="id_link">#</a></dt><dd><p>
          Controls the largest I/O size in operations that combine I/O, and silently
          limits the user-settable parameter <code class="varname">io_combine_limit</code>.
-         This parameter can only be set in
-         the <code class="filename">postgresql.conf</code> file or on the server
-         command line.
+         This parameter can only be set at server start.
+         If this value is specified without units, it is taken as blocks,
+         that is <code class="symbol">BLCKSZ</code> bytes, typically 8kB.
          The maximum possible size depends on the operating system and block
          size, but is typically 1MB on Unix and 128kB on Windows.
          The default is 128kB.
@@ -616,6 +620,8 @@
          higher than the <code class="varname">io_max_combine_limit</code> parameter, the
          lower value will silently be used instead, so both may need to be raised
          to increase the I/O size.
+         If this value is specified without units, it is taken as blocks,
+         that is <code class="symbol">BLCKSZ</code> bytes, typically 8kB.
          The maximum possible size depends on the operating system and block
          size, but is typically 1MB on Unix and 128kB on Windows.
          The default is 128kB.
@@ -757,4 +763,4 @@
          tuples can be produced.  The degree to which the leader can help or
          hinder performance depends on the plan type, number of workers and
          query duration.
-        </p></dd></dl></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="runtime-config-connection.html" title="19.3. Connections and Authentication">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="runtime-config.html" title="Chapter 19. Server Configuration">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="runtime-config-wal.html" title="19.5. Write Ahead Log">Next</a></td></tr><tr><td width="40%" align="left" valign="top">19.3. Connections and Authentication </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="PostgreSQL 18.0 Documentation">Home</a></td><td width="40%" align="right" valign="top"> 19.5. Write Ahead Log</td></tr></table></div></body></html>
+        </p></dd></dl></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="runtime-config-connection.html" title="19.3. Connections and Authentication">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="runtime-config.html" title="Chapter 19. Server Configuration">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="runtime-config-wal.html" title="19.5. Write Ahead Log">Next</a></td></tr><tr><td width="40%" align="left" valign="top">19.3. Connections and Authentication </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="PostgreSQL 18.1 Documentation">Home</a></td><td width="40%" align="right" valign="top"> 19.5. Write Ahead Log</td></tr></table></div></body></html>

@@ -2,7 +2,7 @@
 <!-- doc/src/sgml/postgres.sgml -->
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 <!ENTITY % version SYSTEM "version.sgml">
-<!ENTITY version "18.0">
+<!ENTITY version "18.1">
 <!ENTITY majorversion "18">
 <!ENTITY % filelist SYSTEM "filelist.sgml">
 <!-- doc/src/sgml/filelist.sgml --><!ENTITY history SYSTEM "history.sgml">
@@ -414,12 +414,12 @@ break is not needed in a wider output rendering.
 --><!ENTITY zwsp "&#x200B;">
 ]>
 <book id="postgres">
- <title>PostgreSQL 18.0 Documentation</title>
+ <title>PostgreSQL 18.1 Documentation</title>
 
  <bookinfo>
   <corpauthor>The PostgreSQL Global Development Group</corpauthor>
   <productname>PostgreSQL</productname>
-  <productnumber>18.0</productnumber>
+  <productnumber>18.1</productnumber>
   <!-- doc/src/sgml/legal.sgml -->
 
 <date>2025</date>
@@ -1187,7 +1187,7 @@ break is not needed in a wider output rendering.
      </para>
 
      <para>
-      If your version is older than 18.0 we will almost certainly
+      If your version is older than 18.1 we will almost certainly
       tell you to upgrade. There are many bug fixes and improvements
       in each new release, so it is quite possible that a bug you have
       encountered in an older release of <productname>PostgreSQL</productname>
@@ -1673,7 +1673,7 @@ createdb: error: database creation failed: ERROR:  permission denied to create d
     In <command>psql</command>, you will be greeted with the following
     message:
 <screen>
-psql (18.0)
+psql (18.1)
 Type "help" for help.
 
 mydb=&gt;
@@ -1708,7 +1708,7 @@ mydb=#
 <prompt>mydb=&gt;</prompt> <userinput>SELECT version();</userinput>
                                          version
 -------------------------------------------------------------------&#x200B;-----------------------
- PostgreSQL 18.0 on x86_64-pc-linux-gnu, compiled by gcc (Debian 4.9.2-10) 4.9.2, 64-bit
+ PostgreSQL 18.1 on x86_64-pc-linux-gnu, compiled by gcc (Debian 4.9.2-10) 4.9.2, 64-bit
 (1 row)
 
 <prompt>mydb=&gt;</prompt> <userinput>SELECT current_date;</userinput>
@@ -37659,8 +37659,7 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
    <tgroup cols="1">
     <thead>
      <row>
-      <entry role="func_table_entry">
-       <para role="func_signature">
+      <entry role="func_table_entry"><para role="func_signature">
         Function
        </para>
        <para>
@@ -37668,24 +37667,22 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
         </para>
        <para>
         Example(s)
-       </para>
-       </entry>
+       </para></entry>
      </row>
     </thead>
 
     <tbody>
      <row>
-      <entry role="func_table_entry">
-       <para role="func_signature">
-        <type>gen_random_uuid</type>
+      <entry role="func_table_entry"><para role="func_signature">
+        <function>gen_random_uuid</function> ( )
         <returnvalue>uuid</returnvalue>
        </para>
        <para role="func_signature">
-        <type>uuidv4</type>
+        <function>uuidv4</function> ( )
         <returnvalue>uuid</returnvalue>
        </para>
        <para>
-         Generate a version 4 (random) UUID.
+        Generates a version 4 (random) UUID
        </para>
        <para>
         <literal>gen_random_uuid()</literal>
@@ -37694,26 +37691,25 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
        <para>
         <literal>uuidv4()</literal>
         <returnvalue>b42410ee-132f-42ee-9e4f-09a6485c95b8</returnvalue>
-       </para>
-      </entry>
+       </para></entry>
      </row>
      <row>
-      <entry role="func_table_entry">
-       <para role="func_signature">
-        <type>uuidv7</type>
+      <entry role="func_table_entry"><para role="func_signature">
+        <function>uuidv7</function>
         ( <optional> <parameter>shift</parameter> <type>interval</type> </optional> )
         <returnvalue>uuid</returnvalue>
        </para>
        <para>
-        Generate a version 7 (time-ordered) UUID. The timestamp is computed using UNIX timestamp
-        with millisecond precision + sub-millisecond timestamp + random. The optional parameter
-        <parameter>shift</parameter> will shift the computed timestamp by the given <type>interval</type>.
+        Generates a version 7 (time-ordered) UUID. The timestamp is
+        computed using UNIX timestamp with millisecond precision +
+        sub-millisecond timestamp + random. The optional
+        parameter <parameter>shift</parameter> will shift the computed
+        timestamp by the given <type>interval</type>.
        </para>
        <para>
         <literal>uuidv7()</literal>
         <returnvalue>019535d9-3df7-79fb-b466-fa907fa17f9e</returnvalue>
-       </para>
-      </entry>
+       </para></entry>
      </row>
     </tbody>
    </tgroup>
@@ -37736,8 +37732,7 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
    <tgroup cols="1">
     <thead>
      <row>
-      <entry role="func_table_entry">
-       <para role="func_signature">
+      <entry role="func_table_entry"><para role="func_signature">
         Function
        </para>
        <para>
@@ -37745,44 +37740,41 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
        </para>
        <para>
         Example(s)
-       </para>
-      </entry>
+       </para></entry>
      </row>
     </thead>
 
     <tbody>
      <row>
-      <entry role="func_table_entry">
-       <para role="func_signature">
-        <type>uuid_extract_timestamp</type>
+      <entry role="func_table_entry"><para role="func_signature">
+        <function>uuid_extract_timestamp</function>
         ( <type>uuid</type> )
         <returnvalue>timestamp with time zone</returnvalue>
        </para>
        <para>
-        Extracts a <type>timestamp with time zone</type> from UUID
-        version 1 and 7.  For other versions, this function returns null.  Note that
-        the extracted timestamp is not necessarily exactly equal to the time the
-        UUID was generated; this depends on the implementation that generated the
-        UUID.
+        Extracts a <type>timestamp with time zone</type> from a UUID of
+        version 1 or 7.  For other versions, this function returns null.
+        Note that the extracted timestamp is not necessarily exactly equal
+        to the time the UUID was generated; this depends on the
+        implementation that generated the UUID.
        </para>
        <para>
         <literal>uuid_extract_timestamp('019535d9-3df7-79fb-b466-&#x200B;fa907fa17f9e'::uuid)</literal>
          <returnvalue>2025-02-23 21:46:24.503-05</returnvalue>
-       </para>
-      </entry>
+       </para></entry>
      </row>
      <row>
-      <entry role="func_table_entry">
-       <para role="func_signature">
-        <type>uuid_extract_version</type>
+      <entry role="func_table_entry"><para role="func_signature">
+        <function>uuid_extract_version</function>
         ( <type>uuid</type> )
         <returnvalue>smallint</returnvalue>
        </para>
        <para>
-        Extracts the version from a UUID of the variant described by
-        <ulink url="https://datatracker.ietf.org/doc/html/rfc9562">RFC 9562</ulink>.  For
-        other variants, this function returns null.  For example, for a UUID
-        generated by <function>gen_random_uuid</function>, this function will
+        Extracts the version from a UUID of one of the variants described by
+        <ulink url="https://datatracker.ietf.org/doc/html/rfc9562">RFC
+        9562</ulink>.  For other variants, this function returns null.
+        For example, for a UUID generated
+        by <function>gen_random_uuid()</function>, this function will
         return 4.
        </para>
        <para>
@@ -37792,8 +37784,7 @@ CREATE TYPE rainbow AS ENUM ('red', 'orange', 'yellow', 'green', 'blue', 'purple
        <para>
         <literal>uuid_extract_version('019535d9-3df7-79fb-b466-&#x200B;fa907fa17f9e'::uuid)</literal>
         <returnvalue>7</returnvalue>
-       </para>
-      </entry>
+       </para></entry>
      </row>
     </tbody>
    </tgroup>
@@ -40686,7 +40677,7 @@ ERROR:  value too long for type character(2)
         <returnvalue>[{"f1":1},2,null,3]</returnvalue>
        </para>
        <para>
-        <literal>jsonb_strip_nulls('[1,2,null,3,4]', true);</literal>
+        <literal>jsonb_strip_nulls('[1,2,null,3,4]', true)</literal>
         <returnvalue>[1,2,3,4]</returnvalue>
        </para>
        </entry>
@@ -73151,7 +73142,7 @@ $ <userinput>kill -INT `head -1 /usr/local/pgsql/data/postmaster.pid`</userinput
       To make the backup, you can use the <application>pg_dumpall</application>
       command from the version you are currently running;  see <xref linkend="backup-dump-all"/> for more details.  For best
       results, however, try to use the <application>pg_dumpall</application>
-      command from <productname>PostgreSQL</productname> 18.0,
+      command from <productname>PostgreSQL</productname> 18.1,
       since this version contains bug fixes and improvements over older
       versions.  While this advice might seem idiosyncratic since you
       haven't installed the new version yet, it is advisable to follow
@@ -75873,7 +75864,8 @@ include_dir 'conf.d'
        <para>
         Controls whether huge pages are requested for the main shared memory
         area. Valid values are <literal>try</literal> (the default),
-        <literal>on</literal>, and <literal>off</literal>.  With
+        <literal>on</literal>, and <literal>off</literal>.
+        This parameter can only be set at server start. With
         <varname>huge_pages</varname> set to <literal>try</literal>, the
         server will try to request huge pages, but fall back to the default if
         that fails. With <literal>on</literal>, failure to request huge pages
@@ -76384,6 +76376,7 @@ include_dir 'conf.d'
         the <literal>sysv</literal> option, which is not the default on any
         platform, is generally discouraged because it typically requires
         non-default kernel settings to allow for large allocations (see <xref linkend="sysvipc"/>).
+        This parameter can only be set at server start.
        </para>
       </listitem>
      </varlistentry>
@@ -76411,6 +76404,7 @@ include_dir 'conf.d'
         however, it may be useful for debugging, when the
         <literal>pg_dynshmem</literal> directory is stored on a RAM disk, or when
         other shared memory facilities are not available.
+        This parameter can only be set at server start.
        </para>
       </listitem>
      </varlistentry>
@@ -76524,6 +76518,7 @@ include_dir 'conf.d'
         <xref linkend="sql-notify"/> / <xref linkend="sql-listen"/> queue.
         The default value is 1048576. For 8 KB pages it allows to consume
         up to 8 GB of disk space.
+        This parameter can only be set at server start.
        </para>
       </listitem>
      </varlistentry>
@@ -76803,9 +76798,9 @@ include_dir 'conf.d'
         <para>
          Controls the largest I/O size in operations that combine I/O, and silently
          limits the user-settable parameter <varname>io_combine_limit</varname>.
-         This parameter can only be set in
-         the <filename>postgresql.conf</filename> file or on the server
-         command line.
+         This parameter can only be set at server start.
+         If this value is specified without units, it is taken as blocks,
+         that is <symbol>BLCKSZ</symbol> bytes, typically 8kB.
          The maximum possible size depends on the operating system and block
          size, but is typically 1MB on Unix and 128kB on Windows.
          The default is 128kB.
@@ -76825,6 +76820,8 @@ include_dir 'conf.d'
          higher than the <varname>io_max_combine_limit</varname> parameter, the
          lower value will silently be used instead, so both may need to be raised
          to increase the I/O size.
+         If this value is specified without units, it is taken as blocks,
+         that is <symbol>BLCKSZ</symbol> bytes, typically 8kB.
          The maximum possible size depends on the operating system and block
          size, but is typically 1MB on Unix and 128kB on Windows.
          The default is 128kB.
@@ -78069,6 +78066,7 @@ include_dir 'conf.d'
         blocks to prefetch.  If this value is specified without units, it is
         taken as bytes.
         The default is 512kB.
+        This parameter can only be set at server start.
        </para>
       </listitem>
      </varlistentry>
@@ -78789,9 +78787,9 @@ restore_command = 'copy "C:\\server\\archivedir\\%f" "%p"'  # Windows
       </term>
       <listitem>
        <para>
-        Record commit time of transactions. This parameter
-        can only be set in <filename>postgresql.conf</filename> file or on the server
-        command line. The default value is <literal>off</literal>.
+        Record commit time of transactions.
+        This parameter can only be set at server start.
+        The default value is <literal>off</literal>.
        </para>
       </listitem>
      </varlistentry>
@@ -80007,24 +80005,24 @@ ANY <replaceable class="parameter">num_sync</replaceable> ( <replaceable class="
        </para>
 
        <para>
-        Random access to mechanical disk storage is normally much more expensive
-        than four times sequential access.  However, a lower default is used
-        (4.0) because the majority of random accesses to disk, such as indexed
-        reads, are assumed to be in cache.  The default value can be thought of
-        as modeling random access as 40 times slower than sequential, while
-        expecting 90% of random reads to be cached.
+        Random access to durable storage is normally much more expensive
+        than four times sequential access.  However, a lower default is
+        used (4.0) because the majority of random accesses to storage,
+        such as indexed reads, are assumed to be in cache.  Also, the
+        latency of network-attached storage tends to reduce the relative
+        overhead of random access.
        </para>
 
        <para>
-        If you believe a 90% cache rate is an incorrect assumption
-        for your workload, you can increase random_page_cost to better
-        reflect the true cost of random storage reads. Correspondingly,
-        if your data is likely to be completely in cache, such as when
-        the database is smaller than the total server memory, decreasing
-        random_page_cost can be appropriate.  Storage that has a low random
-        read cost relative to sequential, e.g., solid-state drives, might
-        also be better modeled with a lower value for random_page_cost,
-        e.g., <literal>1.1</literal>.
+        If you believe caching is less frequent than the default
+        value reflects, and network latency is minimal, you can increase
+        random_page_cost to better reflect the true cost of random storage
+        reads.  Storage that has a higher random read cost relative to
+        sequential, like magnetic disks, might also be better modeled with
+        a higher value for random_page_cost.  Correspondingly, if your data
+        is likely to be completely in cache, such as when the database
+        is smaller than the total server memory, or network latency is
+        high, decreasing random_page_cost might be appropriate.
        </para>
 
        <tip>
@@ -81103,8 +81101,7 @@ local0.*    /var/log/postgresql
         determines the program name used to identify
         <productname>PostgreSQL</productname> messages in
         the log. The default is <literal>PostgreSQL</literal>.
-        This parameter can only be set in the <filename>postgresql.conf</filename>
-        file or on the server command line.
+        This parameter can only be set at server start.
        </para>
       </listitem>
      </varlistentry>
@@ -86276,6 +86273,7 @@ dynamic_library_path = '/usr/local/lib/postgresql:$libdir'
         main data files, <literal>wal</literal> for WAL files, and
         <literal>wal_init</literal> for WAL files when being initially
         allocated.
+        This parameter can only be set at server start.
        </para>
        <para>
         Some operating systems and file systems do not support direct I/O, so
@@ -106544,7 +106542,7 @@ FROM pg_stat_get_backend_idset() AS backendid;
       </para>
       <para>
        Total time spent sleeping due to cost-based delay (see
-       <xref linkend="runtime-config-resource-vacuum-cost"/>, in milliseconds
+       <xref linkend="runtime-config-resource-vacuum-cost"/>), in milliseconds
        (if <xref linkend="guc-track-cost-delay-timing"/> is enabled, otherwise
        zero).
       </para></entry>
@@ -116323,7 +116321,7 @@ postgresql://%2Fvar%2Flib%2Fpostgresql/dbname
         server does not support the protocol version requested by the client,
         the connection is automatically downgraded to a lower minor protocol
         version that the server supports. After the connection attempt has
-        completed you can use <xref linkend="libpq-PQprotocolVersion"/> to
+        completed you can use <xref linkend="libpq-PQfullProtocolVersion"/> to
         find out which exact protocol version was negotiated.
        </para>
 
@@ -151207,7 +151205,7 @@ SELECT (a + b) AS c FROM test_complex;
    <para>
     Additional optimization clauses might be added in future versions of
     <productname>PostgreSQL</productname>.  The ones described here are all
-    the ones that release 18.0 understands.
+    the ones that release 18.1 understands.
    </para>
 
    <para>
@@ -184625,24 +184623,22 @@ WITH ( MODULUS <replaceable class="parameter">numeric_literal</replaceable>, REM
       <literal>n_distinct_inherited</literal>, which override the
       number-of-distinct-values estimates made by subsequent
       <link linkend="sql-analyze"><command>ANALYZE</command></link>
-      operations.  <literal>n_distinct</literal> affects the statistics for the table
-      itself, while <literal>n_distinct_inherited</literal> affects the statistics
-      gathered for the table plus its inheritance children.  When set to a
-      positive value, <command>ANALYZE</command> will assume that the column contains
-      exactly the specified number of distinct nonnull values.  When set to a
-      negative value, which must be greater
-      than or equal to -1, <command>ANALYZE</command> will assume that the number of
-      distinct nonnull values in the column is linear in the size of the
-      table; the exact count is to be computed by multiplying the estimated
-      table size by the absolute value of the given number.  For example,
-      a value of -1 implies that all values in the column are distinct, while
-      a value of -0.5 implies that each value appears twice on the average.
-      This can be useful when the size of the table changes over time, since
-      the multiplication by the number of rows in the table is not performed
-      until query planning time.  Specify a value of 0 to revert to estimating
-      the number of distinct values normally.  For more information on the use
-      of statistics by the <productname>PostgreSQL</productname> query
-      planner, refer to <xref linkend="planner-stats"/>.
+      operations. <literal>n_distinct</literal> affects the statistics for the
+      table itself, while <literal>n_distinct_inherited</literal> affects the
+      statistics gathered for the table plus its inheritance children, and for
+      the statistics gathered for partitioned tables.  When the value
+      specified is a positive value, the query planner will assume that the
+      column contains exactly the specified number of distinct nonnull values.
+      Fractional values may also be specified by using values below 0 and
+      above or equal to -1.  This instructs the query planner to estimate the
+      number of distinct values by multiplying the absolute value of the
+      specified number by the estimated number of rows in the table.  For
+      example, a value of -1 implies that all values in the column are
+      distinct, while a value of -0.5 implies that each value appears twice on
+      average.  This can be useful when the size of the table changes over
+      time.  For more information on the use of statistics by the
+      <productname>PostgreSQL</productname> query planner, refer to
+      <xref linkend="planner-stats"/>.
      </para>
      <para>
       Changing per-attribute options acquires a
@@ -217495,6 +217491,15 @@ INSERT INTO <replaceable class="parameter">table_name</replaceable> [ AS <replac
     </para>
    </tip>
 
+   <warning>
+    <para>
+      While <command>CREATE INDEX CONCURRENTLY</command> or <command>REINDEX
+      CONCURRENTLY</command> is running on a unique index, <command>INSERT
+      ... ON CONFLICT</command> statements on the same table may unexpectedly
+      fail with a unique violation.
+    </para>
+   </warning>
+
   </refsect2>
  </refsect1>
 
@@ -241626,7 +241631,7 @@ $ <userinput>psql postgresql://dbmaster:5433/mydb?sslmode=require</userinput>
     the string <literal>=&gt;</literal>. For example:
 <programlisting>
 $ <userinput>psql testdb</userinput>
-psql (18.0)
+psql (18.1)
 Type "help" for help.
 
 testdb=&gt;
@@ -246300,7 +246305,7 @@ PSQL_EDITOR_LINENUMBER_ARG='--line '
      by appending a dash and the <productname>PostgreSQL</productname>
      major or minor release identifier to the file name,
      for example <filename>~/.psqlrc-18</filename> or
-     <filename>~/.psqlrc-18.0</filename>.
+     <filename>~/.psqlrc-18.1</filename>.
      The most specific version-matching file will be read in preference
      to a non-version-specific file.
      These version suffixes are added after determining the file path
@@ -274378,7 +274383,7 @@ psql "dbname=postgres replication=database" -c "IDENTIFY_SYSTEM;"
     <listitem>
      <variablelist>
       <varlistentry>
-       <term>Int32(16)</term>
+       <term>Int32</term>
        <listitem>
         <para>
          Length of message contents in bytes, including self.
@@ -293998,7 +294003,7 @@ EXPLAIN (ANALYZE, TIMING OFF, BUFFERS OFF) SELECT * FROM t WHERE a &lt;= 49 AND 
 
  <para>
   <xref linkend="errcodes-table"/> lists all the error codes defined in
-  <productname>PostgreSQL</productname> 18.0.  (Some are not actually
+  <productname>PostgreSQL</productname> 18.1.  (Some are not actually
   used at present, but are defined by the SQL standard.)
   The error classes are also shown.  For each error class there is a
   <quote>standard</quote> error code having the last three characters
@@ -296557,7 +296562,7 @@ $ <userinput>cal 9 1752</userinput>
  <para>
   <xref linkend="keywords-table"/> lists all tokens that are key words
   in the SQL standard and in <productname>PostgreSQL</productname>
-  18.0.  Background information can be found in <xref linkend="sql-syntax-identifiers"/>.
+  18.1.  Background information can be found in <xref linkend="sql-syntax-identifiers"/>.
   (For space reasons, only the latest two versions of the SQL standard, and
   SQL-92 for historical comparison, are included.  The differences between
   those and the other intermediate standard versions are small.)
@@ -307676,6 +307681,1195 @@ For new features, add links to the documentation sections.
 
 <!-- doc/src/sgml/release-18.sgml -->
 <!-- See header comment in release.sgml about typical markup -->
+
+ <sect1 id="release-18-1">
+  <title>Release 18.1</title>
+
+  <formalpara>
+  <title>Release date:</title>
+  <para>2025-11-13</para>
+  </formalpara>
+
+  <para>
+   This release contains a variety of fixes from 18.0.
+   For information about new features in major release 18, see
+   <xref linkend="release-18"/>.
+  </para>
+
+  <sect2 id="release-18-1-migration">
+   <title>Migration to Version 18.1</title>
+
+   <para>
+    A dump/restore is not required for those running 18.X.
+   </para>
+  </sect2>
+
+  <sect2 id="release-18-1-changes">
+   <title>Changes</title>
+
+   <itemizedlist>
+
+    <listitem>
+<!--
+Author: Nathan Bossart <nathan@postgresql.org>
+Branch: master [5e4fcbe53] 2025-11-10 09:00:00 -0600
+Branch: REL_18_STABLE [00eb646ea] 2025-11-10 09:00:00 -0600
+Branch: REL_17_STABLE [e2fb3dfa8] 2025-11-10 09:00:00 -0600
+Branch: REL_16_STABLE [d20abb587] 2025-11-10 09:00:00 -0600
+Branch: REL_15_STABLE [2393d374a] 2025-11-10 09:00:00 -0600
+Branch: REL_14_STABLE [95cce5669] 2025-11-10 09:00:00 -0600
+Branch: REL_13_STABLE [8a2530ebc] 2025-11-10 09:00:00 -0600
+-->
+     <para>
+      Check for <literal>CREATE</literal> privileges on the schema
+      in <command>CREATE STATISTICS</command> (Jelte Fennema-Nio)
+      <ulink url="https://postgr.es/c/00eb646ea">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This omission allowed table owners to create statistics in any
+      schema, potentially leading to unexpected naming conflicts.
+     </para>
+
+     <para>
+      The <productname>PostgreSQL</productname> Project thanks
+      Jelte Fennema-Nio for reporting this problem.
+      (CVE-2025-12817)
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Jacob Champion <jchampion@postgresql.org>
+Branch: master [600086f47] 2025-11-10 06:20:33 -0800
+Branch: REL_18_STABLE [7eb8fcad8] 2025-11-10 06:03:01 -0800
+Branch: REL_17_STABLE [f5999f018] 2025-11-10 06:03:03 -0800
+Branch: REL_16_STABLE [585fd9b3c] 2025-11-10 06:03:04 -0800
+Branch: REL_15_STABLE [91421565f] 2025-11-10 06:03:05 -0800
+Branch: REL_14_STABLE [96d2c7e96] 2025-11-10 06:03:05 -0800
+Branch: REL_13_STABLE [d6f0c0d6d] 2025-11-10 06:03:06 -0800
+-->
+     <para>
+      Avoid integer overflow in allocation-size calculations
+      within <application>libpq</application> (Jacob Champion)
+      <ulink url="https://postgr.es/c/7eb8fcad8">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Several places in <application>libpq</application> were not
+      sufficiently careful about computing the required size of a memory
+      allocation.  Sufficiently large inputs could cause integer overflow,
+      resulting in an undersized buffer, which would then lead to writing
+      past the end of the buffer.
+     </para>
+
+     <para>
+      The <productname>PostgreSQL</productname> Project thanks Aleksey
+      Solovev of Positive Technologies for reporting this problem.
+      (CVE-2025-12818)
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Amit Langote <amitlan@postgresql.org>
+Branch: master [ef5e60a9d] 2025-10-09 01:07:59 -0400
+Branch: REL_18_STABLE [dc9125111] 2025-10-09 01:07:52 -0400
+Branch: REL_17_STABLE [09f86a42f] 2025-10-09 01:07:36 -0400
+Author: Peter Eisentraut <peter@eisentraut.org>
+Branch: master [c09a06918] 2025-11-04 12:25:04 +0100
+Branch: REL_18_STABLE [1baae827e] 2025-11-04 12:25:14 +0100
+Branch: REL_17_STABLE [1e6dfdaa0] 2025-11-04 12:25:20 +0100
+-->
+     <para>
+      Prevent <quote>unrecognized node type</quote> errors when a SQL/JSON
+      function such as <function>JSON_VALUE</function> has
+      a <literal>DEFAULT</literal> clause containing
+      a <literal>COLLATE</literal> expression (Jian He)
+      <ulink url="https://postgr.es/c/dc9125111">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/1baae827e">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Richard Guo <rguo@postgresql.org>
+Branch: master [18d261409] 2025-10-21 12:35:36 +0900
+Branch: REL_18_STABLE [40c242830] 2025-10-21 12:38:16 +0900
+Branch: REL_18_STABLE [ee49f2cf4] 2025-10-21 14:12:13 +0900
+-->
+     <para>
+      Avoid incorrect optimization of
+      variable-free <literal>HAVING</literal> clauses with grouping sets
+      (Richard Guo)
+      <ulink url="https://postgr.es/c/40c242830">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/ee49f2cf4">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Richard Guo <rguo@postgresql.org>
+Branch: master [257ee7834] 2025-10-30 11:58:45 +0900
+Branch: REL_18_STABLE [ef6168baf] 2025-10-30 12:03:15 +0900
+-->
+     <para>
+      Do not use parallelism in hash right semi joins (Richard Guo)
+      <ulink url="https://postgr.es/c/ef6168baf">&#xA7;</ulink>
+     </para>
+
+     <para>
+      The case does not work reliably due to a race condition in updating
+      the join's shared hash table.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Richard Guo <rguo@postgresql.org>
+Branch: master [c1777f2d6] 2025-11-05 18:09:21 +0900
+Branch: REL_18_STABLE [500f64636] 2025-11-05 18:15:02 +0900
+-->
+     <para>
+      Avoid possible division-by-zero when creating ordered-append plans
+      (Richard Guo)
+      <ulink url="https://postgr.es/c/500f64636">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This mistake could result in incorrect selection of the cheapest
+      path, or in an assertion failure in debug builds.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Peter Eisentraut <peter@eisentraut.org>
+Branch: master [35e53b684] 2025-10-28 10:07:29 +0100
+Branch: REL_18_STABLE [74197bdc8] 2025-10-28 10:11:35 +0100
+-->
+     <para>
+      Fix planner failure with index types that can do ordered access but
+      not index-only scans (Maxime Schoemans)
+      <ulink url="https://postgr.es/c/74197bdc8">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This oversight resulted in errors like <quote>no data returned for
+      index-only scan</quote>.  The case does not arise with any in-core
+      index type, but some extensions encountered the problem.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Peter Geoghegan <pg@bowt.ie>
+Branch: master [843e50208] 2025-10-10 14:52:25 -0400
+Branch: REL_18_STABLE [61de81a49] 2025-10-10 14:52:23 -0400
+Branch: REL_17_STABLE [ae15cebc2] 2025-10-10 14:52:21 -0400
+Branch: REL_16_STABLE [c160fd469] 2025-10-10 14:52:19 -0400
+Branch: REL_15_STABLE [ca0c93908] 2025-10-10 14:52:17 -0400
+Branch: REL_14_STABLE [314004021] 2025-10-10 14:52:14 -0400
+Branch: REL_13_STABLE [af302ff6b] 2025-10-10 14:52:12 -0400
+-->
+     <para>
+      Remove faulty assertion in btree index cleanup (Peter Geoghegan)
+      <ulink url="https://postgr.es/c/61de81a49">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tomas Vondra <tomas.vondra@postgresql.org>
+Branch: master [c98dffcb7] 2025-11-04 18:51:17 +0100
+Branch: REL_18_STABLE [a26b753a0] 2025-11-04 18:47:14 +0100
+-->
+     <para>
+      Avoid possible out-of-memory or <quote>invalid memory alloc request
+      size</quote> failures during parallel GIN index build (Tomas Vondra)
+      <ulink url="https://postgr.es/c/a26b753a0">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Álvaro Herrera <alvherre@kurilemu.de>
+Branch: master [a95e3d84c] 2025-11-04 13:23:26 +0100
+Branch: REL_18_STABLE [419ffde23] 2025-11-04 13:23:26 +0100
+Branch: REL_17_STABLE [f4b68b033] 2025-11-04 13:23:26 +0100
+Branch: REL_16_STABLE [6ef33c805] 2025-11-04 13:23:26 +0100
+Branch: REL_15_STABLE [23ddadf68] 2025-11-04 13:23:26 +0100
+Branch: REL_14_STABLE [f0ad41716] 2025-11-04 13:23:26 +0100
+Branch: REL_13_STABLE [3c7b47974] 2025-11-04 13:23:26 +0100
+Branch: master [0a3d27bfe] 2025-11-04 20:31:43 +0100
+Branch: REL_18_STABLE [8733f0b54] 2025-11-04 20:31:43 +0100
+Branch: REL_17_STABLE [3b5007347] 2025-11-04 20:31:43 +0100
+Branch: REL_16_STABLE [20442cf50] 2025-11-04 20:31:43 +0100
+Branch: REL_15_STABLE [bcfbd3f74] 2025-11-04 20:31:43 +0100
+Branch: REL_14_STABLE [65b0d1f74] 2025-11-04 20:31:43 +0100
+Branch: REL_13_STABLE [ef81697fe] 2025-11-04 20:31:43 +0100
+-->
+     <para>
+      Ensure that BRIN autosummarization provides a snapshot for index
+      expressions that need one (&#xC1;lvaro Herrera)
+      <ulink url="https://postgr.es/c/419ffde23">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/8733f0b54">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Previously, autosummarization would fail for such indexes, and then
+      leave placeholder index tuples behind, causing the index to bloat
+      over time.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: David Rowley <drowley@postgresql.org>
+Branch: master [9fd29d7ff] 2025-10-21 20:46:14 +1300
+Branch: REL_18_STABLE [715983a81] 2025-10-21 20:46:49 +1300
+Branch: REL_17_STABLE [c4f5a59ab] 2025-10-21 20:47:10 +1300
+Branch: REL_16_STABLE [ef915bf93] 2025-10-21 20:47:35 +1300
+Branch: REL_15_STABLE [810aaf7f2] 2025-10-21 20:48:06 +1300
+Branch: REL_14_STABLE [eea24eb0a] 2025-10-21 20:48:34 +1300
+Branch: REL_13_STABLE [c28f8ca29] 2025-10-21 20:49:00 +1300
+-->
+     <para>
+      Fix integer-overflow hazard in BRIN index scans when the table
+      contains close to 2<superscript>32</superscript> pages (Sunil S)
+      <ulink url="https://postgr.es/c/715983a81">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This oversight could result in an infinite loop or scanning of
+      unneeded table pages.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: David Rowley <drowley@postgresql.org>
+Branch: master [6911f8037] 2025-10-23 13:11:02 +1300
+Branch: REL_18_STABLE [ceb51d09b] 2025-10-23 13:12:03 +1300
+Branch: REL_17_STABLE [10945148e] 2025-10-23 13:12:49 +1300
+Branch: REL_16_STABLE [3398b0d02] 2025-10-23 13:13:19 +1300
+Branch: REL_15_STABLE [b8ecfbe5a] 2025-10-23 13:13:44 +1300
+Branch: REL_14_STABLE [e4316ec4d] 2025-10-23 13:14:08 +1300
+Branch: REL_13_STABLE [4afab175b] 2025-10-23 13:14:33 +1300
+-->
+     <para>
+      Fix incorrect zero-extension of stored values in JIT-generated tuple
+      deforming code (David Rowley)
+      <ulink url="https://postgr.es/c/ceb51d09b">&#xA7;</ulink>
+     </para>
+
+     <para>
+      When not using JIT, the equivalent code does sign-extension not
+      zero-extension, leading to a different Datum representation of small
+      integer data types.  This inconsistency was masked in most cases,
+      but it is known to lead to <quote>could not find memoization table
+      entry</quote> errors when using Memoize plan nodes, and there might
+      be other symptoms.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: David Rowley <drowley@postgresql.org>
+Branch: master [5c0a20003] 2025-10-18 16:07:04 +1300
+Branch: REL_18_STABLE [0b6a02f03] 2025-10-18 16:07:41 +1300
+-->
+     <para>
+      Fix rare crash when processing hashed <literal>GROUPING
+      SETS</literal> queries (David Rowley)
+      <ulink url="https://postgr.es/c/0b6a02f03">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tomas Vondra <tomas.vondra@postgresql.org>
+Branch: master [b85c4700f] 2025-10-17 22:21:50 +0200
+Branch: REL_18_STABLE [aa151022e] 2025-10-17 22:27:49 +0200
+-->
+     <para>
+      Repair faulty hash-table-size-choosing logic in hash joins
+      (Tomas Vondra)
+      <ulink url="https://postgr.es/c/aa151022e">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Hash joins sometimes used more memory than intended, or failed to
+      divide it in an efficient way.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Nathan Bossart <nathan@postgresql.org>
+Branch: master [688dc6299] 2025-10-15 12:47:33 -0500
+Branch: REL_18_STABLE [c8af5019b] 2025-10-15 12:47:33 -0500
+Branch: REL_18_STABLE [15d7dded0] 2025-10-15 13:14:00 -0500
+-->
+     <para>
+      Improve relation lookup logic in statistics manipulation functions
+      (Nathan Bossart)
+      <ulink url="https://postgr.es/c/c8af5019b">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/15d7dded0">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Fix <function>pg_restore_relation_stats()</function>,
+      <function>pg_clear_relation_stats()</function>,
+      <function>pg_restore_attribute_stats()</function>, and
+      <function>pg_clear_attribute_stats()</function> to check
+      privileges before acquiring lock on the target relation
+      rather than after.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: David Rowley <drowley@postgresql.org>
+Branch: master [39dcfda2d] 2025-10-26 10:59:50 +1300
+Branch: REL_18_STABLE [a2387c32f] 2025-10-26 11:01:32 +1300
+Branch: REL_17_STABLE [0d3074615] 2025-10-26 11:01:53 +1300
+Branch: REL_16_STABLE [a546964db] 2025-10-26 11:02:15 +1300
+Branch: REL_15_STABLE [2992b9a07] 2025-10-26 11:02:36 +1300
+-->
+     <para>
+      Fix incorrect logic for caching result-relation information for
+      triggers (David Rowley, Amit Langote)
+      <ulink url="https://postgr.es/c/a2387c32f">&#xA7;</ulink>
+     </para>
+
+     <para>
+      In cases where partitions' column sets aren't physically identical
+      to their parent partitioned tables' column sets, this oversight
+      could lead to crashes.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Amit Langote <amitlan@postgresql.org>
+Branch: master [905e932f0] 2025-10-16 14:01:44 +0900
+Branch: REL_18_STABLE [1296dcf18] 2025-10-16 14:01:50 +0900
+-->
+     <para>
+      Fix crash during EvalPlanQual rechecks on partitioned tables (David
+      Rowley, Amit Langote)
+      <ulink url="https://postgr.es/c/1296dcf18">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Etsuro Fujita <efujita@postgresql.org>
+Branch: master [12609fbac] 2025-10-15 17:15:00 +0900
+Branch: REL_18_STABLE [b14144325] 2025-10-15 17:15:01 +0900
+Branch: REL_17_STABLE [2bb84ea7e] 2025-10-15 17:15:02 +0900
+Branch: REL_16_STABLE [5a9af4868] 2025-10-15 17:15:03 +0900
+Branch: REL_15_STABLE [4a08603a2] 2025-10-15 17:15:04 +0900
+Branch: REL_14_STABLE [24e74b962] 2025-10-15 17:15:05 +0900
+Branch: REL_13_STABLE [12b0c0e51] 2025-10-15 17:15:05 +0900
+-->
+     <para>
+      Fix EvalPlanQual handling of foreign or custom joins that do not
+      have an alternative local-join plan prepared for EPQ (Masahiko
+      Sawada, Etsuro Fujita)
+      <ulink url="https://postgr.es/c/b14144325">&#xA7;</ulink>
+     </para>
+
+     <para>
+      In such cases the foreign or custom access method should be invoked
+      normally, but that did not happen, typically leading to a crash.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Álvaro Herrera <alvherre@kurilemu.de>
+Branch: master [3231fd045] 2025-10-11 20:30:12 +0200
+Branch: REL_18_STABLE [08c037dff] 2025-10-11 20:30:12 +0200
+Branch: REL_17_STABLE [ea06f97ee] 2025-10-11 20:30:12 +0200
+Branch: REL_16_STABLE [b835759ec] 2025-10-11 20:30:12 +0200
+Branch: REL_15_STABLE [bdae98495] 2025-10-11 20:30:12 +0200
+Branch: REL_14_STABLE [b753be38a] 2025-10-11 20:30:12 +0200
+-->
+     <para>
+      Avoid duplicating hash partition constraints during <literal>DETACH
+      CONCURRENTLY</literal> (Haiyang Li)
+      <ulink url="https://postgr.es/c/08c037dff">&#xA7;</ulink>
+     </para>
+
+     <para>
+      <command>ALTER TABLE DETACH PARTITION CONCURRENTLY</command> was
+      written to add a copy of the partitioning constraint to the
+      now-detached partition.  This was misguided, partially because
+      non-concurrent <literal>DETACH</literal> doesn't do that, but mostly
+      because in the case of hash partitioning the constraint expression
+      contains references to the parent table's OID.  That causes problems
+      during dump/restore, or if the parent table is dropped
+      after <literal>DETACH</literal>.  In v19 and later, we'll no longer
+      create any such copied constraints at all.  In released branches, to
+      minimize the risk of unforeseen consequences, only skip adding a
+      copied constraint if it is for hash partitioning.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Peter Eisentraut <peter@eisentraut.org>
+Branch: master [040cc5f3c] 2025-11-04 14:46:58 +0100
+Branch: REL_18_STABLE [ba99c9491] 2025-11-04 14:47:15 +0100
+Branch: REL_17_STABLE [0b44f2443] 2025-11-04 15:18:09 +0100
+Branch: REL_16_STABLE [7180d56c5] 2025-11-04 15:22:17 +0100
+Branch: REL_15_STABLE [643a5e96c] 2025-11-04 15:28:46 +0100
+Branch: REL_14_STABLE [04345d7a4] 2025-11-04 15:37:08 +0100
+Branch: REL_13_STABLE [7f239c72a] 2025-11-04 15:37:19 +0100
+-->
+     <para>
+      Disallow generated columns in partition keys
+      (Jian He, Ashutosh Bapat)
+      <ulink url="https://postgr.es/c/ba99c9491">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This was already not allowed, but the check missed some cases, such
+      as where the column reference is implicit in a whole-row reference.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Peter Eisentraut <peter@eisentraut.org>
+Branch: master [aa606b931] 2025-11-06 13:54:42 +0100
+Branch: REL_18_STABLE [0f9e0068b] 2025-11-06 13:55:08 +0100
+Branch: REL_17_STABLE [07f787e57] 2025-11-06 14:01:42 +0100
+Branch: REL_16_STABLE [26958f4d9] 2025-11-06 14:01:57 +0100
+Branch: REL_15_STABLE [8278737bf] 2025-11-06 14:02:03 +0100
+Branch: REL_14_STABLE [ccfe28eb4] 2025-11-06 14:02:09 +0100
+Branch: REL_13_STABLE [3717849e6] 2025-11-06 14:02:13 +0100
+-->
+     <para>
+      Disallow generated columns in <literal>COPY ... FROM
+      ... WHERE</literal> clauses (Peter Eisentraut, Jian He)
+      <ulink url="https://postgr.es/c/0f9e0068b">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Previously, incorrect behavior or an obscure error message resulted
+      from attempting to reference such a column, since generated columns
+      have not yet been computed at the point
+      where <literal>WHERE</literal> filtering is done.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Álvaro Herrera <alvherre@kurilemu.de>
+Branch: master [cf8be0225] 2025-11-03 15:58:19 +0100
+Branch: REL_18_STABLE [d9ffc2729] 2025-11-03 15:58:19 +0100
+-->
+     <para>
+      Prevent setting a column as identity if it has a not-null constraint
+      but the constraint is marked as invalid (Jian He)
+      <ulink url="https://postgr.es/c/d9ffc2729">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Identity columns must be not-null, but the check for that missed
+      this edge case.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: John Naylor <john.naylor@postgresql.org>
+Branch: master [54ab74865] 2025-10-03 16:05:02 +0700
+Branch: REL_18_STABLE [76613b539] 2025-10-03 16:07:42 +0700
+Branch: REL_17_STABLE [3549ffb6a] 2025-10-03 16:07:34 +0700
+-->
+     <para>
+      Avoid potential use-after-free in parallel vacuum (Kevin Oommen
+      Anish)
+      <ulink url="https://postgr.es/c/76613b539">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This bug seems to have no consequences in standard builds, but it's
+      theoretically a hazard.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Noah Misch <noah@leadboat.com>
+Branch: master [a95393ecd] 2025-09-29 11:15:44 -0700
+Branch: REL_18_STABLE [d024160ff] 2025-09-29 11:15:47 -0700
+Branch: REL_17_STABLE [6778fbca6] 2025-09-29 11:15:48 -0700
+Branch: REL_16_STABLE [ab16418ee] 2025-09-29 11:15:48 -0700
+Branch: REL_15_STABLE [d202ec1fb] 2025-09-29 11:15:48 -0700
+Branch: REL_14_STABLE [5816baa9b] 2025-09-29 11:15:49 -0700
+Branch: REL_13_STABLE [afb2cce74] 2025-09-29 11:15:49 -0700
+-->
+     <para>
+      Fix visibility checking for statistics objects
+      in <literal>pg_temp</literal> (Noah Misch)
+      <ulink url="https://postgr.es/c/d024160ff">&#xA7;</ulink>
+     </para>
+
+     <para>
+      A statistics object located in a temporary schema cannot be named
+      without schema qualification,
+      but <function>pg_statistics_obj_is_visible()</function> missed that
+      memo and could return <quote>true</quote> regardless.  In turn,
+      functions such as <function>pg_describe_object()</function> could
+      fail to schema-qualify the object's name as expected.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Álvaro Herrera <alvherre@kurilemu.de>
+Branch: master [ff47f9c16] 2025-10-11 16:39:22 +0200
+Branch: REL_18_STABLE [33e7b4a7c] 2025-10-11 16:39:22 +0200
+Branch: REL_17_STABLE [f9993ac64] 2025-10-11 16:39:22 +0200
+Branch: REL_16_STABLE [c72b5c536] 2025-10-11 16:39:22 +0200
+Branch: REL_15_STABLE [23b316c36] 2025-10-11 16:39:22 +0200
+-->
+     <para>
+      Fix minor memory leak during WAL replay of database creation
+      (Nathan Bossart)
+      <ulink url="https://postgr.es/c/33e7b4a7c">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Fujii Masao <fujii@postgresql.org>
+Branch: master [883a95646] 2025-10-22 11:27:15 +0900
+Branch: REL_18_STABLE [9670032cc] 2025-10-22 11:28:48 +0900
+Branch: REL_17_STABLE [62d5ee75b] 2025-10-22 11:28:57 +0900
+Branch: REL_16_STABLE [2e55cf4ef] 2025-10-22 11:29:02 +0900
+Branch: REL_15_STABLE [59b215f72] 2025-10-22 11:29:07 +0900
+Branch: REL_14_STABLE [a7ab6ce6a] 2025-10-22 11:29:13 +0900
+Branch: REL_13_STABLE [7d7ebdb80] 2025-10-22 11:29:18 +0900
+-->
+     <para>
+      Fix incorrect reporting of replication lag
+      in <structname>pg_stat_replication</structname> view (Fujii Masao)
+      <ulink url="https://postgr.es/c/9670032cc">&#xA7;</ulink>
+     </para>
+
+     <para>
+      If any standby server's replay LSN stopped advancing,
+      the <structfield>write_lag</structfield>
+      and <structfield>flush_lag</structfield> columns would eventually
+      stop updating.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Fujii Masao <fujii@postgresql.org>
+Branch: master [f33e60a53] 2025-10-22 20:09:43 +0900
+Branch: REL_18_STABLE [6ff7ba9fe] 2025-10-22 20:10:58 +0900
+Branch: REL_17_STABLE [1db2870bb] 2025-10-22 20:11:47 +0900
+Branch: REL_16_STABLE [4fd916eab] 2025-10-22 20:12:36 +0900
+Branch: REL_15_STABLE [caf529aba] 2025-10-22 20:13:15 +0900
+Branch: REL_14_STABLE [f106f53df] 2025-10-22 20:14:02 +0900
+Branch: REL_13_STABLE [b00a16bae] 2025-10-22 20:14:07 +0900
+-->
+     <para>
+      Avoid duplicative log messages about
+      invalid <varname>primary_slot_name</varname> settings (Fujii Masao)
+      <ulink url="https://postgr.es/c/6ff7ba9fe">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Amit Kapila <akapila@postgresql.org>
+Branch: master [e0dc4bbfb] 2025-10-27 06:48:32 +0000
+Branch: REL_18_STABLE [b45a8d7d8] 2025-10-27 06:37:35 +0000
+Branch: REL_17_STABLE [0024f5a10] 2025-10-27 06:34:29 +0000
+-->
+     <para>
+      Avoid failures when <varname>synchronized_standby_slots</varname>
+      references nonexistent replication slots (Shlok Kyal)
+      <ulink url="https://postgr.es/c/b45a8d7d8">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Michael Paquier <michael@paquier.xyz>
+Branch: master [912af1c7e] 2025-10-10 09:23:59 +0900
+Branch: REL_18_STABLE [9a6ea00ac] 2025-10-10 09:24:48 +0900
+Branch: REL_17_STABLE [42348839d] 2025-10-10 09:24:50 +0900
+Branch: REL_16_STABLE [bfdd1a12d] 2025-10-10 09:24:53 +0900
+Branch: REL_15_STABLE [0adf424b4] 2025-10-10 09:24:54 +0900
+Branch: REL_14_STABLE [f57f2760e] 2025-10-10 09:24:57 +0900
+Branch: REL_13_STABLE [c878d9808] 2025-10-10 09:24:59 +0900
+-->
+     <para>
+      Remove the unfinished slot state file after failing to write a
+      replication slot's state to disk (Michael Paquier)
+      <ulink url="https://postgr.es/c/9a6ea00ac">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Previously, a failure such as out-of-disk-space resulted in leaving
+      a temporary <filename>state.tmp</filename> file behind.  That's
+      problematic because it would block all subsequent attempts to
+      write the state, requiring manual intervention to clean up.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Amit Kapila <akapila@postgresql.org>
+Branch: master [e41d954da] 2025-09-24 04:11:53 +0000
+Branch: REL_18_STABLE [37fc5de43] 2025-09-24 04:00:15 +0000
+Branch: REL_17_STABLE [2f6e1a490] 2025-09-24 03:49:02 +0000
+Branch: REL_16_STABLE [a54c7a113] 2025-09-24 03:38:27 +0000
+-->
+     <para>
+      Fix mishandling of lock timeout signals in parallel apply workers
+      for logical replication (Hayato Kuroda)
+      <ulink url="https://postgr.es/c/37fc5de43">&#xA7;</ulink>
+     </para>
+
+     <para>
+      The same signal number was being used for both worker shutdown and
+      lock timeout, leading to confusion.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Michael Paquier <michael@paquier.xyz>
+Branch: master [17b2d5ec7] 2025-11-04 10:47:38 +0900
+Branch: REL_18_STABLE [a14201073] 2025-11-04 10:52:33 +0900
+Branch: REL_17_STABLE [e7340b484] 2025-11-04 10:52:35 +0900
+Branch: REL_16_STABLE [9b6109607] 2025-11-04 10:52:38 +0900
+Branch: REL_15_STABLE [da5ea6c70] 2025-11-04 10:52:41 +0900
+Branch: REL_14_STABLE [a1b8b3b2e] 2025-11-04 10:52:42 +0900
+Branch: REL_13_STABLE [25b484080] 2025-11-04 10:52:44 +0900
+-->
+     <para>
+      Avoid unwanted WAL receiver shutdown when switching from streaming
+      to archive WAL source (Xuneng Zhou)
+      <ulink url="https://postgr.es/c/a14201073">&#xA7;</ulink>
+     </para>
+
+     <para>
+      During a timeline change, a standby server's WAL receiver should
+      remain alive, waiting for a new WAL streaming start point.  Instead
+      it was repeatedly shutting down and immediately getting restarted,
+      which could confuse status monitoring code.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Masahiko Sawada <msawada@postgresql.org>
+Branch: master [b46efe904] 2025-10-09 10:59:27 -0700
+Branch: REL_18_STABLE [32b95fc71] 2025-10-09 10:59:29 -0700
+Branch: REL_17_STABLE [a61592253] 2025-10-09 10:59:31 -0700
+Branch: REL_16_STABLE [b07682bce] 2025-10-09 10:59:34 -0700
+Branch: REL_15_STABLE [c40761759] 2025-10-09 10:59:36 -0700
+-->
+     <para>
+      Fix use-after-free issue in the relation synchronization cache
+      maintained by the <application>pgoutput</application> logical
+      decoding plugin (Vignesh C, Masahiko Sawada)
+      <ulink url="https://postgr.es/c/32b95fc71">&#xA7;</ulink>
+     </para>
+
+     <para>
+      An error during logical decoding could result in crashes in
+      subsequent logical decoding attempts in the same session.
+      The case is only reachable when <application>pgoutput</application>
+      is invoked via SQL functions.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Michael Paquier <michael@paquier.xyz>
+Branch: master [d43209468] 2025-10-30 13:13:28 +0900
+Branch: REL_18_STABLE [bf3dba508] 2025-10-30 13:13:31 +0900
+Branch: REL_17_STABLE [f3fb6bc9f] 2025-10-30 13:13:34 +0900
+Branch: REL_16_STABLE [e3714dc05] 2025-10-30 13:13:37 +0900
+-->
+     <para>
+      Avoid unnecessary invalidation of logical replication slots
+      (Bertrand Drouvot)
+      <ulink url="https://postgr.es/c/bf3dba508">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Jeff Davis <jdavis@postgresql.org>
+Branch: master [d115de9d8] 2025-11-04 16:48:16 -0800
+Branch: REL_18_STABLE [3ebea75f9] 2025-11-04 16:49:00 -0800
+-->
+     <para>
+      Re-establish special case for <literal>C</literal> collation in
+      locale setup (Jeff Davis)
+      <ulink url="https://postgr.es/c/3ebea75f9">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This fixes a regression in access to shared catalogs early in
+      backend startup, before a database has been selected.  It is not
+      known to be a problem for any
+      core <productname>PostgreSQL</productname> code, but some extensions
+      were broken.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: master [03bf7a12c] 2025-10-13 17:56:45 -0400
+Branch: REL_18_STABLE [b48ae226e] 2025-10-13 17:56:45 -0400
+Branch: REL_17_STABLE [4c53519e1] 2025-10-13 17:56:45 -0400
+Branch: REL_16_STABLE [9883e3cd1] 2025-10-13 17:56:45 -0400
+Branch: REL_15_STABLE [f91666c83] 2025-10-13 17:56:45 -0400
+Branch: REL_14_STABLE [e91eb4ad6] 2025-10-13 17:56:45 -0400
+Branch: REL_13_STABLE [75a555d61] 2025-10-13 17:56:45 -0400
+-->
+     <para>
+      Fix incorrect printing of messages about failures in checking
+      whether the user has Windows administrator privilege (Bryan Green)
+      <ulink url="https://postgr.es/c/b48ae226e">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This code would have crashed or at least printed garbage.
+      No such cases have been reported though, indicating that failure of
+      these system calls is extremely rare.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: master [d4baa327a] 2025-11-05 11:09:45 -0500
+Branch: REL_18_STABLE [6d8acb777] 2025-11-05 11:09:30 -0500
+Branch: REL_17_STABLE [a9515f294] 2025-11-05 11:09:30 -0500
+Branch: REL_16_STABLE [c775bf048] 2025-11-05 11:09:30 -0500
+-->
+     <para>
+      Avoid crash when attempting to
+      test <productname>PostgreSQL</productname> with certain libsanitizer
+      options (Emmanuel Sibi, Jacob Champion)
+      <ulink url="https://postgr.es/c/6d8acb777">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: David Rowley <drowley@postgresql.org>
+Branch: master [50eb4e118] 2025-10-30 14:48:10 +1300
+Branch: REL_18_STABLE [af3a79e08] 2025-10-30 14:49:07 +1300
+Branch: REL_17_STABLE [bd6f986c9] 2025-10-30 14:49:42 +1300
+Branch: REL_16_STABLE [cdc04a6c3] 2025-10-30 14:50:05 +1300
+Branch: REL_15_STABLE [f3420e006] 2025-10-30 14:50:26 +1300
+Branch: REL_14_STABLE [86bd9497f] 2025-10-30 14:50:46 +1300
+Branch: REL_13_STABLE [7b955c227] 2025-10-30 14:51:08 +1300
+-->
+     <para>
+      Fix false memory-context-checking warnings in debug builds
+      on 64-bit Windows (David Rowley)
+      <ulink url="https://postgr.es/c/af3a79e08">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: master [7504d2be9] 2025-09-27 14:29:41 -0400
+Branch: REL_18_STABLE [78a284b0b] 2025-09-27 14:29:41 -0400
+Branch: REL_17_STABLE [3fc9aa5b0] 2025-09-27 14:29:41 -0400
+Branch: REL_16_STABLE [b7f6798c0] 2025-09-27 14:29:41 -0400
+Branch: REL_15_STABLE [9ca79896a] 2025-09-27 14:29:41 -0400
+Branch: REL_14_STABLE [0be39b4b1] 2025-09-27 14:29:41 -0400
+-->
+     <para>
+      Correctly handle <literal>GROUP BY DISTINCT</literal> in PL/pgSQL
+      assignment statements (Tom Lane)
+      <ulink url="https://postgr.es/c/78a284b0b">&#xA7;</ulink>
+     </para>
+
+     <para>
+      The parser failed to record the <literal>DISTINCT</literal> option
+      in this context, so that the command would act as if it were
+      plain <literal>GROUP BY</literal>.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: master [798b19d27] 2025-10-23 11:47:46 -0400
+Branch: REL_18_STABLE [447a794f6] 2025-10-23 11:47:46 -0400
+Branch: REL_17_STABLE [fbc41a145] 2025-10-23 11:47:46 -0400
+Branch: REL_16_STABLE [cbfd4d0f8] 2025-10-23 11:47:46 -0400
+Branch: REL_15_STABLE [4cde73259] 2025-10-23 11:47:46 -0400
+Branch: REL_14_STABLE [7fb8c9240] 2025-10-23 11:47:46 -0400
+Branch: REL_13_STABLE [d90c92d1c] 2025-10-23 11:47:46 -0400
+-->
+     <para>
+      Avoid leaking memory when handling a SQL error within PL/Python
+      (Tom Lane)
+      <ulink url="https://postgr.es/c/447a794f6">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This fixes a session-lifespan memory leak introduced in our previous
+      minor releases.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: master [ea78bd6d5] 2025-10-05 16:27:47 -0400
+Branch: REL_18_STABLE [d83879a32] 2025-10-05 16:27:47 -0400
+Branch: REL_17_STABLE [1c4671f7b] 2025-10-05 16:27:47 -0400
+Branch: REL_16_STABLE [46c4478db] 2025-10-05 16:27:47 -0400
+Branch: REL_15_STABLE [771b106d1] 2025-10-05 16:27:47 -0400
+Branch: REL_14_STABLE [f46d77377] 2025-10-05 16:27:47 -0400
+Branch: REL_13_STABLE [fc287cf3c] 2025-10-05 16:27:47 -0400
+-->
+     <para>
+      Fix <application>libpq</application>'s handling of socket-related
+      errors on Windows within its GSSAPI logic (Ning Wu, Tom Lane)
+      <ulink url="https://postgr.es/c/d83879a32">&#xA7;</ulink>
+     </para>
+
+     <para>
+      The code for encrypting/decrypting transmitted data using GSSAPI did
+      not correctly recognize error conditions on the connection socket,
+      since Windows reports those differently than other platforms.  This
+      led to failure to make such connections on Windows.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Álvaro Herrera <alvherre@kurilemu.de>
+Branch: master [615ff828e] 2025-10-18 18:18:19 +0200
+Branch: REL_18_STABLE [0fe07fa11] 2025-10-18 18:18:19 +0200
+Branch: REL_17_STABLE [c945b06d5] 2025-10-18 18:18:19 +0200
+-->
+     <para>
+      Fix dumping of non-inherited not-null constraints on inherited table
+      columns (Dilip Kumar)
+      <ulink url="https://postgr.es/c/0fe07fa11">&#xA7;</ulink>
+     </para>
+
+     <para>
+      <application>pg_dump</application> failed to preserve such
+      constraints when dumping from a pre-v18 server.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Álvaro Herrera <alvherre@kurilemu.de>
+Branch: master [4921a5972] 2025-10-18 17:50:10 +0200
+Branch: REL_18_STABLE [162e70ea0] 2025-10-18 17:50:10 +0200
+Branch: REL_17_STABLE [7419c99a2] 2025-10-18 17:50:10 +0200
+Branch: REL_16_STABLE [06c1ee6b7] 2025-10-18 17:50:10 +0200
+Branch: REL_15_STABLE [4cc3b4445] 2025-10-18 17:50:10 +0200
+Branch: REL_14_STABLE [6062c3db3] 2025-10-18 17:50:10 +0200
+Branch: REL_13_STABLE [d20df9590] 2025-10-18 17:50:10 +0200
+-->
+     <para>
+      Fix <application>pg_dump</application>'s sorting of
+      foreign key constraints (&#xC1;lvaro Herrera)
+      <ulink url="https://postgr.es/c/162e70ea0">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Ensure consistent ordering of these database objects, as was
+      already done for other object types.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Daniel Gustafsson <dgustafsson@postgresql.org>
+Branch: master [e686010c5] 2025-08-29 19:28:46 +0200
+Branch: REL_18_STABLE Release: REL_18_0 [8980c724b] 2025-08-29 19:28:46 +0200
+Branch: REL_17_STABLE [92268b35d] 2025-08-29 19:28:46 +0200
+Branch: REL_16_STABLE [ec017a305] 2025-08-29 19:28:46 +0200
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: master [a239c4a0c] 2025-10-13 12:44:20 -0400
+Branch: REL_18_STABLE [6a4009747] 2025-10-13 12:44:20 -0400
+Branch: REL_17_STABLE [bf18e9bd7] 2025-10-13 12:44:20 -0400
+Branch: REL_16_STABLE [1518b7d76] 2025-10-13 12:44:20 -0400
+Branch: master [277dec651] 2025-10-19 14:36:58 -0400
+Branch: REL_18_STABLE [aa1fcd087] 2025-10-19 14:36:58 -0400
+Branch: REL_17_STABLE [2efca1633] 2025-10-19 14:36:58 -0400
+Branch: REL_16_STABLE [c865f5b9f] 2025-10-19 14:36:58 -0400
+Branch: REL_15_STABLE [8b9924bce] 2025-10-19 14:36:58 -0400
+Branch: REL_14_STABLE [40dc710a6] 2025-10-19 14:36:58 -0400
+Branch: REL_13_STABLE [33276cd02] 2025-10-19 14:36:58 -0400
+-->
+     <para>
+      Fix assorted errors in the data compression logic
+      in <application>pg_dump</application>
+      and <application>pg_restore</application>
+      (Daniel Gustafsson, Tom Lane)
+      <ulink url="https://postgr.es/c/8980c724b">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/6a4009747">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/aa1fcd087">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Error checking was missing or incorrect in several places, and there
+      were also portability issues that would manifest on big-endian
+      hardware.  These problems had been missed because this code is only
+      used to read compressed TOC files within directory-format
+      dumps.   <application>pg_dump</application> never produces such a
+      dump; the case can be reached only by manually compressing the TOC
+      file after the fact, which is a supported thing to do but very
+      uncommon.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Michael Paquier <michael@paquier.xyz>
+Branch: master [902c08887] 2025-10-03 14:03:55 +0900
+Branch: REL_18_STABLE [c00637b5f] 2025-10-03 14:04:00 +0900
+Branch: REL_17_STABLE [de6de069d] 2025-10-03 14:04:01 +0900
+Branch: REL_16_STABLE [640590bb4] 2025-10-03 14:04:03 +0900
+Branch: REL_15_STABLE [b5cefc197] 2025-10-03 14:04:05 +0900
+Branch: REL_14_STABLE [9b3beb7c6] 2025-10-03 14:04:06 +0900
+Branch: REL_13_STABLE [f1a2f3a0c] 2025-10-03 14:04:08 +0900
+-->
+     <para>
+      Fix <application>pgbench</application> to error out cleanly if
+      a <literal>COPY</literal> operation is started (Anthonin Bonnefoy)
+      <ulink url="https://postgr.es/c/c00637b5f">&#xA7;</ulink>
+     </para>
+
+     <para>
+      <application>pgbench</application> doesn't intend to support this
+      case, but previously it went into an infinite loop.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Fujii Masao <fujii@postgresql.org>
+Branch: master [19d4f9ffc] 2025-09-30 23:52:28 +0900
+Branch: REL_18_STABLE [29aabbc43] 2025-09-30 23:53:32 +0900
+Branch: REL_17_STABLE [a912118c6] 2025-09-30 23:53:46 +0900
+Branch: REL_16_STABLE [36c4d30c8] 2025-09-30 23:53:53 +0900
+Branch: REL_15_STABLE [bdccb6302] 2025-09-30 23:54:01 +0900
+Branch: REL_14_STABLE [cb21e1f92] 2025-09-30 23:55:02 +0900
+Branch: REL_13_STABLE [7d7e81d1e] 2025-09-30 23:55:33 +0900
+-->
+     <para>
+      Fix <application>pgbench</application>'s reporting of multiple
+      errors (Yugo Nagata)
+      <ulink url="https://postgr.es/c/29aabbc43">&#xA7;</ulink>
+     </para>
+
+     <para>
+      In cases where two successive <function>PQgetResult</function> calls
+      both fail, <application>pgbench</application> might report the wrong
+      error message.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Fujii Masao <fujii@postgresql.org>
+Branch: master [8bb174295] 2025-09-26 21:23:43 +0900
+Branch: REL_18_STABLE [c736808e0] 2025-09-26 21:24:59 +0900
+Branch: REL_17_STABLE [f39d9164b] 2025-09-26 21:25:05 +0900
+Branch: REL_16_STABLE [8b2e290bd] 2025-09-26 21:25:11 +0900
+Branch: REL_15_STABLE [704f51771] 2025-09-26 21:25:17 +0900
+-->
+     <para>
+      In <application>pgbench</application>, fix faulty assertion about
+      errors in pipeline mode (Yugo Nagata)
+      <ulink url="https://postgr.es/c/c736808e0">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: master [9224c3025] 2025-10-22 13:38:40 -0400
+Branch: REL_18_STABLE [e2072b47b] 2025-10-22 13:38:37 -0400
+Branch: REL_17_STABLE [4eb6992af] 2025-10-22 13:38:37 -0400
+-->
+     <para>
+      Fix per-file memory leakage
+      in <application>pg_combinebackup</application> (Tom Lane)
+      <ulink url="https://postgr.es/c/e2072b47b">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Masahiko Sawada <msawada@postgresql.org>
+Branch: master [8ae0f6a0c] 2025-11-04 15:47:25 -0800
+Branch: REL_18_STABLE [71aa2e114] 2025-11-04 15:47:22 -0800
+Branch: master [eab9e4e27] 2025-08-19 12:11:42 -0700
+Branch: REL_18_STABLE Release: REL_18_0 [0beb7e933] 2025-08-19 12:11:39 -0700
+Branch: REL_17_STABLE [b6090ed96] 2025-08-19 12:11:37 -0700
+Branch: REL_16_STABLE [815fcfb20] 2025-08-19 12:11:34 -0700
+Branch: REL_15_STABLE [eb9ee4d18] 2025-08-19 12:11:32 -0700
+Branch: REL_14_STABLE [79643105a] 2025-08-19 12:11:29 -0700
+Branch: REL_13_STABLE [7d8d36289] 2025-08-19 12:11:25 -0700
+-->
+     <para>
+      Ensure that <filename>contrib/pg_buffercache</filename> functions
+      can be canceled (Satyanarayana Narlapuram, Yuhang Qiu)
+      <ulink url="https://postgr.es/c/71aa2e114">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/0beb7e933">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Some code paths were capable of running for a long time without
+      checking for interrupts.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Nathan Bossart <nathan@postgresql.org>
+Branch: master [208927e65] 2025-10-17 11:36:50 -0500
+Branch: REL_18_STABLE [3ccf8e9ac] 2025-10-17 11:36:50 -0500
+Branch: REL_17_STABLE [a0551bc57] 2025-10-17 11:36:50 -0500
+Branch: REL_16_STABLE [fae0ce5e3] 2025-10-17 11:36:50 -0500
+Branch: REL_15_STABLE [6c03ae8d6] 2025-10-17 11:36:50 -0500
+Branch: REL_14_STABLE [f146eb45c] 2025-10-17 11:36:50 -0500
+Branch: REL_13_STABLE [19a64f567] 2025-10-17 11:36:50 -0500
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: master [da44d71e7] 2025-10-18 18:36:21 -0400
+Branch: REL_18_STABLE [c29d32d27] 2025-10-18 18:36:21 -0400
+Branch: REL_17_STABLE [d4e8c37cc] 2025-10-18 18:36:21 -0400
+Branch: REL_16_STABLE [c26a8eaf6] 2025-10-18 18:36:21 -0400
+-->
+     <para>
+      Fix <filename>contrib/pg_prewarm</filename>'s privilege checks for
+      indexes (Ayush Vatsa, Nathan Bossart)
+      <ulink url="https://postgr.es/c/3ccf8e9ac">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/c29d32d27">&#xA7;</ulink>
+     </para>
+
+     <para>
+      <function>pg_prewarm()</function> requires <literal>SELECT</literal>
+      privilege on relations to be prewarmed.  However, since indexes have
+      no SQL privileges of their own, this resulted in non-superusers
+      being unable to prewarm indexes.  Instead, check
+      for <literal>SELECT</literal> privilege on the index's table.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Álvaro Herrera <alvherre@kurilemu.de>
+Branch: master [16edc1b94] 2025-10-29 12:35:02 +0100
+Branch: REL_18_STABLE [b1635c166] 2025-10-29 12:35:02 +0100
+-->
+     <para>
+      In <filename>contrib/pg_stat_statements</filename>, avoid
+      crash when two or more constants are marked as having the same
+      location in the SQL statement text (Sami Imseih, Dmitry Dolgov)
+      <ulink url="https://postgr.es/c/b1635c166">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Michael Paquier <michael@paquier.xyz>
+Branch: master [684a745f5] 2025-10-02 11:07:30 +0900
+Branch: REL_18_STABLE [fc295beb7] 2025-10-02 11:09:10 +0900
+Branch: REL_17_STABLE [036decbba] 2025-10-02 11:09:12 +0900
+Branch: REL_16_STABLE [c0f9fe877] 2025-10-02 11:09:13 +0900
+Branch: REL_15_STABLE [49b5f0b53] 2025-10-02 11:09:15 +0900
+Branch: REL_14_STABLE [ee2dbcad0] 2025-10-02 11:09:17 +0900
+Branch: REL_13_STABLE [c207bf473] 2025-10-02 11:09:19 +0900
+-->
+     <para>
+      Make <filename>contrib/pgstattuple</filename> more robust about
+      empty or invalid index pages (Nitin Motiani)
+      <ulink url="https://postgr.es/c/fc295beb7">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Count all-zero pages as free space, and ignore pages that are
+      invalid according to a check of the page's special-space size.
+      The code for btree indexes already counted all-zero pages as free,
+      but the hash and gist code would error out, which has been found to
+      be much less user-friendly.  Similarly, make all three cases agree
+      on ignoring corrupted pages rather than throwing errors.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Thomas Munro <tmunro@postgresql.org>
+Branch: master [c5d34f4a5] 2025-11-08 12:26:43 +1300
+Branch: REL_18_STABLE [f8ccab0e9] 2025-11-08 12:28:15 +1300
+Branch: REL_17_STABLE [03d9140cb] 2025-11-08 12:28:52 +1300
+Branch: REL_16_STABLE [2f76ffe5e] 2025-11-08 12:29:15 +1300
+Branch: REL_15_STABLE [1c7cba4c5] 2025-11-08 12:30:08 +1300
+Branch: REL_14_STABLE [d8ba910b0] 2025-11-08 12:32:42 +1300
+Branch: REL_13_STABLE [77b5b2c6f] 2025-11-08 12:33:01 +1300
+-->
+     <para>
+      Harden our read and write barrier macros to satisfy Clang
+      (Thomas Munro)
+      <ulink url="https://postgr.es/c/f8ccab0e9">&#xA7;</ulink>
+     </para>
+
+     <para>
+      We supposed that <function>__atomic_thread_fence()</function> is a
+      sufficient barrier to prevent the C compiler from re-ordering memory
+      accesses around it, but it appears that that's not true for Clang,
+      allowing it to generate incorrect code for at least RISC-V, MIPS,
+      and LoongArch machines.  Add explicit compiler barriers to fix that.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Álvaro Herrera <alvherre@kurilemu.de>
+Branch: master [6ad9378c9] 2025-10-16 20:21:05 +0200
+Branch: REL_18_STABLE [6aa04a60c] 2025-10-16 20:21:05 +0200
+Branch: REL_17_STABLE [a8933194e] 2025-10-16 20:21:05 +0200
+Branch: REL_16_STABLE [a506b0c0a] 2025-10-16 20:21:05 +0200
+Branch: REL_15_STABLE [33202cba8] 2025-10-16 20:21:05 +0200
+Branch: REL_14_STABLE [56cd332f8] 2025-10-16 20:21:05 +0200
+Branch: REL_13_STABLE [f768f5a7d] 2025-10-16 20:21:05 +0200
+-->
+     <para>
+      Fix PGXS build infrastructure to support building
+      NLS <filename>po</filename> files for extensions (Ryo Matsumura)
+      <ulink url="https://postgr.es/c/6aa04a60c">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+   </itemizedlist>
+
+  </sect2>
+ </sect1>
 
  <sect1 id="release-18">
   <title>Release 18</title>
@@ -334285,7 +335479,7 @@ From database "alvherre":
 
    <step>
     <para>
-     To begin using the Git repository, make a clone of the official mirror:
+     To begin using the <productname>Git</productname> repository, make a clone of the official mirror:
 
 <programlisting>
 git clone https://git.postgresql.org/git/postgresql.git
@@ -334295,16 +335489,6 @@ git clone https://git.postgresql.org/git/postgresql.git
      a while to complete, especially if you have a slow Internet connection.
      The files will be placed in a new subdirectory <filename>postgresql</filename> of
      your current directory.
-    </para>
-
-    <para>
-     The Git mirror can also be reached via the Git protocol. Just change the URL
-     prefix to <literal>git</literal>, as in:
-
-<programlisting>
-git clone git://git.postgresql.org/git/postgresql.git
-</programlisting>
-
     </para>
    </step>
 

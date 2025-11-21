@@ -38,9 +38,9 @@ all:
 maintainer-clean: distclean
 
 # PostgreSQL version number
-VERSION = 18.0
+VERSION = 18.1
 MAJORVERSION = 18
-VERSION_NUM = 180000
+VERSION_NUM = 180001
 
 PACKAGE_URL = https://www.postgresql.org/
 
@@ -63,8 +63,8 @@ endif
 endif
 else # not PGXS
 vpath_build = yes
-abs_top_builddir = D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\postgresql-18.0\meson-build
-abs_top_srcdir = D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\postgresql-18.0
+abs_top_builddir = D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\postgresql-18.1\meson-build
+abs_top_srcdir = D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\postgresql-18.1
 
 ifneq ($(vpath_build),yes)
 top_srcdir = $(top_builddir)
@@ -104,7 +104,7 @@ ifneq (,$(if $(PGXS),,1)$(prefix))
 # Note that prefix, exec_prefix, and datarootdir aren't defined in a PGXS build;
 # makefiles may only use the derived variables such as bindir.
 
-prefix := D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\postgresql-18.0\meson-install
+prefix := D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\postgresql-18.1\meson-install
 exec_prefix := ${prefix}
 datarootdir := ${prefix}/share
 
@@ -354,7 +354,7 @@ MSGFMT  =
 MSGFMT_FLAGS = 
 MSGMERGE = 
 OPENSSL	= D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\openssl\bin\openssl.EXE
-PYTHON	= C:\hostedtoolcache\windows\Python\3.13.7\x64\python3.EXE
+PYTHON	= C:\hostedtoolcache\windows\Python\3.13.9\x64\python3.EXE
 TAR	= C:\msys64\usr\bin\tar.EXE
 XGETTEXT = 
 

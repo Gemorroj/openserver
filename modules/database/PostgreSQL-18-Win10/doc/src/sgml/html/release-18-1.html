@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>E.1. Release 18.1</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="release.html" title="Appendix E. Release Notes" /><link rel="next" href="release-18.html" title="E.2. Release 18" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">E.1. Release 18.1</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="release.html" title="Appendix E. Release Notes">Prev</a> </td><td width="10%" align="left"><a accesskey="u" href="release.html" title="Appendix E. Release Notes">Up</a></td><th width="60%" align="center">Appendix E. Release Notes</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="PostgreSQL 18.1 Documentation">Home</a></td><td width="10%" align="right"> <a accesskey="n" href="release-18.html" title="E.2. Release 18">Next</a></td></tr></table><hr /></div><div class="sect1" id="RELEASE-18-1"><div class="titlepage"><div><div><h2 class="title" style="clear: both">E.1. Release 18.1 <a href="#RELEASE-18-1" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="release-18-1.html#RELEASE-18-1-MIGRATION">E.1.1. Migration to Version 18.1</a></span></dt><dt><span class="sect2"><a href="release-18-1.html#RELEASE-18-1-CHANGES">E.1.2. Changes</a></span></dt></dl></div><p><strong>Release date: </strong>2025-11-13</p><p>
+   This release contains a variety of fixes from 18.0.
+   For information about new features in major release 18, see
+   <a class="xref" href="release-18.html" title="E.2. Release 18">Section E.2</a>.
+  </p><div class="sect2" id="RELEASE-18-1-MIGRATION"><div class="titlepage"><div><div><h3 class="title">E.1.1. Migration to Version 18.1 <a href="#RELEASE-18-1-MIGRATION" class="id_link">#</a></h3></div></div></div><p>
+    A dump/restore is not required for those running 18.X.
+   </p></div><div class="sect2" id="RELEASE-18-1-CHANGES"><div class="titlepage"><div><div><h3 class="title">E.1.2. Changes <a href="#RELEASE-18-1-CHANGES" class="id_link">#</a></h3></div></div></div><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      Check for <code class="literal">CREATE</code> privileges on the schema
+      in <code class="command">CREATE STATISTICS</code> (Jelte Fennema-Nio)
+      <a class="ulink" href="https://postgr.es/c/00eb646ea" target="_top">§</a>
+     </p><p>
+      This omission allowed table owners to create statistics in any
+      schema, potentially leading to unexpected naming conflicts.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Jelte Fennema-Nio for reporting this problem.
+      (CVE-2025-12817)
+     </p></li><li class="listitem"><p>
+      Avoid integer overflow in allocation-size calculations
+      within <span class="application">libpq</span> (Jacob Champion)
+      <a class="ulink" href="https://postgr.es/c/7eb8fcad8" target="_top">§</a>
+     </p><p>
+      Several places in <span class="application">libpq</span> were not
+      sufficiently careful about computing the required size of a memory
+      allocation.  Sufficiently large inputs could cause integer overflow,
+      resulting in an undersized buffer, which would then lead to writing
+      past the end of the buffer.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks Aleksey
+      Solovev of Positive Technologies for reporting this problem.
+      (CVE-2025-12818)
+     </p></li><li class="listitem"><p>
+      Prevent <span class="quote">“<span class="quote">unrecognized node type</span>”</span> errors when a SQL/JSON
+      function such as <code class="function">JSON_VALUE</code> has
+      a <code class="literal">DEFAULT</code> clause containing
+      a <code class="literal">COLLATE</code> expression (Jian He)
+      <a class="ulink" href="https://postgr.es/c/dc9125111" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/1baae827e" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Avoid incorrect optimization of
+      variable-free <code class="literal">HAVING</code> clauses with grouping sets
+      (Richard Guo)
+      <a class="ulink" href="https://postgr.es/c/40c242830" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/ee49f2cf4" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Do not use parallelism in hash right semi joins (Richard Guo)
+      <a class="ulink" href="https://postgr.es/c/ef6168baf" target="_top">§</a>
+     </p><p>
+      The case does not work reliably due to a race condition in updating
+      the join's shared hash table.
+     </p></li><li class="listitem"><p>
+      Avoid possible division-by-zero when creating ordered-append plans
+      (Richard Guo)
+      <a class="ulink" href="https://postgr.es/c/500f64636" target="_top">§</a>
+     </p><p>
+      This mistake could result in incorrect selection of the cheapest
+      path, or in an assertion failure in debug builds.
+     </p></li><li class="listitem"><p>
+      Fix planner failure with index types that can do ordered access but
+      not index-only scans (Maxime Schoemans)
+      <a class="ulink" href="https://postgr.es/c/74197bdc8" target="_top">§</a>
+     </p><p>
+      This oversight resulted in errors like <span class="quote">“<span class="quote">no data returned for
+      index-only scan</span>”</span>.  The case does not arise with any in-core
+      index type, but some extensions encountered the problem.
+     </p></li><li class="listitem"><p>
+      Remove faulty assertion in btree index cleanup (Peter Geoghegan)
+      <a class="ulink" href="https://postgr.es/c/61de81a49" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Avoid possible out-of-memory or <span class="quote">“<span class="quote">invalid memory alloc request
+      size</span>”</span> failures during parallel GIN index build (Tomas Vondra)
+      <a class="ulink" href="https://postgr.es/c/a26b753a0" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Ensure that BRIN autosummarization provides a snapshot for index
+      expressions that need one (Álvaro Herrera)
+      <a class="ulink" href="https://postgr.es/c/419ffde23" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/8733f0b54" target="_top">§</a>
+     </p><p>
+      Previously, autosummarization would fail for such indexes, and then
+      leave placeholder index tuples behind, causing the index to bloat
+      over time.
+     </p></li><li class="listitem"><p>
+      Fix integer-overflow hazard in BRIN index scans when the table
+      contains close to 2<sup>32</sup> pages (Sunil S)
+      <a class="ulink" href="https://postgr.es/c/715983a81" target="_top">§</a>
+     </p><p>
+      This oversight could result in an infinite loop or scanning of
+      unneeded table pages.
+     </p></li><li class="listitem"><p>
+      Fix incorrect zero-extension of stored values in JIT-generated tuple
+      deforming code (David Rowley)
+      <a class="ulink" href="https://postgr.es/c/ceb51d09b" target="_top">§</a>
+     </p><p>
+      When not using JIT, the equivalent code does sign-extension not
+      zero-extension, leading to a different Datum representation of small
+      integer data types.  This inconsistency was masked in most cases,
+      but it is known to lead to <span class="quote">“<span class="quote">could not find memoization table
+      entry</span>”</span> errors when using Memoize plan nodes, and there might
+      be other symptoms.
+     </p></li><li class="listitem"><p>
+      Fix rare crash when processing hashed <code class="literal">GROUPING
+      SETS</code> queries (David Rowley)
+      <a class="ulink" href="https://postgr.es/c/0b6a02f03" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Repair faulty hash-table-size-choosing logic in hash joins
+      (Tomas Vondra)
+      <a class="ulink" href="https://postgr.es/c/aa151022e" target="_top">§</a>
+     </p><p>
+      Hash joins sometimes used more memory than intended, or failed to
+      divide it in an efficient way.
+     </p></li><li class="listitem"><p>
+      Improve relation lookup logic in statistics manipulation functions
+      (Nathan Bossart)
+      <a class="ulink" href="https://postgr.es/c/c8af5019b" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/15d7dded0" target="_top">§</a>
+     </p><p>
+      Fix <code class="function">pg_restore_relation_stats()</code>,
+      <code class="function">pg_clear_relation_stats()</code>,
+      <code class="function">pg_restore_attribute_stats()</code>, and
+      <code class="function">pg_clear_attribute_stats()</code> to check
+      privileges before acquiring lock on the target relation
+      rather than after.
+     </p></li><li class="listitem"><p>
+      Fix incorrect logic for caching result-relation information for
+      triggers (David Rowley, Amit Langote)
+      <a class="ulink" href="https://postgr.es/c/a2387c32f" target="_top">§</a>
+     </p><p>
+      In cases where partitions' column sets aren't physically identical
+      to their parent partitioned tables' column sets, this oversight
+      could lead to crashes.
+     </p></li><li class="listitem"><p>
+      Fix crash during EvalPlanQual rechecks on partitioned tables (David
+      Rowley, Amit Langote)
+      <a class="ulink" href="https://postgr.es/c/1296dcf18" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Fix EvalPlanQual handling of foreign or custom joins that do not
+      have an alternative local-join plan prepared for EPQ (Masahiko
+      Sawada, Etsuro Fujita)
+      <a class="ulink" href="https://postgr.es/c/b14144325" target="_top">§</a>
+     </p><p>
+      In such cases the foreign or custom access method should be invoked
+      normally, but that did not happen, typically leading to a crash.
+     </p></li><li class="listitem"><p>
+      Avoid duplicating hash partition constraints during <code class="literal">DETACH
+      CONCURRENTLY</code> (Haiyang Li)
+      <a class="ulink" href="https://postgr.es/c/08c037dff" target="_top">§</a>
+     </p><p>
+      <code class="command">ALTER TABLE DETACH PARTITION CONCURRENTLY</code> was
+      written to add a copy of the partitioning constraint to the
+      now-detached partition.  This was misguided, partially because
+      non-concurrent <code class="literal">DETACH</code> doesn't do that, but mostly
+      because in the case of hash partitioning the constraint expression
+      contains references to the parent table's OID.  That causes problems
+      during dump/restore, or if the parent table is dropped
+      after <code class="literal">DETACH</code>.  In v19 and later, we'll no longer
+      create any such copied constraints at all.  In released branches, to
+      minimize the risk of unforeseen consequences, only skip adding a
+      copied constraint if it is for hash partitioning.
+     </p></li><li class="listitem"><p>
+      Disallow generated columns in partition keys
+      (Jian He, Ashutosh Bapat)
+      <a class="ulink" href="https://postgr.es/c/ba99c9491" target="_top">§</a>
+     </p><p>
+      This was already not allowed, but the check missed some cases, such
+      as where the column reference is implicit in a whole-row reference.
+     </p></li><li class="listitem"><p>
+      Disallow generated columns in <code class="literal">COPY ... FROM
+      ... WHERE</code> clauses (Peter Eisentraut, Jian He)
+      <a class="ulink" href="https://postgr.es/c/0f9e0068b" target="_top">§</a>
+     </p><p>
+      Previously, incorrect behavior or an obscure error message resulted
+      from attempting to reference such a column, since generated columns
+      have not yet been computed at the point
+      where <code class="literal">WHERE</code> filtering is done.
+     </p></li><li class="listitem"><p>
+      Prevent setting a column as identity if it has a not-null constraint
+      but the constraint is marked as invalid (Jian He)
+      <a class="ulink" href="https://postgr.es/c/d9ffc2729" target="_top">§</a>
+     </p><p>
+      Identity columns must be not-null, but the check for that missed
+      this edge case.
+     </p></li><li class="listitem"><p>
+      Avoid potential use-after-free in parallel vacuum (Kevin Oommen
+      Anish)
+      <a class="ulink" href="https://postgr.es/c/76613b539" target="_top">§</a>
+     </p><p>
+      This bug seems to have no consequences in standard builds, but it's
+      theoretically a hazard.
+     </p></li><li class="listitem"><p>
+      Fix visibility checking for statistics objects
+      in <code class="literal">pg_temp</code> (Noah Misch)
+      <a class="ulink" href="https://postgr.es/c/d024160ff" target="_top">§</a>
+     </p><p>
+      A statistics object located in a temporary schema cannot be named
+      without schema qualification,
+      but <code class="function">pg_statistics_obj_is_visible()</code> missed that
+      memo and could return <span class="quote">“<span class="quote">true</span>”</span> regardless.  In turn,
+      functions such as <code class="function">pg_describe_object()</code> could
+      fail to schema-qualify the object's name as expected.
+     </p></li><li class="listitem"><p>
+      Fix minor memory leak during WAL replay of database creation
+      (Nathan Bossart)
+      <a class="ulink" href="https://postgr.es/c/33e7b4a7c" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Fix incorrect reporting of replication lag
+      in <code class="structname">pg_stat_replication</code> view (Fujii Masao)
+      <a class="ulink" href="https://postgr.es/c/9670032cc" target="_top">§</a>
+     </p><p>
+      If any standby server's replay LSN stopped advancing,
+      the <code class="structfield">write_lag</code>
+      and <code class="structfield">flush_lag</code> columns would eventually
+      stop updating.
+     </p></li><li class="listitem"><p>
+      Avoid duplicative log messages about
+      invalid <code class="varname">primary_slot_name</code> settings (Fujii Masao)
+      <a class="ulink" href="https://postgr.es/c/6ff7ba9fe" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Avoid failures when <code class="varname">synchronized_standby_slots</code>
+      references nonexistent replication slots (Shlok Kyal)
+      <a class="ulink" href="https://postgr.es/c/b45a8d7d8" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Remove the unfinished slot state file after failing to write a
+      replication slot's state to disk (Michael Paquier)
+      <a class="ulink" href="https://postgr.es/c/9a6ea00ac" target="_top">§</a>
+     </p><p>
+      Previously, a failure such as out-of-disk-space resulted in leaving
+      a temporary <code class="filename">state.tmp</code> file behind.  That's
+      problematic because it would block all subsequent attempts to
+      write the state, requiring manual intervention to clean up.
+     </p></li><li class="listitem"><p>
+      Fix mishandling of lock timeout signals in parallel apply workers
+      for logical replication (Hayato Kuroda)
+      <a class="ulink" href="https://postgr.es/c/37fc5de43" target="_top">§</a>
+     </p><p>
+      The same signal number was being used for both worker shutdown and
+      lock timeout, leading to confusion.
+     </p></li><li class="listitem"><p>
+      Avoid unwanted WAL receiver shutdown when switching from streaming
+      to archive WAL source (Xuneng Zhou)
+      <a class="ulink" href="https://postgr.es/c/a14201073" target="_top">§</a>
+     </p><p>
+      During a timeline change, a standby server's WAL receiver should
+      remain alive, waiting for a new WAL streaming start point.  Instead
+      it was repeatedly shutting down and immediately getting restarted,
+      which could confuse status monitoring code.
+     </p></li><li class="listitem"><p>
+      Fix use-after-free issue in the relation synchronization cache
+      maintained by the <span class="application">pgoutput</span> logical
+      decoding plugin (Vignesh C, Masahiko Sawada)
+      <a class="ulink" href="https://postgr.es/c/32b95fc71" target="_top">§</a>
+     </p><p>
+      An error during logical decoding could result in crashes in
+      subsequent logical decoding attempts in the same session.
+      The case is only reachable when <span class="application">pgoutput</span>
+      is invoked via SQL functions.
+     </p></li><li class="listitem"><p>
+      Avoid unnecessary invalidation of logical replication slots
+      (Bertrand Drouvot)
+      <a class="ulink" href="https://postgr.es/c/bf3dba508" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Re-establish special case for <code class="literal">C</code> collation in
+      locale setup (Jeff Davis)
+      <a class="ulink" href="https://postgr.es/c/3ebea75f9" target="_top">§</a>
+     </p><p>
+      This fixes a regression in access to shared catalogs early in
+      backend startup, before a database has been selected.  It is not
+      known to be a problem for any
+      core <span class="productname">PostgreSQL</span> code, but some extensions
+      were broken.
+     </p></li><li class="listitem"><p>
+      Fix incorrect printing of messages about failures in checking
+      whether the user has Windows administrator privilege (Bryan Green)
+      <a class="ulink" href="https://postgr.es/c/b48ae226e" target="_top">§</a>
+     </p><p>
+      This code would have crashed or at least printed garbage.
+      No such cases have been reported though, indicating that failure of
+      these system calls is extremely rare.
+     </p></li><li class="listitem"><p>
+      Avoid crash when attempting to
+      test <span class="productname">PostgreSQL</span> with certain libsanitizer
+      options (Emmanuel Sibi, Jacob Champion)
+      <a class="ulink" href="https://postgr.es/c/6d8acb777" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Fix false memory-context-checking warnings in debug builds
+      on 64-bit Windows (David Rowley)
+      <a class="ulink" href="https://postgr.es/c/af3a79e08" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Correctly handle <code class="literal">GROUP BY DISTINCT</code> in PL/pgSQL
+      assignment statements (Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/78a284b0b" target="_top">§</a>
+     </p><p>
+      The parser failed to record the <code class="literal">DISTINCT</code> option
+      in this context, so that the command would act as if it were
+      plain <code class="literal">GROUP BY</code>.
+     </p></li><li class="listitem"><p>
+      Avoid leaking memory when handling a SQL error within PL/Python
+      (Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/447a794f6" target="_top">§</a>
+     </p><p>
+      This fixes a session-lifespan memory leak introduced in our previous
+      minor releases.
+     </p></li><li class="listitem"><p>
+      Fix <span class="application">libpq</span>'s handling of socket-related
+      errors on Windows within its GSSAPI logic (Ning Wu, Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/d83879a32" target="_top">§</a>
+     </p><p>
+      The code for encrypting/decrypting transmitted data using GSSAPI did
+      not correctly recognize error conditions on the connection socket,
+      since Windows reports those differently than other platforms.  This
+      led to failure to make such connections on Windows.
+     </p></li><li class="listitem"><p>
+      Fix dumping of non-inherited not-null constraints on inherited table
+      columns (Dilip Kumar)
+      <a class="ulink" href="https://postgr.es/c/0fe07fa11" target="_top">§</a>
+     </p><p>
+      <span class="application">pg_dump</span> failed to preserve such
+      constraints when dumping from a pre-v18 server.
+     </p></li><li class="listitem"><p>
+      Fix <span class="application">pg_dump</span>'s sorting of
+      foreign key constraints (Álvaro Herrera)
+      <a class="ulink" href="https://postgr.es/c/162e70ea0" target="_top">§</a>
+     </p><p>
+      Ensure consistent ordering of these database objects, as was
+      already done for other object types.
+     </p></li><li class="listitem"><p>
+      Fix assorted errors in the data compression logic
+      in <span class="application">pg_dump</span>
+      and <span class="application">pg_restore</span>
+      (Daniel Gustafsson, Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/8980c724b" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/6a4009747" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/aa1fcd087" target="_top">§</a>
+     </p><p>
+      Error checking was missing or incorrect in several places, and there
+      were also portability issues that would manifest on big-endian
+      hardware.  These problems had been missed because this code is only
+      used to read compressed TOC files within directory-format
+      dumps.   <span class="application">pg_dump</span> never produces such a
+      dump; the case can be reached only by manually compressing the TOC
+      file after the fact, which is a supported thing to do but very
+      uncommon.
+     </p></li><li class="listitem"><p>
+      Fix <span class="application">pgbench</span> to error out cleanly if
+      a <code class="literal">COPY</code> operation is started (Anthonin Bonnefoy)
+      <a class="ulink" href="https://postgr.es/c/c00637b5f" target="_top">§</a>
+     </p><p>
+      <span class="application">pgbench</span> doesn't intend to support this
+      case, but previously it went into an infinite loop.
+     </p></li><li class="listitem"><p>
+      Fix <span class="application">pgbench</span>'s reporting of multiple
+      errors (Yugo Nagata)
+      <a class="ulink" href="https://postgr.es/c/29aabbc43" target="_top">§</a>
+     </p><p>
+      In cases where two successive <code class="function">PQgetResult</code> calls
+      both fail, <span class="application">pgbench</span> might report the wrong
+      error message.
+     </p></li><li class="listitem"><p>
+      In <span class="application">pgbench</span>, fix faulty assertion about
+      errors in pipeline mode (Yugo Nagata)
+      <a class="ulink" href="https://postgr.es/c/c736808e0" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Fix per-file memory leakage
+      in <span class="application">pg_combinebackup</span> (Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/e2072b47b" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Ensure that <code class="filename">contrib/pg_buffercache</code> functions
+      can be canceled (Satyanarayana Narlapuram, Yuhang Qiu)
+      <a class="ulink" href="https://postgr.es/c/71aa2e114" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/0beb7e933" target="_top">§</a>
+     </p><p>
+      Some code paths were capable of running for a long time without
+      checking for interrupts.
+     </p></li><li class="listitem"><p>
+      Fix <code class="filename">contrib/pg_prewarm</code>'s privilege checks for
+      indexes (Ayush Vatsa, Nathan Bossart)
+      <a class="ulink" href="https://postgr.es/c/3ccf8e9ac" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/c29d32d27" target="_top">§</a>
+     </p><p>
+      <code class="function">pg_prewarm()</code> requires <code class="literal">SELECT</code>
+      privilege on relations to be prewarmed.  However, since indexes have
+      no SQL privileges of their own, this resulted in non-superusers
+      being unable to prewarm indexes.  Instead, check
+      for <code class="literal">SELECT</code> privilege on the index's table.
+     </p></li><li class="listitem"><p>
+      In <code class="filename">contrib/pg_stat_statements</code>, avoid
+      crash when two or more constants are marked as having the same
+      location in the SQL statement text (Sami Imseih, Dmitry Dolgov)
+      <a class="ulink" href="https://postgr.es/c/b1635c166" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Make <code class="filename">contrib/pgstattuple</code> more robust about
+      empty or invalid index pages (Nitin Motiani)
+      <a class="ulink" href="https://postgr.es/c/fc295beb7" target="_top">§</a>
+     </p><p>
+      Count all-zero pages as free space, and ignore pages that are
+      invalid according to a check of the page's special-space size.
+      The code for btree indexes already counted all-zero pages as free,
+      but the hash and gist code would error out, which has been found to
+      be much less user-friendly.  Similarly, make all three cases agree
+      on ignoring corrupted pages rather than throwing errors.
+     </p></li><li class="listitem"><p>
+      Harden our read and write barrier macros to satisfy Clang
+      (Thomas Munro)
+      <a class="ulink" href="https://postgr.es/c/f8ccab0e9" target="_top">§</a>
+     </p><p>
+      We supposed that <code class="function">__atomic_thread_fence()</code> is a
+      sufficient barrier to prevent the C compiler from re-ordering memory
+      accesses around it, but it appears that that's not true for Clang,
+      allowing it to generate incorrect code for at least RISC-V, MIPS,
+      and LoongArch machines.  Add explicit compiler barriers to fix that.
+     </p></li><li class="listitem"><p>
+      Fix PGXS build infrastructure to support building
+      NLS <code class="filename">po</code> files for extensions (Ryo Matsumura)
+      <a class="ulink" href="https://postgr.es/c/6aa04a60c" target="_top">§</a>
+     </p></li></ul></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="release.html" title="Appendix E. Release Notes">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="release.html" title="Appendix E. Release Notes">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="release-18.html" title="E.2. Release 18">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Appendix E. Release Notes </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="PostgreSQL 18.1 Documentation">Home</a></td><td width="40%" align="right" valign="top"> E.2. Release 18</td></tr></table></div></body></html>

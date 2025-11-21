@@ -3,11 +3,11 @@
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
 .\"      Date: 2025
-.\"    Manual: PostgreSQL 18.0 Documentation
-.\"    Source: PostgreSQL 18.0
+.\"    Manual: PostgreSQL 18.1 Documentation
+.\"    Source: PostgreSQL 18.1
 .\"  Language: English
 .\"
-.TH "INSERT" "7" "2025" "PostgreSQL 18.0" "PostgreSQL 18.0 Documentation"
+.TH "INSERT" "7" "2025" "PostgreSQL 18.1" "PostgreSQL 18.1 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -508,6 +508,28 @@ ON CONFLICT ON CONSTRAINT
 \fI constraint_name\fR\&. Inference will continue to work correctly when the underlying index is replaced by another more or less equivalent index in an overlapping way, for example when using
 CREATE UNIQUE INDEX \&.\&.\&. CONCURRENTLY
 before dropping the index being replaced\&.
+.sp .5v
+.RE
+.if n \{\
+.sp
+.\}
+.RS 4
+.it 1 an-trap
+.nr an-no-space-flag 1
+.nr an-break-flag 1
+.br
+.ps +1
+\fBWarning\fR
+.ps -1
+.br
+.PP
+While
+\fBCREATE INDEX CONCURRENTLY\fR
+or
+\fBREINDEX CONCURRENTLY\fR
+is running on a unique index,
+\fBINSERT \&.\&.\&. ON CONFLICT\fR
+statements on the same table may unexpectedly fail with a unique violation\&.
 .sp .5v
 .RE
 .SH "OUTPUTS"
