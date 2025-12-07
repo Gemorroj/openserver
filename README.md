@@ -5,6 +5,6 @@
 - MySQL 8.4
 - PostgreSQL 18
 - Apache 2.4
-- PHP 8.2-8.4
-- Redis 7.4, 8.2
+- PHP 8.2-8.5
+- Redis 7.4, 8.4
 - ospanel_sys_prep_tool_.exe
