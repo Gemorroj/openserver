@@ -297,7 +297,7 @@ ZIC =
 
 # Linking
 
-AR = C:\mingw64\bin\ar.EXE
+AR = C:\msys64\usr\bin\ar.EXE
 AROPT = crs
 LIBS = 
 LDAP_LIBS_FE = 
@@ -528,9 +528,9 @@ MKDIR_P = mkdir -p
 
 missing		= $(SHELL) $(top_srcdir)/config/missing
 
-STRIP		= C:\mingw64\bin\strip.EXE
-STRIP_STATIC_LIB = C:\mingw64\bin\strip.EXE --strip-unneeded
-STRIP_SHARED_LIB = C:\mingw64\bin\strip.EXE --strip-unneeded
+STRIP		= C:\msys64\usr\bin\strip.EXE
+STRIP_STATIC_LIB = C:\msys64\usr\bin\strip.EXE --strip-unneeded
+STRIP_SHARED_LIB = C:\msys64\usr\bin\strip.EXE --strip-unneeded
 
 # Documentation
 

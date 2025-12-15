@@ -313,7 +313,7 @@
 
 #define PG_VERSION_NUM 180001
 
-#define PG_VERSION_STR "PostgreSQL 18.1 on x86_64-windows, compiled by msvc-19.44.35219, 64-bit"
+#define PG_VERSION_STR "PostgreSQL 18.1 on x86_64-windows, compiled by msvc-19.44.35221, 64-bit"
 
 #define RELSEG_SIZE 131072
 
