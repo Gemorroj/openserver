@@ -21,7 +21,7 @@
 
 package dbmmanage;
 #                               -ldb    -lndbm    -lgdbm    -lsdbm
-BEGIN { @AnyDBM_File::ISA = qw(SDBM_File) }
+BEGIN { @AnyDBM_File::ISA = qw(DB_File NDBM_File GDBM_File SDBM_File) }
 use strict;
 use Fcntl;
 use AnyDBM_File ();

@@ -1,9 +1,9 @@
 This snapshot was automatically generated on
-Tue, 01 Jul 2025 18:41:53 +0000
+Tue, 16 Dec 2025 18:05:23 +0000
 
-Version: 8.2.29
+Version: 8.2.30
 Branch: HEAD
-Build: C:\Users\runneradmin\AppData\Local\Temp\bfc6d9cc-deb2-4f84-9250-7b35a31c4142\config\vs16\x64\obj\Release_TS
+Build: C:\Users\runneradmin\AppData\Local\Temp\php-25e5cbc7-d59c-4908-8704-4cb37443ad9f\config\vs16\x64\obj\Release_TS
 
 Built-in Extensions
 ===========================
