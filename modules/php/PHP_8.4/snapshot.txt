@@ -1,9 +1,9 @@
 This snapshot was automatically generated on
-Tue, 16 Dec 2025 16:21:57 +0000
+Tue, 13 Jan 2026 17:52:51 +0000
 
-Version: 8.4.16
+Version: 8.4.17
 Branch: HEAD
-Build: C:\Users\runneradmin\AppData\Local\Temp\php-b43d012d-df57-4810-a9e0-564faafa1fb8\config\vs17\x64\obj\Release_TS
+Build: C:\Users\runneradmin\AppData\Local\Temp\php-6bc81b45-6751-445a-bf02-3427cc504615\config\vs17\x64\obj\Release_TS
 
 Built-in Extensions
 ===========================
@@ -102,25 +102,25 @@ Module: php_sqlite3.dll
 
 Module: php_intl.dll
 ===========================
-	icuin75.dll
-	icuio75.dll
-	icuuc75.dll
+	icuin77.dll
+	icuio77.dll
+	icuuc77.dll
 	vcruntime140_1.dll
 
-Module: icuin75.dll
+Module: icuin77.dll
 ===========================
-	icuuc75.dll
+	icuuc77.dll
 	vcruntime140_1.dll
 
-Module: icuuc75.dll
+Module: icuuc77.dll
 ===========================
-	icudt75.dll
+	icudt77.dll
 	vcruntime140_1.dll
 
-Module: icuio75.dll
+Module: icuio77.dll
 ===========================
-	icuuc75.dll
-	icuin75.dll
+	icuuc77.dll
+	icuin77.dll
 	vcruntime140_1.dll
 
 Module: php_pdo_firebird.dll

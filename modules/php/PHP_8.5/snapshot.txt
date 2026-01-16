@@ -1,9 +1,9 @@
 This snapshot was automatically generated on
-Tue, 16 Dec 2025 16:31:15 +0000
+Tue, 13 Jan 2026 22:00:40 +0000
 
-Version: 8.5.1
+Version: 8.5.2
 Branch: HEAD
-Build: C:\Users\runneradmin\AppData\Local\Temp\php-d579c126-7f16-4778-8c1c-f341bd75bba5\config\vs17\x64\obj\Release_TS
+Build: C:\Users\runneradmin\AppData\Local\Temp\php-5a4ff7e9-04ac-4dec-b205-bf28af58cfdb\config\vs17\x64\obj\Release_TS
 
 Built-in Extensions
 ===========================
@@ -102,22 +102,22 @@ Module: php_sqlite3.dll
 
 Module: php_intl.dll
 ===========================
-	icuin75.dll
-	icuio75.dll
-	icuuc75.dll
+	icuin77.dll
+	icuio77.dll
+	icuuc77.dll
 
-Module: icuin75.dll
+Module: icuin77.dll
 ===========================
-	icuuc75.dll
+	icuuc77.dll
 
-Module: icuuc75.dll
+Module: icuuc77.dll
 ===========================
-	icudt75.dll
+	icudt77.dll
 
-Module: icuio75.dll
+Module: icuio77.dll
 ===========================
-	icuuc75.dll
-	icuin75.dll
+	icuuc77.dll
+	icuin77.dll
 
 Module: php_pdo_pgsql.dll
 ===========================
