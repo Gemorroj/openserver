@@ -2182,8 +2182,8 @@ SELECT IF(LOCATE('.', ibp.table_name) = 0, 'InnoDB System', REPLACE(SUBSTRING_IN
        format_bytes(SUM(IF(ibp.compressed_size = 0, 16384, compressed_size))) AS allocated,
        format_bytes(SUM(ibp.data_size)) AS data,
        COUNT(ibp.page_number) AS pages,
-       COUNT(IF(ibp.is_hashed = 'YES', 1, NULL)) AS pages_hashed,
-       COUNT(IF(ibp.is_old = 'YES', 1, NULL)) AS pages_old,
+       COUNT(IF(ibp.is_hashed, 1, NULL)) AS pages_hashed,
+       COUNT(IF(ibp.is_old, 1, NULL)) AS pages_old,
        ROUND(SUM(ibp.number_records)/COUNT(DISTINCT ibp.index_name)) AS rows_cached 
   FROM information_schema.innodb_buffer_page ibp 
  WHERE table_name IS NOT NULL
@@ -2191,7 +2191,6 @@ SELECT IF(LOCATE('.', ibp.table_name) = 0, 'InnoDB System', REPLACE(SUBSTRING_IN
  ORDER BY SUM(IF(ibp.compressed_size = 0, 16384, compressed_size)) DESC;
 END$$
 DELIMITER ;
-
 
 -- Copyright (c) 2014, 2016, Oracle and/or its affiliates. All rights reserved.
 --
@@ -2314,8 +2313,8 @@ SELECT IF(LOCATE('.', ibp.table_name) = 0, 'InnoDB System', REPLACE(SUBSTRING_IN
        format_bytes(SUM(IF(ibp.compressed_size = 0, 16384, compressed_size))) AS allocated,
        format_bytes(SUM(ibp.data_size)) AS data,
        COUNT(ibp.page_number) AS pages,
-       COUNT(IF(ibp.is_hashed = 'YES', 1, NULL)) AS pages_hashed,
-       COUNT(IF(ibp.is_old = 'YES', 1, NULL)) AS pages_old,
+       COUNT(IF(ibp.is_hashed, 1, NULL)) AS pages_hashed,
+       COUNT(IF(ibp.is_old, 1, NULL)) AS pages_old,
        ROUND(SUM(ibp.number_records)/COUNT(DISTINCT ibp.index_name)) AS rows_cached 
   FROM information_schema.innodb_buffer_page ibp 
  WHERE table_name IS NOT NULL
@@ -2323,6 +2322,7 @@ SELECT IF(LOCATE('.', ibp.table_name) = 0, 'InnoDB System', REPLACE(SUBSTRING_IN
  ORDER BY SUM(IF(ibp.compressed_size = 0, 16384, compressed_size)) DESC;
 END$$
 DELIMITER ;
+
 -- Copyright (c) 2014, 2016, Oracle and/or its affiliates. All rights reserved.
 --
 -- This program is free software; you can redistribute it and/or modify
@@ -2389,6 +2389,7 @@ SELECT IF(LOCATE('.', ibp.table_name) = 0, 'InnoDB System', REPLACE(SUBSTRING_IN
  ORDER BY SUM(IF(ibp.compressed_size = 0, 16384, compressed_size)) DESC;
 END$$
 DELIMITER ;
+
 -- Copyright (c) 2014, 2015, Oracle and/or its affiliates. All rights reserved.
 --
 -- This program is free software; you can redistribute it and/or modify

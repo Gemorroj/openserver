@@ -1324,7 +1324,7 @@
 { "ER_SEQUENCE_TABLE_CANNOT_HAVE_ANY_KEYS", 4197, "Sequence tables cannot have any keys" },
 { "ER_SEQUENCE_TABLE_CANNOT_HAVE_ANY_CONSTRAINTS", 4198, "Sequence tables cannot have any constraints" },
 { "ER_SEQUENCE_TABLE_ORDER_BY", 4199, "ORDER BY" },
-{ "ER_VARIABLE_IGNORED", 4200, "The variable \'%s\' is ignored. It only exists for compatibility with old installations and will be removed in a future release" },
+{ "ER_VARIABLE_IGNORED", 4200, "The setting \'%s\' is ignored. It only exists for compatibility with old installations and will be removed in a future release" },
 { "ER_INCORRECT_COLUMN_NAME_COUNT", 4201, "Incorrect column name count for derived table" },
 { "WARN_SORTING_ON_TRUNCATED_LENGTH", 4202, "%llu values were longer than max_sort_length. Sorting used only the first %lu bytes" },
 { "ER_VECTOR_BINARY_FORMAT_INVALID", 4203, "Invalid binary vector format. Must use IEEE standard float representation in little-endian format. Use VEC_FromText() to generate it." },

@@ -1,4 +1,4 @@
-/* Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+/* Copyright (c) 2000, 2026, Oracle and/or its affiliates.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License, version 2.0,
@@ -26,9 +26,9 @@
 #define MYSQLD_ERROR_INCLUDED
 
 static const int errmsg_section_start[] = { 1000, 3000, 3500, 6000, 10000, 15000 };
-static const int errmsg_section_size[] = { 888, 239, 667, 141, 4083, 147 };
+static const int errmsg_section_size[] = { 888, 239, 668, 141, 4090, 149 };
 
-static const int total_error_count = 6165;
+static const int total_error_count = 6175;
 
 //#define OBSOLETE_ER_HASHCHK 1000
 //#define OBSOLETE_ER_NISAMCHK 1001
@@ -1824,6 +1824,7 @@ static const int total_error_count = 6165;
 #define ER_WARN_NO_SPACE_VERSION_COMMENT 4164
 #define ER_VALIDATE_PASSWORD_INSUFFICIENT_CHANGED_CHARACTERS 4165
 #define ER_WARN_DEPRECATED_WITH_NOTE 4166
+#define ER_CANT_RUN_COMMAND_SERVICES_RECURSIVELY 4167
 #define ER_LANGUAGE_COMPONENT 6000
 #define ER_LANGUAGE_COMPONENT_NOT_AVAILABLE 6001
 #define ER_LANGUAGE_COMPONENT_UNSUPPORTED_LANGUAGE 6002
@@ -5565,7 +5566,7 @@ static const int total_error_count = 6165;
 #define ER_XPLUGIN_FAILED_TO_BIND_INTERFACE_ADDRESS 13597
 #define ER_IB_ERR_RECOVERY_REDO_DISABLED 13598
 #define ER_IB_WRN_FAST_SHUTDOWN_REDO_DISABLED 13599
-#define ER_IB_WRN_REDO_DISABLED 13600
+//#define OBSOLETE_ER_IB_WRN_REDO_DISABLED 13600
 #define ER_IB_WRN_REDO_ENABLED 13601
 #define ER_TLS_CONFIGURED_FOR_CHANNEL 13602
 #define ER_TLS_CONFIGURATION_REUSED 13603
@@ -5830,7 +5831,7 @@ static const int total_error_count = 6165;
 #define ER_IB_MSG_LOG_INIT_DIR_MISSING_SUBDIR 13862
 #define ER_IB_MSG_LOG_FILES_CREATED_BY_CLONE_AND_READ_ONLY_MODE 13863
 #define ER_IB_MSG_LOG_WRITER_WRITE_FAILED 13864
-#define ER_IB_MSG_LOG_WRITER_WAIT_ON_NEW_LOG_FILE 13865
+//#define OBSOLETE_ER_IB_MSG_LOG_WRITER_WAIT_ON_NEW_LOG_FILE 13865
 #define ER_IB_MSG_RECOVERY_CHECKPOINT_OUTSIDE_LOG_FILE 13866
 #define ER_IB_MSG_LOG_WRITER_ENTERED_EXTRA_MARGIN 13867
 #define ER_IB_MSG_LOG_WRITER_EXITED_EXTRA_MARGIN 13868
@@ -6048,6 +6049,13 @@ static const int total_error_count = 6165;
 #define ER_GRP_RPL_CERT_BROADCAST_THREAD_CREATE_FAILED 14080
 #define ER_GRP_RPL_CERT_BROADCAST_THREAD_STARTED 14081
 #define ER_GRP_RPL_CERT_BROADCAST_THREAD_STOPPED 14082
+#define ER_GRP_RPL_APPLIER_THD_KILLED_BY_SQL_KILL 14083
+#define ER_IB_MSG_WAITING_ON_LAGGING_REDO_LOG_CONSUMER 14084
+#define ER_IB_MSG_ABORTING_LOG_ARCHIVER 14085
+#define ER_IB_INSTANT_ADD_DROP_COLUMN_NOT_ALLOWED 14086
+#define ER_IB_INSTANT_ADD_NOT_POSSIBLE 14087
+#define ER_IB_WRN_REDO_DISABLED_INFO 14088
+#define ER_IB_MSG_LOG_WRITER_WAIT_ON_NEW_LOG_FILE_INFO 14089
 #define ER_LANGUAGE_COMPONENT_INFO 15000
 #define ER_LANGUAGE_COMPONENT_WARNING 15001
 #define ER_LANGUAGE_COMPONENT_ERROR 15002
@@ -6195,12 +6203,14 @@ static const int total_error_count = 6165;
 #define ER_IB_MSG_FIL_STATE_MOVED_PREV 15144
 #define ER_RPL_KILL_OLD_DUMP_THREAD_ENCOUNTERED 15145
 #define ER_RPL_MTA_ALLOW_COMMIT_OUT_OF_ORDER 15146
-static const int obsolete_error_count = 621;
+#define ER_TEMPTABLE_ENGINE_ERROR 15147
+#define ER_AUTH_INITIAL_PLUGIN_OVERRIDE 15148
+static const int obsolete_error_count = 623;
 
 static const int pfs_no_error_stat_count = 2;
 
-static const int pfs_session_error_stat_count = 1774;
+static const int pfs_session_error_stat_count = 1775;
 
-static const int pfs_global_error_stat_count = 3768;
+static const int pfs_global_error_stat_count = 3775;
 
 #endif
