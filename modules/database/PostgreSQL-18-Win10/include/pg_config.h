@@ -293,13 +293,13 @@
 
 #define PACKAGE_NAME "PostgreSQL"
 
-#define PACKAGE_STRING "PostgreSQL 18.1"
+#define PACKAGE_STRING "PostgreSQL 18.2"
 
 #define PACKAGE_TARNAME "postgresql"
 
 #define PACKAGE_URL "https://www.postgresql.org/"
 
-#define PACKAGE_VERSION "18.1"
+#define PACKAGE_VERSION "18.2"
 
 #define PG_KRB_SRVNAM "postgres"
 
@@ -307,13 +307,13 @@
 
 #define PG_MAJORVERSION_NUM 18
 
-#define PG_MINORVERSION_NUM 1
+#define PG_MINORVERSION_NUM 2
 
-#define PG_VERSION "18.1"
+#define PG_VERSION "18.2"
 
-#define PG_VERSION_NUM 180001
+#define PG_VERSION_NUM 180002
 
-#define PG_VERSION_STR "PostgreSQL 18.1 on x86_64-windows, compiled by msvc-19.44.35221, 64-bit"
+#define PG_VERSION_STR "PostgreSQL 18.2 on x86_64-windows, compiled by msvc-19.44.35222, 64-bit"
 
 #define RELSEG_SIZE 131072
 

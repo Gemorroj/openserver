@@ -2,12 +2,12 @@
 .\"     Title: CREATE TABLE
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
-.\"      Date: 2025
-.\"    Manual: PostgreSQL 18.1 Documentation
-.\"    Source: PostgreSQL 18.1
+.\"      Date: 2026
+.\"    Manual: PostgreSQL 18.2 Documentation
+.\"    Source: PostgreSQL 18.2
 .\"  Language: English
 .\"
-.TH "CREATE TABLE" "7" "2025" "PostgreSQL 18.1" "PostgreSQL 18.1 Documentation"
+.TH "CREATE TABLE" "7" "2026" "PostgreSQL 18.2" "PostgreSQL 18.2 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -924,10 +924,10 @@ REFERENCES
 NOT NULL
 and
 CHECK
-constraints are not deferrable\&. Note that deferrable constraints cannot be used as conflict arbitrators in an
+constraints are not deferrable\&. Note that deferrable constraints cannot be used as conflict arbiters in an
 \fBINSERT\fR
 statement that includes an
-ON CONFLICT DO UPDATE
+ON CONFLICT
 clause\&.
 .RE
 .PP

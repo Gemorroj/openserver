@@ -2,12 +2,12 @@
 .\"     Title: pg_dump
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
-.\"      Date: 2025
-.\"    Manual: PostgreSQL 18.1 Documentation
-.\"    Source: PostgreSQL 18.1
+.\"      Date: 2026
+.\"    Manual: PostgreSQL 18.2 Documentation
+.\"    Source: PostgreSQL 18.2
 .\"  Language: English
 .\"
-.TH "PG_DUMP" "1" "2025" "PostgreSQL 18.1" "PostgreSQL 18.1 Documentation"
+.TH "PG_DUMP" "1" "2026" "PostgreSQL 18.2" "PostgreSQL 18.2 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -1168,12 +1168,12 @@ In the case of a parallel dump, the snapshot name defined by this option is used
 .PP
 \fB\-\-statistics\fR
 .RS 4
-Dump statistics\&.
+Dump optimizer statistics\&.
 .RE
 .PP
 \fB\-\-statistics\-only\fR
 .RS 4
-Dump only the statistics, not the schema (data definitions) or data\&. Statistics for tables, materialized views, foreign tables, and indexes are dumped\&.
+Dump only the statistics, not the schema (data definitions) or data\&. Optimizer statistics for tables, materialized views, foreign tables, and indexes are dumped\&.
 .RE
 .PP
 \fB\-\-strict\-names\fR
@@ -1396,13 +1396,12 @@ is used,
 pg_dump
 emits commands to disable triggers on user tables before inserting the data, and then commands to re\-enable them after the data has been inserted\&. If the restore is stopped in the middle, the system catalogs might be left in the wrong state\&.
 .PP
-If
+When
 \fB\-\-statistics\fR
 is specified,
 \fBpg_dump\fR
-will include most optimizer statistics in the resulting dump file\&. However, some statistics may not be included, such as those created explicitly with
-CREATE STATISTICS (\fBCREATE_STATISTICS\fR(7))
-or custom statistics added by an extension\&. Therefore, it may be useful to run
+will include most optimizer statistics in the resulting dump file\&. This does not include all statistics, such as those created explicitly with
+CREATE STATISTICS (\fBCREATE_STATISTICS\fR(7)), custom statistics added by an extension, or statistics collected by the cumulative statistics system\&. Therefore, it may still be useful to run
 \fBANALYZE\fR
 after restoring from a dump file to ensure optimal performance; see
 Section\ \&24.1.3

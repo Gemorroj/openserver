@@ -2,12 +2,12 @@
 .\"     Title: pg_upgrade
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
-.\"      Date: 2025
-.\"    Manual: PostgreSQL 18.1 Documentation
-.\"    Source: PostgreSQL 18.1
+.\"      Date: 2026
+.\"    Manual: PostgreSQL 18.2 Documentation
+.\"    Source: PostgreSQL 18.2
 .\"  Language: English
 .\"
-.TH "PG_UPGRADE" "1" "2025" "PostgreSQL 18.1" "PostgreSQL 18.1 Documentation"
+.TH "PG_UPGRADE" "1" "2026" "PostgreSQL 18.2" "PostgreSQL 18.2 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -905,9 +905,8 @@ Statistics: Unless the
 \fB\-\-no\-statistics\fR
 option is specified,
 \fBpg_upgrade\fR
-will transfer most optimizer statistics from the old cluster to the new cluster\&. However, some statistics may not be transferred, such as those created explicitly with
-CREATE STATISTICS (\fBCREATE_STATISTICS\fR(7))
-or custom statistics added by an extension\&.
+will transfer most optimizer statistics from the old cluster to the new cluster\&. This does not transfer all statistics, such as those created explicitly with
+CREATE STATISTICS (\fBCREATE_STATISTICS\fR(7)), custom statistics added by an extension, or statistics collected by the cumulative statistics system\&.
 .sp
 Because not all statistics are transferred by
 \fBpg_upgrade\fR, you will be instructed to run commands to regenerate that information at the end of the upgrade\&. You might need to set connection parameters to match your new cluster\&.

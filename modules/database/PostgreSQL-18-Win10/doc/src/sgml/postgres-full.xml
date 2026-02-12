@@ -2,7 +2,7 @@
 <!-- doc/src/sgml/postgres.sgml -->
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 <!ENTITY % version SYSTEM "version.sgml">
-<!ENTITY version "18.1">
+<!ENTITY version "18.2">
 <!ENTITY majorversion "18">
 <!ENTITY % filelist SYSTEM "filelist.sgml">
 <!-- doc/src/sgml/filelist.sgml --><!ENTITY history SYSTEM "history.sgml">
@@ -414,18 +414,18 @@ break is not needed in a wider output rendering.
 --><!ENTITY zwsp "&#x200B;">
 ]>
 <book id="postgres">
- <title>PostgreSQL 18.1 Documentation</title>
+ <title>PostgreSQL 18.2 Documentation</title>
 
  <bookinfo>
   <corpauthor>The PostgreSQL Global Development Group</corpauthor>
   <productname>PostgreSQL</productname>
-  <productnumber>18.1</productnumber>
+  <productnumber>18.2</productnumber>
   <!-- doc/src/sgml/legal.sgml -->
 
-<date>2025</date>
+<date>2026</date>
 
 <copyright>
- <year>1996&#x2013;2025</year>
+ <year>1996&#x2013;2026</year>
  <holder>The PostgreSQL Global Development Group</holder>
 </copyright>
 
@@ -438,7 +438,7 @@ break is not needed in a wider output rendering.
  </para>
 
  <para>
-  Portions Copyright &#xA9; 1996-2025, PostgreSQL Global Development Group
+  Portions Copyright &#xA9; 1996-2026, PostgreSQL Global Development Group
  </para>
  <para>
   Portions Copyright &#xA9; 1994, The Regents of the University of California
@@ -797,7 +797,7 @@ break is not needed in a wider output rendering.
       A short tutorial introducing regular <acronym>SQL</acronym>
       features as well as those of
       <productname>Postgres95</productname> was distributed with the
-      source code
+      source code.
      </para>
     </listitem>
 
@@ -1187,7 +1187,7 @@ break is not needed in a wider output rendering.
      </para>
 
      <para>
-      If your version is older than 18.1 we will almost certainly
+      If your version is older than 18.2 we will almost certainly
       tell you to upgrade. There are many bug fixes and improvements
       in each new release, so it is quite possible that a bug you have
       encountered in an older release of <productname>PostgreSQL</productname>
@@ -1673,7 +1673,7 @@ createdb: error: database creation failed: ERROR:  permission denied to create d
     In <command>psql</command>, you will be greeted with the following
     message:
 <screen>
-psql (18.1)
+psql (18.2)
 Type "help" for help.
 
 mydb=&gt;
@@ -1708,7 +1708,7 @@ mydb=#
 <prompt>mydb=&gt;</prompt> <userinput>SELECT version();</userinput>
                                          version
 -------------------------------------------------------------------&#x200B;-----------------------
- PostgreSQL 18.1 on x86_64-pc-linux-gnu, compiled by gcc (Debian 4.9.2-10) 4.9.2, 64-bit
+ PostgreSQL 18.2 on x86_64-pc-linux-gnu, compiled by gcc (Debian 4.9.2-10) 4.9.2, 64-bit
 (1 row)
 
 <prompt>mydb=&gt;</prompt> <userinput>SELECT current_date;</userinput>
@@ -7777,7 +7777,7 @@ CREATE TABLE circles (
       locate the row version very quickly, a row's
       <structfield>ctid</structfield> will change if it is
       updated or moved by <command>VACUUM FULL</command>.  Therefore
-      <structfield>ctid</structfield> is useless as a long-term row
+      <structfield>ctid</structfield> should not be used as a row
       identifier.  A primary key should be used to identify logical rows.
      </para>
     </listitem>
@@ -8178,6 +8178,8 @@ ALTER TABLE <replaceable>table_name</replaceable> OWNER TO <replaceable>new_owne
    Superusers can always do this; ordinary roles can only do it if they are
    both the current owner of the object (or inherit the privileges of the
    owning role) and able to <literal>SET ROLE</literal> to the new owning role.
+   All object privileges of the old owner are transferred to the new owner
+   along with the ownership.
   </para>
 
   <para>
@@ -49631,6 +49633,21 @@ SELECT pg_type_is_visible('myschema.widget'::regtype);
       <row>
        <entry role="func_table_entry"><para role="func_signature">
         <indexterm>
+         <primary>pg_get_partition_constraintdef</primary>
+        </indexterm>
+        <function>pg_get_partition_constraintdef</function> ( <parameter>table</parameter> <type>oid</type> )
+        <returnvalue>text</returnvalue>
+       </para>
+       <para>
+        Reconstructs the definition of a partition constraint.
+        (This is a decompiled reconstruction, not the original text
+        of the command.)
+       </para></entry>
+      </row>
+
+      <row>
+       <entry role="func_table_entry"><para role="func_signature">
+        <indexterm>
          <primary>pg_get_partkeydef</primary>
         </indexterm>
         <function>pg_get_partkeydef</function> ( <parameter>table</parameter> <type>oid</type> )
@@ -73142,7 +73159,7 @@ $ <userinput>kill -INT `head -1 /usr/local/pgsql/data/postmaster.pid`</userinput
       To make the backup, you can use the <application>pg_dumpall</application>
       command from the version you are currently running;  see <xref linkend="backup-dump-all"/> for more details.  For best
       results, however, try to use the <application>pg_dumpall</application>
-      command from <productname>PostgreSQL</productname> 18.1,
+      command from <productname>PostgreSQL</productname> 18.2,
       since this version contains bug fixes and improvements over older
       versions.  While this advice might seem idiosyncratic since you
       haven't installed the new version yet, it is advisable to follow
@@ -75784,13 +75801,19 @@ include_dir 'conf.d'
         This parameter determines whether the passphrase command set by
         <varname>ssl_passphrase_command</varname> will also be called during a
         configuration reload if a key file needs a passphrase.  If this
-        parameter is off (the default), then
+        parameter is <literal>off</literal> (the default), then
         <varname>ssl_passphrase_command</varname> will be ignored during a
         reload and the SSL configuration will not be reloaded if a passphrase
         is needed.  That setting is appropriate for a command that requires a
         TTY for prompting, which might not be available when the server is
         running.  Setting this parameter to on might be appropriate if the
         passphrase is obtained from a file, for example.
+       </para>
+       <para>
+        This parameter must be set to <literal>on</literal> when running on
+        <systemitem class="osname">Windows</systemitem> since all connections
+        will perform a configuration reload due to the different process model
+        of that platform.
        </para>
        <para>
         This parameter can only be set in the <filename>postgresql.conf</filename>
@@ -76506,6 +76529,43 @@ include_dir 'conf.d'
       </listitem>
      </varlistentry>
 
+     <varlistentry id="guc-file-extend-method" xreflabel="file_extend_method">
+      <term><varname>file_extend_method</varname> (<type>enum</type>)
+      <indexterm>
+       <primary><varname>file_extend_method</varname> configuration parameter</primary>
+      </indexterm>
+      </term>
+      <listitem>
+       <para>
+        Specifies the method used to extend data files during bulk operations
+        such as <command>COPY</command>.  The first available option is used as
+        the default, depending on the operating system:
+        <itemizedlist>
+         <listitem>
+          <para>
+           <literal>posix_fallocate</literal> (Unix) uses the standard POSIX
+            interface for allocating disk space, but is missing on some systems.
+            If it is present but the underlying file system doesn't support it,
+            this option silently falls back to <literal>write_zeros</literal>.
+            Current versions of BTRFS are known to disable compression when
+            this option is used.
+            This is the default on systems that have the function.
+           </para>
+         </listitem>
+         <listitem>
+          <para>
+           <literal>write_zeros</literal> extends files by writing out blocks
+            of zero bytes.  This is the default on systems that don't have the
+            function <function>posix_fallocate</function>.
+          </para>
+         </listitem>
+        </itemizedlist>
+        The <literal>write_zeros</literal> method is always used when data
+        files are extended by 8 blocks or fewer.
+       </para>
+      </listitem>
+     </varlistentry>
+
      <varlistentry id="guc-max-notify-queue-pages" xreflabel="max_notify_queue_pages">
       <term><varname>max_notify_queue_pages</varname> (<type>integer</type>)
       <indexterm>
@@ -76753,7 +76813,7 @@ include_dir 'conf.d'
          Higher values will have the most impact on higher latency storage
          where queries otherwise experience noticeable I/O stalls and on
          devices with high IOPs. Unnecessarily high values may increase I/O
-         latency for all queries on the system
+         latency for all queries on the system.
         </para>
 
         <para>
@@ -78794,45 +78854,6 @@ restore_command = 'copy "C:\\server\\archivedir\\%f" "%p"'  # Windows
       </listitem>
      </varlistentry>
 
-     <varlistentry id="guc-synchronized-standby-slots" xreflabel="synchronized_standby_slots">
-      <term><varname>synchronized_standby_slots</varname> (<type>string</type>)
-      <indexterm>
-       <primary><varname>synchronized_standby_slots</varname> configuration parameter</primary>
-      </indexterm>
-      </term>
-      <listitem>
-       <para>
-        A comma-separated list of streaming replication standby server slot names
-        that logical WAL sender processes will wait for. Logical WAL sender processes
-        will send decoded changes to plugins only after the specified replication
-        slots confirm receiving WAL. This guarantees that logical replication
-        failover slots do not consume changes until those changes are received
-        and flushed to corresponding physical standbys. If a
-        logical replication connection is meant to switch to a physical standby
-        after the standby is promoted, the physical replication slot for the
-        standby should be listed here. Note that logical replication will not
-        proceed if the slots specified in the
-        <varname>synchronized_standby_slots</varname> do not exist or are invalidated.
-        Additionally, the replication management functions
-        <link linkend="pg-replication-slot-advance">
-        <function>pg_replication_slot_advance</function></link>,
-        <link linkend="pg-logical-slot-get-changes">
-        <function>pg_logical_slot_get_changes</function></link>, and
-        <link linkend="pg-logical-slot-peek-changes">
-        <function>pg_logical_slot_peek_changes</function></link>,
-        when used with logical failover slots, will block until all
-        physical slots specified in <varname>synchronized_standby_slots</varname> have
-        confirmed WAL receipt.
-       </para>
-       <para>
-        The standbys corresponding to the physical replication slots in
-        <varname>synchronized_standby_slots</varname> must configure
-        <literal>sync_replication_slots = true</literal> so they can receive
-        logical failover slot changes from the primary.
-       </para>
-      </listitem>
-     </varlistentry>
-
      </variablelist>
     </sect2>
 
@@ -78979,6 +79000,45 @@ ANY <replaceable class="parameter">num_sync</replaceable> ( <replaceable class="
        <para>
         This parameter can only be set in the <filename>postgresql.conf</filename>
         file or on the server command line.
+       </para>
+      </listitem>
+
+     </varlistentry>
+     <varlistentry id="guc-synchronized-standby-slots" xreflabel="synchronized_standby_slots">
+      <term><varname>synchronized_standby_slots</varname> (<type>string</type>)
+      <indexterm>
+       <primary><varname>synchronized_standby_slots</varname> configuration parameter</primary>
+      </indexterm>
+      </term>
+      <listitem>
+       <para>
+        A comma-separated list of streaming replication standby server slot names
+        that logical WAL sender processes will wait for. Logical WAL sender processes
+        will send decoded changes to plugins only after the specified replication
+        slots confirm receiving WAL. This guarantees that logical replication
+        failover slots do not consume changes until those changes are received
+        and flushed to corresponding physical standbys. If a
+        logical replication connection is meant to switch to a physical standby
+        after the standby is promoted, the physical replication slot for the
+        standby should be listed here. Note that logical replication will not
+        proceed if the slots specified in the
+        <varname>synchronized_standby_slots</varname> do not exist or are invalidated.
+        Additionally, the replication management functions
+        <link linkend="pg-replication-slot-advance">
+        <function>pg_replication_slot_advance</function></link>,
+        <link linkend="pg-logical-slot-get-changes">
+        <function>pg_logical_slot_get_changes</function></link>, and
+        <link linkend="pg-logical-slot-peek-changes">
+        <function>pg_logical_slot_peek_changes</function></link>,
+        when used with logical failover slots, will block until all
+        physical slots specified in <varname>synchronized_standby_slots</varname> have
+        confirmed WAL receipt.
+       </para>
+       <para>
+        The standbys corresponding to the physical replication slots in
+        <varname>synchronized_standby_slots</varname> must configure
+        <literal>sync_replication_slots = true</literal> so they can receive
+        logical failover slot changes from the primary.
        </para>
       </listitem>
      </varlistentry>
@@ -87951,16 +88011,16 @@ host    all             all             192.168.0.0/16          ident map=omicro
 # list of names of administrators.  Passwords are required in all cases.
 #
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
-local   sameuser        all                                     md5
-local   all             /^.*helpdesk$                           md5
-local   all             @admins                                 md5
-local   all             +support                                md5
+local   sameuser        all                                     scram-sha-256
+local   all             /^.*helpdesk$                           scram-sha-256
+local   all             @admins                                 scram-sha-256
+local   all             +support                                scram-sha-256
 
 # The last two lines above can be combined into a single line:
-local   all             @admins,+support                        md5
+local   all             @admins,+support                        scram-sha-256
 
 # The database column can also use lists and file names:
-local   db1,db2,@demodbs  all                                   md5
+local   db1,db2,@demodbs  all                                   scram-sha-256
 </programlisting>
    </example>
  </sect1>
@@ -95427,12 +95487,16 @@ vacuum threshold = Minimum(vacuum max threshold, vacuum base threshold + vacuum 
     The table is also vacuumed if the number of tuples inserted since the last
     vacuum has exceeded the defined insert threshold, which is defined as:
 <programlisting>
-vacuum insert threshold = vacuum base insert threshold + vacuum insert scale factor * number of tuples
+vacuum insert threshold = vacuum base insert threshold + vacuum insert scale factor * number of tuples * percent of table not frozen
 </programlisting>
     where the vacuum insert base threshold is
     <xref linkend="guc-autovacuum-vacuum-insert-threshold"/>,
-    and vacuum insert scale factor is
-    <xref linkend="guc-autovacuum-vacuum-insert-scale-factor"/>.
+    the vacuum insert scale factor is
+    <xref linkend="guc-autovacuum-vacuum-insert-scale-factor"/>,
+    the number of tuples is
+    <structname>pg_class</structname>.<structfield>reltuples</structfield>,
+    and the percent of the table not frozen is
+    <literal>1 - pg_class.relallfrozen / pg_class.relpages</literal>.
     Such vacuums may allow portions of the table to be marked as
     <firstterm>all visible</firstterm> and also allow tuples to be frozen, which
     can reduce the work required in subsequent vacuums.
@@ -98180,7 +98244,7 @@ archive_cleanup_command = 'pg_archivecleanup /path/to/archive %r'
 # as a replication standby if the user's password is correctly supplied.
 #
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
-host    replication     foo             192.168.1.100/32        md5
+host    replication     foo             192.168.1.100/32        scram-sha-256
 </programlisting>
     </para>
     <para>
@@ -112786,7 +112850,7 @@ wal_level = logical
    (the values here depend on your actual network configuration and user you
    want to use for connecting):
 <programlisting>
-host     all     repuser     0.0.0.0/0     md5
+host     all     repuser     0.0.0.0/0     scram-sha-256
 </programlisting>
   </para>
 
@@ -114106,7 +114170,7 @@ ninja coverage-html
 
   <!-- doc/src/sgml/libpq.sgml -->
 
-<chapter id="libpq" xreflabel="libpq">
+<chapter id="libpq">
  <title><application>libpq</application> &#x2014; C Library</title>
 
  <indexterm zone="libpq">
@@ -124459,10 +124523,14 @@ typedef struct PGoauthBearerRequest
 
     /* Hook outputs */
 
-    /* Callback implementing a custom asynchronous OAuth flow. */
+    /*
+     * Callback implementing a custom asynchronous OAuth flow. The signature is
+     * platform-dependent: PQ_SOCKTYPE is SOCKET on Windows, and int everywhere
+     * else.
+     */
     PostgresPollingStatusType (*async) (PGconn *conn,
                                         struct PGoauthBearerRequest *request,
-                                        SOCKTYPE *altsock);
+                                        PQ_SOCKTYPE *altsock);
 
     /* Callback to clean up custom allocations. */
     void        (*cleanup) (PGconn *conn, struct PGoauthBearerRequest *request);
@@ -124519,7 +124587,7 @@ typedef struct PGoauthBearerRequest
          hook. When the callback cannot make further progress without blocking,
          it should return either <symbol>PGRES_POLLING_READING</symbol> or
          <symbol>PGRES_POLLING_WRITING</symbol> after setting
-         <literal>*pgsocket</literal> to the file descriptor that will be marked
+         <literal>*altsock</literal> to the file descriptor that will be marked
          ready to read/write when progress can be made again. (This descriptor
          is then provided to the top-level polling loop via
          <function>PQsocket()</function>.) Return <symbol>PGRES_POLLING_OK</symbol>
@@ -128184,7 +128252,7 @@ while (1)
      representation of that type is <literal>(%f,%f)</literal>,
      which is defined in the
      functions <function>complex_in()</function>
-     and <function>complex_out()</function> functions
+     and <function>complex_out()</function>
      in <xref linkend="xtypes"/>.  The following example inserts the
      complex type values <literal>(1,1)</literal>
      and <literal>(3,3)</literal> into the
@@ -151205,7 +151273,7 @@ SELECT (a + b) AS c FROM test_complex;
    <para>
     Additional optimization clauses might be added in future versions of
     <productname>PostgreSQL</productname>.  The ones described here are all
-    the ones that release 18.1 understands.
+    the ones that release 18.2 understands.
    </para>
 
    <para>
@@ -163675,13 +163743,13 @@ $$ LANGUAGE plpgsql;
    <para>
     Variable substitution currently works only in <command>SELECT</command>,
     <command>INSERT</command>, <command>UPDATE</command>,
-    <command>DELETE</command>, and commands containing one of
-    these (such as <command>EXPLAIN</command> and <command>CREATE TABLE
-    ... AS SELECT</command>),
-    because the main SQL engine allows query parameters only in these
-    commands.  To use a non-constant name or value in other statement
-    types (generically called utility statements), you must construct
-    the utility statement as a string and <command>EXECUTE</command> it.
+    <command>DELETE</command>, <command>MERGE</command> and commands
+    containing one of these (such as <command>EXPLAIN</command> and
+    <command>CREATE TABLE ... AS SELECT</command>), because the main SQL
+    engine allows query parameters only in these commands.  To use a
+    non-constant name or value in other statement types (generically called
+    utility statements), you must construct the utility statement as a string
+    and <command>EXECUTE</command> it.
    </para>
 
   </sect2>
@@ -167633,7 +167701,7 @@ DO 'elog(WARNING, join ", ", sort keys %INC)' LANGUAGE plperl;
 
   <!-- doc/src/sgml/plpython.sgml -->
 
-<chapter id="plpython" xreflabel="PL/Python">
+<chapter id="plpython">
  <title>PL/Python &#x2014; Python Procedural Language</title>
 
  <indexterm zone="plpython"><primary>PL/Python</primary></indexterm>
@@ -182144,15 +182212,24 @@ PostgreSQL documentation
 <synopsis>
 ALTER PUBLICATION <replaceable class="parameter">name</replaceable> ADD <replaceable class="parameter">publication_object</replaceable> [, ...]
 ALTER PUBLICATION <replaceable class="parameter">name</replaceable> SET <replaceable class="parameter">publication_object</replaceable> [, ...]
-ALTER PUBLICATION <replaceable class="parameter">name</replaceable> DROP <replaceable class="parameter">publication_object</replaceable> [, ...]
+ALTER PUBLICATION <replaceable class="parameter">name</replaceable> DROP <replaceable class="parameter">publication_drop_object</replaceable> [, ...]
 ALTER PUBLICATION <replaceable class="parameter">name</replaceable> SET ( <replaceable class="parameter">publication_parameter</replaceable> [= <replaceable class="parameter">value</replaceable>] [, ... ] )
 ALTER PUBLICATION <replaceable class="parameter">name</replaceable> OWNER TO { <replaceable>new_owner</replaceable> | CURRENT_ROLE | CURRENT_USER | SESSION_USER }
 ALTER PUBLICATION <replaceable class="parameter">name</replaceable> RENAME TO <replaceable>new_name</replaceable>
 
 <phrase>where <replaceable class="parameter">publication_object</replaceable> is one of:</phrase>
 
-    TABLE [ ONLY ] <replaceable class="parameter">table_name</replaceable> [ * ] [ ( <replaceable class="parameter">column_name</replaceable> [, ... ] ) ] [ WHERE ( <replaceable class="parameter">expression</replaceable> ) ] [, ... ]
+    TABLE <replaceable class="parameter">table_and_columns</replaceable> [, ... ]
     TABLES IN SCHEMA { <replaceable class="parameter">schema_name</replaceable> | CURRENT_SCHEMA } [, ... ]
+
+<phrase>and <replaceable class="parameter">publication_drop_object</replaceable> is one of:</phrase>
+
+    TABLE [ ONLY ] <replaceable class="parameter">table_name</replaceable> [ * ] [, ... ]
+    TABLES IN SCHEMA { <replaceable class="parameter">schema_name</replaceable> | CURRENT_SCHEMA } [, ... ]
+
+<phrase>and <replaceable class="parameter">table_and_columns</replaceable> is:</phrase>
+
+    [ ONLY ] <replaceable class="parameter">table_name</replaceable> [ * ] [ ( <replaceable class="parameter">column_name</replaceable> [, ... ] ) ] [ WHERE ( <replaceable class="parameter">expression</replaceable> ) ]
 </synopsis>
  </refsynopsisdiv>
 
@@ -182178,8 +182255,7 @@ ALTER PUBLICATION <replaceable class="parameter">name</replaceable> RENAME TO <r
    <literal>DROP TABLES IN SCHEMA</literal> will not drop any schema tables
    that were specified using
    <link linkend="sql-createpublication-params-for-table"><literal>FOR TABLE</literal></link>/
-   <literal>ADD TABLE</literal>, and the combination of <literal>DROP</literal>
-   with a <literal>WHERE</literal> clause is not allowed.
+   <literal>ADD TABLE</literal>.
   </para>
 
   <para>
@@ -197953,6 +198029,8 @@ CREATE POLICY <replaceable class="parameter">name</replaceable> ON <replaceable 
    in <literal>WITH CHECK</literal>.  When a <literal>USING</literal>
    expression returns true for a given row then that row is visible to the
    user, while if false or null is returned then the row is not visible.
+   Typically, no error occurs when a row is not visible, but see
+   <xref linkend="sql-createpolicy-summary"/> for exceptions.
    When a <literal>WITH CHECK</literal> expression returns true for a row
    then that row is inserted or updated, while if false or null is returned
    then an error occurs.
@@ -198098,8 +198176,9 @@ CREATE POLICY <replaceable class="parameter">name</replaceable> ON <replaceable 
       rows for which the expression returns false or null will not be
       visible to the user (in a <command>SELECT</command>), and will not be
       available for modification (in an <command>UPDATE</command>
-      or <command>DELETE</command>).  Such rows are silently suppressed; no error
-      is reported.
+      or <command>DELETE</command>).  Typically, such rows are silently
+      suppressed; no error is reported (but see
+      <xref linkend="sql-createpolicy-summary"/> for exceptions).
      </para>
     </listitem>
    </varlistentry>
@@ -198155,8 +198234,10 @@ CREATE POLICY <replaceable class="parameter">name</replaceable> ON <replaceable 
          otherwise).  If an <command>INSERT</command>
          or <command>UPDATE</command> command attempts to add rows to the
          table that do not pass the <literal>ALL</literal>
-         policy's <literal>WITH CHECK</literal> expression, the entire
-         command will be aborted.
+         policy's <literal>WITH CHECK</literal> expression (or its
+         <literal>USING</literal> expression, if it does not have a
+         <literal>WITH CHECK</literal> expression), the entire command will
+         be aborted.
        </para>
       </listitem>
      </varlistentry>
@@ -198172,11 +198253,50 @@ CREATE POLICY <replaceable class="parameter">name</replaceable> ON <replaceable 
          relation that pass the <literal>SELECT</literal> policy will be
          returned during a <literal>SELECT</literal> query, and that queries
          that require <literal>SELECT</literal> permissions, such as
-         <literal>UPDATE</literal>, will also only see those records
+         <literal>UPDATE</literal>, <literal>DELETE</literal>, and
+         <literal>MERGE</literal>, will also only see those records
          that are allowed by the <literal>SELECT</literal> policy.
          A <literal>SELECT</literal> policy cannot have a <literal>WITH
          CHECK</literal> expression, as it only applies in cases where
-         records are being retrieved from the relation.
+         records are being retrieved from the relation, except as described
+         below.
+       </para>
+       <para>
+         If a data-modifying query has a <literal>RETURNING</literal> clause,
+         <literal>SELECT</literal> permissions are required on the relation,
+         and any newly inserted or updated rows from the relation must satisfy
+         the relation's <literal>SELECT</literal> policies in order to be
+         available to the <literal>RETURNING</literal> clause.  If a newly
+         inserted or updated row does not satisfy the relation's
+         <literal>SELECT</literal> policies, an error will be thrown (inserted
+         or updated rows to be returned are <emphasis>never</emphasis>
+         silently ignored).
+       </para>
+       <para>
+         If an <literal>INSERT</literal> has an <literal>ON CONFLICT DO
+         NOTHING/UPDATE</literal> clause, <literal>SELECT</literal>
+         permissions are required on the relation, and the rows proposed for
+         insertion are checked using the relation's <literal>SELECT</literal>
+         policies.  If a row proposed for insertion does not satisfy the
+         relation's <literal>SELECT</literal> policies, an error is thrown
+         (the <literal>INSERT</literal> is <emphasis>never</emphasis> silently
+         avoided).  In addition, if the <literal>UPDATE</literal> path is
+         taken, the row to be updated and the new updated row are checked
+         against the relation's <literal>SELECT</literal> policies, and an
+         error is thrown if they are not satisfied (an auxiliary
+         <literal>UPDATE</literal> is <emphasis>never</emphasis> silently
+         avoided).
+       </para>
+       <para>
+         A <literal>MERGE</literal> command requires <literal>SELECT</literal>
+         permissions on both the source and target relations, and so each
+         relation's <literal>SELECT</literal> policies are applied before they
+         are joined, and the <literal>MERGE</literal> actions will only see
+         those records that are allowed by those policies.  In addition, if
+         an <literal>UPDATE</literal> action is executed, the target relation's
+         <literal>SELECT</literal> policies are applied to the updated row, as
+         for a standalone <literal>UPDATE</literal>, except that an error is
+         thrown if they are not satisfied.
        </para>
       </listitem>
      </varlistentry>
@@ -198196,10 +198316,11 @@ CREATE POLICY <replaceable class="parameter">name</replaceable> ON <replaceable 
          where records are being added to the relation.
        </para>
        <para>
-         Note that <literal>INSERT</literal> with <literal>ON CONFLICT DO
-         UPDATE</literal> checks <literal>INSERT</literal> policies'
-         <literal>WITH CHECK</literal> expressions only for rows appended
-         to the relation by the <literal>INSERT</literal> path.
+         Note that an <literal>INSERT</literal> with an <literal>ON CONFLICT
+         DO NOTHING/UPDATE</literal> clause will check the
+         <literal>INSERT</literal> policies' <literal>WITH CHECK</literal>
+         expressions for all rows proposed for insertion, regardless of
+         whether or not they end up being inserted.
        </para>
       </listitem>
      </varlistentry>
@@ -198209,12 +198330,12 @@ CREATE POLICY <replaceable class="parameter">name</replaceable> ON <replaceable 
       <listitem>
        <para>
          Using <literal>UPDATE</literal> for a policy means that it will apply
-         to <literal>UPDATE</literal>, <literal>SELECT FOR UPDATE</literal>
+         to <literal>UPDATE</literal>, <literal>SELECT FOR UPDATE</literal>,
          and <literal>SELECT FOR SHARE</literal> commands, as well as
          auxiliary <literal>ON CONFLICT DO UPDATE</literal> clauses of
-         <literal>INSERT</literal> commands.
-         <literal>MERGE</literal> commands containing <literal>UPDATE</literal>
-         actions are affected as well.  Since <literal>UPDATE</literal>
+         <literal>INSERT</literal> commands, and <literal>MERGE</literal>
+         commands containing <literal>UPDATE</literal> actions.
+         Since an <literal>UPDATE</literal> command
          involves pulling an existing record and replacing it with a new
          modified record, <literal>UPDATE</literal>
          policies accept both a <literal>USING</literal> expression and
@@ -198260,7 +198381,8 @@ CREATE POLICY <replaceable class="parameter">name</replaceable> ON <replaceable 
          command, if the existing row does not pass the
          <literal>USING</literal> expressions, an error will be thrown (the
          <literal>UPDATE</literal> path will <emphasis>never</emphasis> be silently
-         avoided).
+         avoided).  The same applies to an <literal>UPDATE</literal> action
+         of a <command>MERGE</command> command.
        </para>
       </listitem>
      </varlistentry>
@@ -198270,12 +198392,18 @@ CREATE POLICY <replaceable class="parameter">name</replaceable> ON <replaceable 
       <listitem>
        <para>
          Using <literal>DELETE</literal> for a policy means that it will apply
-         to <literal>DELETE</literal> commands.  Only rows that pass this
-         policy will be seen by a <literal>DELETE</literal> command.  There can
-         be rows that are visible through a <literal>SELECT</literal> that are
-         not available for deletion, if they do not pass the
-         <literal>USING</literal> expression for
-         the <literal>DELETE</literal> policy.
+         to <literal>DELETE</literal> commands and <literal>MERGE</literal>
+         commands containing <literal>DELETE</literal> actions.  For a
+         <literal>DELETE</literal> command, only rows that pass this policy
+         will be seen by the <literal>DELETE</literal> command.  There can
+         be rows that are visible through a <literal>SELECT</literal> policy
+         that are not available for deletion, if they do not pass the
+         <literal>USING</literal> expression for the <literal>DELETE</literal>
+         policy.  Note, however, that a <literal>DELETE</literal> action in a
+         <literal>MERGE</literal> command will see rows that are visible
+         through <literal>SELECT</literal> policies, and if the
+         <literal>DELETE</literal> policy does not pass for such a row, an
+         error will be thrown.
        </para>
 
        <para>
@@ -198304,6 +198432,15 @@ CREATE POLICY <replaceable class="parameter">name</replaceable> ON <replaceable 
 
    </variablelist>
 
+   <para>
+    <xref linkend="sql-createpolicy-summary"/> summarizes how the different
+    types of policy apply to specific commands.  In the table,
+    <quote>check</quote> means that the policy expression is checked and an
+    error is thrown if it returns false or null, whereas <quote>filter</quote>
+    means that the row is silently ignored if the policy expression returns
+    false or null.
+   </para>
+
    <table id="sql-createpolicy-summary">
     <title>Policies Applied by Command Type</title>
     <tgroup cols="6">
@@ -198328,8 +198465,8 @@ CREATE POLICY <replaceable class="parameter">name</replaceable> ON <replaceable 
      </thead>
      <tbody>
       <row>
-       <entry><command>SELECT</command></entry>
-       <entry>Existing row</entry>
+       <entry><command>SELECT</command> / <command>COPY ... TO</command></entry>
+       <entry>Filter existing row</entry>
        <entry>&#x2014;</entry>
        <entry>&#x2014;</entry>
        <entry>&#x2014;</entry>
@@ -198337,63 +198474,117 @@ CREATE POLICY <replaceable class="parameter">name</replaceable> ON <replaceable 
       </row>
       <row>
        <entry><command>SELECT FOR UPDATE/SHARE</command></entry>
-       <entry>Existing row</entry>
+       <entry>Filter existing row</entry>
        <entry>&#x2014;</entry>
-       <entry>Existing row</entry>
-       <entry>&#x2014;</entry>
-       <entry>&#x2014;</entry>
-      </row>
-      <row>
-       <entry><command>INSERT</command> / <command>MERGE ... THEN INSERT</command></entry>
-       <entry>&#x2014;</entry>
-       <entry>New row</entry>
-       <entry>&#x2014;</entry>
+       <entry>Filter existing row</entry>
        <entry>&#x2014;</entry>
        <entry>&#x2014;</entry>
       </row>
       <row>
-       <entry><command>INSERT ... RETURNING</command></entry>
+       <entry><command>INSERT</command></entry>
        <entry>
-        New row <footnote id="rls-select-priv">
+        Check new row&#xA0;<footnote id="rls-select-priv">
          <para>
-          If read access is required to the existing or new row (for example,
-          a <literal>WHERE</literal> or <literal>RETURNING</literal> clause
-          that refers to columns from the relation).
+          If read access is required to either the existing or new row (for
+          example, a <literal>WHERE</literal> or <literal>RETURNING</literal>
+          clause that refers to columns from the relation).
          </para>
         </footnote>
        </entry>
-       <entry>New row</entry>
+       <entry>Check new row</entry>
        <entry>&#x2014;</entry>
        <entry>&#x2014;</entry>
        <entry>&#x2014;</entry>
       </row>
       <row>
-       <entry><command>UPDATE</command> / <command>MERGE ... THEN UPDATE</command></entry>
+       <entry><command>UPDATE</command></entry>
        <entry>
-        Existing &amp; new rows <footnoteref linkend="rls-select-priv"/>
+        Filter existing row&#xA0;<footnoteref linkend="rls-select-priv"/> &amp;
+        check new row&#xA0;<footnoteref linkend="rls-select-priv"/>
        </entry>
        <entry>&#x2014;</entry>
-       <entry>Existing row</entry>
-       <entry>New row</entry>
+       <entry>Filter existing row</entry>
+       <entry>Check new row</entry>
        <entry>&#x2014;</entry>
       </row>
       <row>
        <entry><command>DELETE</command></entry>
        <entry>
-        Existing row <footnoteref linkend="rls-select-priv"/>
+        Filter existing row&#xA0;<footnoteref linkend="rls-select-priv"/>
        </entry>
        <entry>&#x2014;</entry>
        <entry>&#x2014;</entry>
        <entry>&#x2014;</entry>
-       <entry>Existing row</entry>
+       <entry>Filter existing row</entry>
+      </row>
+      <row>
+       <entry><command>INSERT ... ON CONFLICT</command></entry>
+       <entry>
+        Check new row&#xA0;<footnote id="rls-on-conflict-priv">
+         <para>
+          Row proposed for insertion is checked regardless of whether or not a
+          conflict occurs.
+         </para>
+        </footnote>
+       </entry>
+       <entry>
+        Check new row&#xA0;<footnoteref linkend="rls-on-conflict-priv"/>
+       </entry>
+       <entry>&#x2014;</entry>
+       <entry>&#x2014;</entry>
+       <entry>&#x2014;</entry>
       </row>
       <row>
        <entry><command>ON CONFLICT DO UPDATE</command></entry>
-       <entry>Existing &amp; new rows</entry>
+       <entry>
+        Check existing &amp; new rows&#xA0;<footnote id="rls-on-conflict-update-priv">
+         <para>
+          New row of the auxiliary <command>UPDATE</command> command, which
+          might be different from the new row of the original
+          <command>INSERT</command> command.
+         </para>
+        </footnote>
+       </entry>
        <entry>&#x2014;</entry>
-       <entry>Existing row</entry>
-       <entry>New row</entry>
+       <entry>Check existing row</entry>
+       <entry>
+        Check new row&#xA0;<footnoteref linkend="rls-on-conflict-update-priv"/>
+       </entry>
        <entry>&#x2014;</entry>
+      </row>
+      <row>
+       <entry><command>MERGE</command></entry>
+       <entry>Filter source &amp; target rows</entry>
+       <entry>&#x2014;</entry>
+       <entry>&#x2014;</entry>
+       <entry>&#x2014;</entry>
+       <entry>&#x2014;</entry>
+      </row>
+      <row>
+       <entry><command>MERGE ... THEN INSERT</command></entry>
+       <entry>
+        Check new row&#xA0;<footnoteref linkend="rls-select-priv"/>
+       </entry>
+       <entry>Check new row</entry>
+       <entry>&#x2014;</entry>
+       <entry>&#x2014;</entry>
+       <entry>&#x2014;</entry>
+      </row>
+      <row>
+       <entry><command>MERGE ... THEN UPDATE</command></entry>
+       <entry>Check new row</entry>
+       <entry>&#x2014;</entry>
+       <entry>Check existing row</entry>
+       <entry>Check new row</entry>
+       <entry>&#x2014;</entry>
+      </row>
+      <row>
+       <entry><command>MERGE ... THEN DELETE</command></entry>
+       <entry>&#x2014;</entry>
+       <entry>&#x2014;</entry>
+       <entry>&#x2014;</entry>
+       <entry>&#x2014;</entry>
+       <entry>Check existing row</entry>
       </row>
      </tbody>
     </tgroup>
@@ -198995,8 +199186,12 @@ CREATE PUBLICATION <replaceable class="parameter">name</replaceable>
 
 <phrase>where <replaceable class="parameter">publication_object</replaceable> is one of:</phrase>
 
-    TABLE [ ONLY ] <replaceable class="parameter">table_name</replaceable> [ * ] [ ( <replaceable class="parameter">column_name</replaceable> [, ... ] ) ] [ WHERE ( <replaceable class="parameter">expression</replaceable> ) ] [, ... ]
+    TABLE <replaceable class="parameter">table_and_columns</replaceable> [, ... ]
     TABLES IN SCHEMA { <replaceable class="parameter">schema_name</replaceable> | CURRENT_SCHEMA } [, ... ]
+
+<phrase>and <replaceable class="parameter">table_and_columns</replaceable> is:</phrase>
+
+    [ ONLY ] <replaceable class="parameter">table_name</replaceable> [ * ] [ ( <replaceable class="parameter">column_name</replaceable> [, ... ] ) ] [ WHERE ( <replaceable class="parameter">expression</replaceable> ) ]
 </synopsis>
  </refsynopsisdiv>
 
@@ -199198,13 +199393,15 @@ CREATE PUBLICATION <replaceable class="parameter">name</replaceable>
         <term><literal>publish_via_partition_root</literal> (<type>boolean</type>)</term>
         <listitem>
          <para>
-          This parameter determines whether changes in a partitioned table (or
-          on its partitions) contained in the publication will be published
-          using the identity and schema of the partitioned table rather than
-          that of the individual partitions that are actually changed; the
-          latter is the default.  Enabling this allows the changes to be
-          replicated into a non-partitioned table or a partitioned table
-          consisting of a different set of partitions.
+          This parameter controls how changes to a partitioned table (or any of
+          its partitions) are published.  When set to <literal>true</literal>,
+          changes are published using the identity and schema of the
+          root partitioned table.  When set to <literal>false</literal> (the
+          default), changes are published using the identity and schema of the
+          individual partitions where the changes actually occurred.  Enabling
+          this option allows the changes to be replicated into a
+          non-partitioned table or into a partitioned table whose partition
+          structure differs from that of the publisher.
          </para>
 
          <para>
@@ -203379,8 +203576,8 @@ WITH ( MODULUS <replaceable class="parameter">numeric_literal</replaceable>, REM
       <literal>REFERENCES</literal> (foreign key) constraints accept this
       clause.  <literal>NOT NULL</literal> and <literal>CHECK</literal> constraints are not
       deferrable.  Note that deferrable constraints cannot be used as
-      conflict arbitrators in an <command>INSERT</command> statement that
-      includes an <literal>ON CONFLICT DO UPDATE</literal> clause.
+      conflict arbiters in an <command>INSERT</command> statement that
+      includes an <literal>ON CONFLICT</literal> clause.
      </para>
     </listitem>
    </varlistentry>
@@ -209331,6 +209528,9 @@ DELETE FROM user_logs AS dl
   USING delete_batch AS del
   WHERE dl.ctid = del.ctid;
 </programlisting>
+   This use of <structfield>ctid</structfield> is only safe because
+   the query is repeatedly run, avoiding the problem of changed
+   <structfield>ctid</structfield>s.
   </para>
  </refsect1>
 
@@ -226623,6 +226823,9 @@ UPDATE work_item SET status = 'failed'
   WHERE work_item.ctid = emr.ctid;
 </programlisting>
    This command will need to be repeated until no rows remain to be updated.
+   (This use of <structfield>ctid</structfield> is only safe because
+   the query is repeatedly run, avoiding the problem of changed
+   <structfield>ctid</structfield>s.)
    Use of an <literal>ORDER BY</literal> clause allows the command to
    prioritize which rows will be updated; it can also prevent deadlock
    with other update operations if they use the same ordering.
@@ -228831,7 +229034,7 @@ PostgreSQL documentation
 <prompt>$ </prompt><userinput>createuser -P -s -e joe</userinput>
 <computeroutput>Enter password for new role: </computeroutput><userinput>xyzzy</userinput>
 <computeroutput>Enter it again: </computeroutput><userinput>xyzzy</userinput>
-<computeroutput>CREATE ROLE joe PASSWORD 'md5b5f5ba1a423792b526f799ae4eb3d59e' SUPERUSER CREATEDB CREATEROLE INHERIT LOGIN;</computeroutput>
+<computeroutput>CREATE ROLE joe PASSWORD 'SCRAM-SHA-256$4096:44560wPMLfjqiAzyPDZ/eQ==$4CA054rZlSFEq8Z3FEhToBTa2X6KnWFxFkPwIbKoDe0=:L/nbSZRCjp6RhOhKK56GoR1zibCCSePKshCJ9lnl3yw=' SUPERUSER CREATEDB CREATEROLE INHERIT LOGIN NOREPLICATION NOBYPASSRLS;</computeroutput>
 </screen>
     In the above example, the new password isn't actually echoed when typed,
     but we show what was typed for clarity.  As you see, the password is
@@ -236573,7 +236776,7 @@ PostgreSQL documentation
       <term><option>--statistics</option></term>
       <listitem>
        <para>
-        Dump statistics.
+        Dump optimizer statistics.
        </para>
       </listitem>
      </varlistentry>
@@ -236583,7 +236786,7 @@ PostgreSQL documentation
       <listitem>
        <para>
         Dump only the statistics, not the schema (data definitions) or data.
-        Statistics for tables, materialized views, foreign tables,
+        Optimizer statistics for tables, materialized views, foreign tables,
         and indexes are dumped.
        </para>
       </listitem>
@@ -236877,11 +237080,12 @@ CREATE DATABASE foo WITH TEMPLATE template0;
   </para>
 
   <para>
-   If <option>--statistics</option> is specified,
+   When <option>--statistics</option> is specified,
    <command>pg_dump</command> will include most optimizer statistics in the
-   resulting dump file.  However, some statistics may not be included, such as
-   those created explicitly with <xref linkend="sql-createstatistics"/> or
-   custom statistics added by an extension.  Therefore, it may be useful to
+   resulting dump file.  This does not include all statistics, such as
+   those created explicitly with <xref linkend="sql-createstatistics"/>,
+   custom statistics added by an extension, or statistics collected by the
+   cumulative statistics system. Therefore, it may still be useful to
    run <command>ANALYZE</command> after restoring from a dump file to ensure
    optimal performance; see <xref linkend="vacuum-for-statistics"/> and <xref linkend="autovacuum"/> for more information.
   </para>
@@ -237719,7 +237923,7 @@ exclude database <replaceable class="parameter">PATTERN</replaceable>
       <term><option>--statistics</option></term>
       <listitem>
        <para>
-        Dump statistics.
+        Dump optimizer statistics.
        </para>
       </listitem>
      </varlistentry>
@@ -237729,7 +237933,7 @@ exclude database <replaceable class="parameter">PATTERN</replaceable>
       <listitem>
        <para>
         Dump only the statistics, not the schema (data definitions) or data.
-        Statistics for tables, materialized views, foreign tables,
+        Optimizer statistics for tables, materialized views, foreign tables,
         and indexes are dumped.
        </para>
       </listitem>
@@ -237969,11 +238173,12 @@ exclude database <replaceable class="parameter">PATTERN</replaceable>
   </para>
 
   <para>
-   If <option>--statistics</option> is specified,
+   When <option>--statistics</option> is specified,
    <command>pg_dumpall</command> will include most optimizer statistics in the
-   resulting dump file.  However, some statistics may not be included, such as
-   those created explicitly with <xref linkend="sql-createstatistics"/> or
-   custom statistics added by an extension.  Therefore, it may be useful to
+   resulting dump file. This does not include all statistics, such as
+   those created explicitly with <xref linkend="sql-createstatistics"/>,
+   custom statistics added by an extension, or statistics collected by the
+   cumulative statistics system.  Therefore, it may still be useful to
    run <command>ANALYZE</command> on each database after restoring from a dump
    file to ensure optimal performance.  You can also run <command>vacuumdb -a
    -z</command> to analyze all databases.
@@ -241631,7 +241836,7 @@ $ <userinput>psql postgresql://dbmaster:5433/mydb?sslmode=require</userinput>
     the string <literal>=&gt;</literal>. For example:
 <programlisting>
 $ <userinput>psql testdb</userinput>
-psql (18.1)
+psql (18.2)
 Type "help" for help.
 
 testdb=&gt;
@@ -246305,7 +246510,7 @@ PSQL_EDITOR_LINENUMBER_ARG='--line '
      by appending a dash and the <productname>PostgreSQL</productname>
      major or minor release identifier to the file name,
      for example <filename>~/.psqlrc-18</filename> or
-     <filename>~/.psqlrc-18.1</filename>.
+     <filename>~/.psqlrc-18.2</filename>.
      The most specific version-matching file will be read in preference
      to a non-version-specific file.
      These version suffixes are added after determining the file path
@@ -250921,9 +251126,9 @@ PostgreSQL documentation
    <application>pg_rewind</application> requires that the target server either has
    the <xref linkend="guc-wal-log-hints"/> option enabled
    in <filename>postgresql.conf</filename> or data checksums enabled when
-   the cluster was initialized with <application>initdb</application>.  Neither of these
-   are currently on by default.  <xref linkend="guc-full-page-writes"/>
-   must also be set to <literal>on</literal>, but is enabled by default.
+   the cluster was initialized with <application>initdb</application> (the
+   default).  <xref linkend="guc-full-page-writes"/> must also be set to
+   <literal>on</literal>, but is enabled by default.
   </para>
 
   <warning>
@@ -252522,9 +252727,10 @@ psql --username=postgres --file=script.sql postgres
     <para>
      Unless the <option>--no-statistics</option> option is specified,
      <command>pg_upgrade</command> will transfer most optimizer statistics
-     from the old cluster to the new cluster.  However, some statistics may
-     not be transferred, such as those created explicitly with <xref linkend="sql-createstatistics"/> or custom statistics added by an
-     extension.
+     from the old cluster to the new cluster.  This does not transfer
+     all statistics, such as those created explicitly with
+     <xref linkend="sql-createstatistics"/>, custom statistics added by
+     an extension, or statistics collected by the cumulative statistics system.
     </para>
 
     <para>
@@ -286138,7 +286344,7 @@ CREATE INDEX ON my_table USING GIST (my_inet_column inet_ops);
    speed up building a <acronym>GiST</acronym> index.
    The optional twelfth method <function>stratnum</function> is used to
    translate compare types (from
-   <filename>src/include/nodes/primnodes.h</filename>) into strategy numbers
+   <filename>src/include/access/cmptype.h</filename>) into strategy numbers
    used by the operator class.  This lets the core code look up operators for
    temporal constraint indexes.
  </para>
@@ -287021,7 +287227,7 @@ my_sortsupport(PG_FUNCTION_ARGS)
      <listitem>
       <para>
        Given a <literal>CompareType</literal> value from
-       <filename>src/include/nodes/primnodes.h</filename>, returns a strategy
+       <filename>src/include/access/cmptype.h</filename>, returns a strategy
        number used by this operator class for matching functionality.  The
        function should return <literal>InvalidStrategy</literal> if the
        operator class has no matching strategy.
@@ -290504,11 +290710,10 @@ typedef struct BrinOpcInfo
   Both scanning the index and inserting tuples require locating the bucket
   where a given tuple ought to be located. To do this, we need the bucket
   count, highmask, and lowmask from the metapage; however, it's undesirable
-  for performance reasons to have to have to lock and pin the metapage for
-  every such operation. Instead, we retain a cached copy of the metapage
-  in each backend's relcache entry. This will produce the correct bucket
-  mapping as long as the target bucket hasn't been split since the last
-  cache refresh.
+  for performance reasons to have to lock and pin the metapage for every such
+  operation. Instead, we retain a cached copy of the metapage in each
+  backend's relcache entry. This will produce the correct bucket mapping as
+  long as the target bucket hasn't been split since the last cache refresh.
  </para>
 
  <para>
@@ -294003,7 +294208,7 @@ EXPLAIN (ANALYZE, TIMING OFF, BUFFERS OFF) SELECT * FROM t WHERE a &lt;= 49 AND 
 
  <para>
   <xref linkend="errcodes-table"/> lists all the error codes defined in
-  <productname>PostgreSQL</productname> 18.1.  (Some are not actually
+  <productname>PostgreSQL</productname> 18.2.  (Some are not actually
   used at present, but are defined by the SQL standard.)
   The error classes are also shown.  For each error class there is a
   <quote>standard</quote> error code having the last three characters
@@ -296562,7 +296767,7 @@ $ <userinput>cal 9 1752</userinput>
  <para>
   <xref linkend="keywords-table"/> lists all tokens that are key words
   in the SQL standard and in <productname>PostgreSQL</productname>
-  18.1.  Background information can be found in <xref linkend="sql-syntax-identifiers"/>.
+  18.2.  Background information can be found in <xref linkend="sql-syntax-identifiers"/>.
   (For space reasons, only the latest two versions of the SQL standard, and
   SQL-92 for historical comparison, are included.  The differences between
   those and the other intermediate standard versions are small.)
@@ -307682,6 +307887,1803 @@ For new features, add links to the documentation sections.
 <!-- doc/src/sgml/release-18.sgml -->
 <!-- See header comment in release.sgml about typical markup -->
 
+ <sect1 id="release-18-2">
+  <title>Release 18.2</title>
+
+  <formalpara>
+  <title>Release date:</title>
+  <para>2026-02-12</para>
+  </formalpara>
+
+  <para>
+   This release contains a variety of fixes from 18.1.
+   For information about new features in major release 18, see
+   <xref linkend="release-18"/>.
+  </para>
+
+  <sect2 id="release-18-2-migration">
+   <title>Migration to Version 18.2</title>
+
+   <para>
+    A dump/restore is not required for those running 18.X.
+   </para>
+
+   <para>
+    However, if you have any indexes on <type>ltree</type> columns, it may
+    be necessary to reindex them after updating.  See the sixth changelog
+    entry below.
+   </para>
+  </sect2>
+
+  <sect2 id="release-18-2-changes">
+   <title>Changes</title>
+
+   <itemizedlist>
+
+    <listitem>
+<!--
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: master [60e7ae41a] 2026-02-09 09:57:43 -0500
+Branch: REL_18_STABLE [3b6588cd9] 2026-02-09 09:57:44 -0500
+Branch: REL_17_STABLE [3d160401b] 2026-02-09 09:57:44 -0500
+Branch: REL_16_STABLE [595956fc7] 2026-02-09 09:57:44 -0500
+Branch: REL_15_STABLE [429aeaebd] 2026-02-09 09:57:44 -0500
+Branch: REL_14_STABLE [b39d38139] 2026-02-09 09:57:44 -0500
+-->
+     <para>
+      Guard against unexpected dimensions
+      of <type>oidvector</type>/<type>int2vector</type> (Tom Lane)
+      <ulink url="https://postgr.es/c/3b6588cd9">&#xA7;</ulink>
+     </para>
+
+     <para>
+      These data types are expected to be 1-dimensional arrays containing
+      no nulls, but there are cast pathways that permit violating those
+      expectations.  Add checks to some functions that were depending on
+      those expectations without verifying them, and could misbehave in
+      consequence.
+     </para>
+
+     <para>
+      The <productname>PostgreSQL</productname> Project thanks
+      Altan Birler for reporting this problem.
+      (CVE-2026-2003)
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: master [841d42cc4] 2026-02-09 10:07:31 -0500
+Branch: REL_18_STABLE [66ddac698] 2026-02-09 10:07:31 -0500
+Branch: REL_17_STABLE [bbf5bcf58] 2026-02-09 10:07:31 -0500
+Branch: REL_16_STABLE [91d7c0bfd] 2026-02-09 10:07:31 -0500
+Branch: REL_15_STABLE [b764b26f2] 2026-02-09 10:07:31 -0500
+Branch: REL_14_STABLE [ea3bf3498] 2026-02-09 10:07:31 -0500
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: master [8ebdf41c2] 2026-02-09 10:14:22 -0500
+Branch: REL_18_STABLE [b69af3dda] 2026-02-09 10:14:22 -0500
+Branch: REL_17_STABLE [dd3ad2a4d] 2026-02-09 10:14:22 -0500
+Branch: REL_16_STABLE [c0887b39d] 2026-02-09 10:14:22 -0500
+Branch: REL_15_STABLE [deb464a40] 2026-02-09 10:14:22 -0500
+Branch: REL_14_STABLE [7e82d9a04] 2026-02-09 10:14:22 -0500
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: REL_17_STABLE [dbb09fd8e] 2026-02-09 10:02:23 -0500
+Branch: REL_16_STABLE [d484bc260] 2026-02-09 10:02:23 -0500
+Branch: REL_15_STABLE [3ecc84cce] 2026-02-09 10:02:23 -0500
+Branch: REL_14_STABLE [9fa38c572] 2026-02-09 10:02:23 -0500
+-->
+     <para>
+      Harden selectivity estimators against being attached to operators
+      that accept unexpected data types (Tom Lane)
+      <ulink url="https://postgr.es/c/66ddac698">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/b69af3dda">&#xA7;</ulink>
+     </para>
+
+     <para>
+      <filename>contrib/intarray</filename> contained a selectivity
+      estimation function that could be abused for arbitrary code
+      execution, because it did not check that its input was of the
+      expected data type.  Third-party extensions should check for similar
+      hazards and add defenses using the technique intarray now uses.
+      Since such extension fixes will take time, we now require superuser
+      privilege to attach a non-built-in selectivity estimator to an
+      operator.
+     </para>
+
+     <para>
+      The <productname>PostgreSQL</productname> Project thanks
+      Daniel Firer, as part of zeroday.cloud, for reporting this problem.
+      (CVE-2026-2004)
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Michael Paquier <michael@paquier.xyz>
+Branch: master [379695d3c] 2026-02-09 08:00:59 +0900
+Branch: REL_18_STABLE [209f387b8] 2026-02-09 08:01:05 +0900
+Branch: REL_17_STABLE [7a7d9693c] 2026-02-09 08:01:07 +0900
+Branch: REL_16_STABLE [527b730f4] 2026-02-09 08:01:09 +0900
+Branch: REL_15_STABLE [9a9982ec6] 2026-02-09 08:01:10 +0900
+Branch: REL_14_STABLE [01de2e32d] 2026-02-09 08:01:12 +0900
+-->
+     <para>
+      Fix buffer overrun in <filename>contrib/pgcrypto</filename>'s
+      PGP decryption functions (Michael Paquier)
+      <ulink url="https://postgr.es/c/209f387b8">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Decrypting a crafted message with an overlength session key caused a
+      buffer overrun, with consequences as bad as arbitrary code
+      execution.
+     </para>
+
+     <para>
+      The <productname>PostgreSQL</productname> Project thanks
+      Team Xint Code, as part of zeroday.cloud, for reporting this problem.
+      (CVE-2026-2005)
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Thomas Munro <tmunro@postgresql.org>
+Branch: master [af79c30dc] 2026-02-09 12:08:58 +1300
+Branch: REL_18_STABLE [df0852fe0] 2026-02-09 12:12:29 +1300
+Branch: REL_17_STABLE [838248b1b] 2026-02-09 12:23:45 +1300
+Branch: REL_16_STABLE [70ff9ede5] 2026-02-09 12:28:01 +1300
+Branch: REL_15_STABLE [b2c81ac86] 2026-02-09 12:34:12 +1300
+Branch: REL_14_STABLE [2a53db21e] 2026-02-09 12:38:07 +1300
+Branch: master [74ee636cc] 2026-02-09 12:08:58 +1300
+Branch: REL_18_STABLE [efef05ba9] 2026-02-09 12:12:33 +1300
+Branch: REL_17_STABLE [7a522039f] 2026-02-09 12:23:51 +1300
+Branch: REL_16_STABLE [b0e3f5cf9] 2026-02-09 12:28:07 +1300
+Branch: REL_15_STABLE [50863be0b] 2026-02-09 12:34:17 +1300
+Branch: REL_14_STABLE [6ed116046] 2026-02-09 12:38:12 +1300
+Branch: master [1e7fe06c1] 2026-02-09 12:44:04 +1300
+Branch: REL_18_STABLE [7b5fc85be] 2026-02-09 12:43:42 +1300
+Branch: REL_17_STABLE [319e8a644] 2026-02-09 12:42:47 +1300
+Branch: REL_16_STABLE [d837fb029] 2026-02-09 12:29:15 +1300
+Branch: REL_15_STABLE [fd82ddb67] 2026-02-09 12:34:24 +1300
+Branch: REL_14_STABLE [cecedb912] 2026-02-09 12:39:01 +1300
+Branch: master [c67bef3f3] 2026-02-09 12:44:12 +1300
+Branch: REL_18_STABLE [b0f5d25bc] 2026-02-09 12:43:50 +1300
+Branch: REL_17_STABLE [10ebc4bd6] 2026-02-09 12:42:59 +1300
+Branch: REL_16_STABLE [4c08960d9] 2026-02-09 12:29:41 +1300
+Branch: REL_15_STABLE [757bf8145] 2026-02-09 12:35:19 +1300
+Branch: REL_14_STABLE [e7591254c] 2026-02-09 12:39:16 +1300
+Author: Noah Misch <noah@leadboat.com>
+Branch: master [d536aee55] 2026-02-09 06:14:47 -0800
+Branch: REL_18_STABLE [b42709194] 2026-02-09 06:14:50 -0800
+Branch: REL_17_STABLE [dc072a09a] 2026-02-09 06:14:51 -0800
+Branch: REL_16_STABLE [0c33d5608] 2026-02-09 06:14:51 -0800
+Branch: REL_15_STABLE [8f8b1ffac] 2026-02-09 06:14:52 -0800
+Branch: REL_14_STABLE [8373ed094] 2026-02-09 06:14:52 -0800
+Branch: master [c5dc75479] 2026-02-09 09:08:10 -0800
+Branch: REL_18_STABLE [4543b02af] 2026-02-09 09:08:13 -0800
+Branch: REL_17_STABLE [955433ebd] 2026-02-09 09:08:13 -0800
+Branch: REL_16_STABLE [763671b74] 2026-02-09 09:08:13 -0800
+Branch: REL_15_STABLE [6f741bcb6] 2026-02-09 09:08:14 -0800
+Branch: REL_14_STABLE [5301b2b7d] 2026-02-09 09:08:14 -0800
+-->
+     <para>
+      Fix inadequate validation of multibyte character lengths
+      (Thomas Munro, Noah Misch)
+      <ulink url="https://postgr.es/c/df0852fe0">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/efef05ba9">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/7b5fc85be">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/b0f5d25bc">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/b42709194">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/4543b02af">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Assorted bugs allowed an attacker able to issue crafted SQL to
+      overrun string buffers, with consequences as bad as arbitrary code
+      execution.  After these fixes, applications may
+      observe <quote>invalid byte sequence for encoding</quote> errors
+      when string functions process invalid text that has been stored in
+      the database.
+     </para>
+
+     <para>
+      The <productname>PostgreSQL</productname> Project thanks Paul Gerste
+      and Moritz Sanft, as part of zeroday.cloud, for reporting this
+      problem.
+      (CVE-2026-2006)
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Heikki Linnakangas <heikki.linnakangas@iki.fi>
+Branch: master [00896ddaf] 2026-02-09 12:08:58 +1300
+Branch: REL_18_STABLE [e0965fb1a] 2026-02-09 12:12:24 +1300
+Author: Heikki Linnakangas <heikki.linnakangas@iki.fi>
+Branch: master [54598670f] 2026-02-09 12:08:58 +1300
+Branch: REL_18_STABLE [18548681d] 2026-02-09 12:12:18 +1300
+-->
+     <para>
+      Harden <filename>contrib/pg_trgm</filename> against changes in
+      string lowercasing behavior (Heikki Linnakangas)
+      <ulink url="https://postgr.es/c/e0965fb1a">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/18548681d">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Fix potential buffer overruns arising from the fact that in some
+      locales lower-casing a string can produce more characters (not
+      bytes) than were in the original.  That behavior is new in version
+      18, and so is the bug.
+     </para>
+
+     <para>
+      The <productname>PostgreSQL</productname> Project thanks
+      Heikki Linnakangas for reporting this problem.
+      (CVE-2026-2007)
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Jeff Davis <jdavis@postgresql.org>
+Branch: master [7f007e4a0] 2025-12-16 12:57:00 -0800
+Branch: REL_18_STABLE [806555e30] 2025-12-16 12:57:12 -0800
+Branch: REL_18_STABLE [8993bf099] 2026-01-27 08:16:07 -0800
+-->
+     <para>
+      Fix inconsistent case-insensitive matching
+      in <filename>contrib/ltree</filename> (Jeff Davis)
+      <ulink url="https://postgr.es/c/806555e30">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/8993bf099">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Index-related routines in <filename>ltree</filename> used a
+      different implementation of case-folding than the primary operators
+      did.  Their behavior was equivalent only if the default collation
+      provider was libc and the encoding was single-byte.
+     </para>
+
+     <para>
+      To fix, change the code to use case-folding with the database's
+      default collation.
+      This change will require reindexing indexes on <type>ltree</type>
+      columns (regardless of the index access method) unless the database
+      uses libc as collation provider and its encoding is single-byte.
+      Without that, searches of such indexes will fail to locate relevant
+      entries.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Álvaro Herrera <alvherre@kurilemu.de>
+Branch: master [96e2af605] 2026-02-03 12:33:29 +0100
+Branch: REL_18_STABLE [492a69e14] 2026-02-03 12:33:29 +0100
+-->
+     <para>
+      When using <command>ALTER TABLE ... ADD CONSTRAINT</command> to add
+      a not-null constraint with an explicit name, if the column is
+      already marked NOT NULL, require that the provided name match the
+      existing constraint name (&#xC1;lvaro Herrera, Srinath Reddy Sadipiralla)
+      <ulink url="https://postgr.es/c/492a69e14">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: master [35b5c62c3] 2025-11-18 12:56:55 -0500
+Branch: REL_18_STABLE [12bc32917] 2025-11-18 12:56:55 -0500
+Branch: REL_17_STABLE [075a763e2] 2025-11-18 12:56:55 -0500
+Branch: REL_16_STABLE [1c8c3206f] 2025-11-18 12:56:55 -0500
+Branch: REL_15_STABLE [9f5a58aac] 2025-11-18 12:56:55 -0500
+Branch: REL_14_STABLE [b85397481] 2025-11-18 12:56:55 -0500
+-->
+     <para>
+      Don't allow CTE references in sub-selects to determine semantic
+      levels of aggregate functions (Tom Lane)
+      <ulink url="https://postgr.es/c/12bc32917">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This change undoes a change made two minor releases ago, instead
+      throwing an error if a sub-select references a CTE that's below the
+      semantic level that standard SQL rules would assign to the aggregate
+      based on contained column references and aggregates.  The attempted
+      fix turned out to cause problems of its own, and it's unclear what
+      to do instead.  Since sub-selects within aggregates are disallowed
+      altogether by the SQL standard, treating such cases as errors seems
+      sufficient.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Dean Rasheed <dean.a.rasheed@gmail.com>
+Branch: master [b4307ae2e] 2026-01-24 11:30:48 +0000
+Branch: REL_18_STABLE [c6ce4dcf9] 2026-01-24 11:30:48 +0000
+Branch: REL_17_STABLE [c5fc17dda] 2026-01-24 11:30:49 +0000
+Branch: REL_16_STABLE [e7391bbf1] 2026-01-24 11:30:50 +0000
+Branch: REL_15_STABLE [c5824536e] 2026-01-24 11:30:51 +0000
+-->
+     <para>
+      Fix trigger transition table capture for <command>MERGE</command>
+      in CTE queries (Dean Rasheed)
+      <ulink url="https://postgr.es/c/c6ce4dcf9">&#xA7;</ulink>
+     </para>
+
+     <para>
+      When executing a data-modifying CTE query containing both
+      a <command>MERGE</command> and another DML operation on a table with
+      statement-level <literal>AFTER</literal> triggers, the transition
+      tables passed to the triggers would not include the rows affected by
+      the <command>MERGE</command>, only those affected by the other
+      operation(s).
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Amit Langote <amitlan@postgresql.org>
+Branch: master [889676a0d] 2026-01-16 14:53:50 +0900
+Branch: REL_18_STABLE [f335457e8] 2026-01-16 14:53:32 +0900
+-->
+     <para>
+      Fix incorrect pruning of rowmarks belonging to non-relation
+      rangetable entries, such as subqueries (Dean Rasheed)
+      <ulink url="https://postgr.es/c/f335457e8">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This led to incorrect results if a proposed row update needed to be
+      modified by EvalPlanQual rechecking, as could happen if there was a
+      concurrent update to that row.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Amit Langote <amitlan@postgresql.org>
+Branch: master [f9a468c66] 2026-01-23 10:23:30 +0900
+Branch: REL_18_STABLE [9f4b7bfc5] 2026-01-23 10:23:26 +0900
+Branch: REL_17_STABLE [933f67fb6] 2026-01-23 10:23:22 +0900
+Branch: REL_16_STABLE [fab386f74] 2026-01-23 10:23:18 +0900
+Branch: REL_15_STABLE [687533b39] 2026-01-23 10:23:14 +0900
+Branch: REL_14_STABLE [6d2fa44d2] 2026-01-23 10:23:10 +0900
+-->
+     <para>
+      Fix failure when all children of a partitioned target table
+      of an update or delete have been pruned (Amit Langote)
+      <ulink url="https://postgr.es/c/9f4b7bfc5">&#xA7;</ulink>
+     </para>
+
+     <para>
+      In such cases, the executor could report <quote>could not find junk
+      ctid column</quote> errors, even though nothing needs to be done.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Andres Freund <andres@anarazel.de>
+Branch: master [75609fded] 2026-01-06 19:51:10 -0500
+Branch: REL_18_STABLE [bdc5dedfc] 2026-01-06 19:51:19 -0500
+-->
+     <para>
+      Fix expression evaluation bug for a sub-select within an array
+      subscript (Andres Freund)
+      <ulink url="https://postgr.es/c/bdc5dedfc">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: master [6dfce8420] 2025-12-05 20:10:33 -0500
+Branch: REL_18_STABLE [18b349315] 2025-12-05 20:10:33 -0500
+-->
+     <para>
+      Fix text substring search for non-deterministic collations
+      (Laurenz Albe)
+      <ulink url="https://postgr.es/c/18b349315">&#xA7;</ulink>
+     </para>
+
+     <para>
+      When using a non-deterministic collation, we failed to detect a
+      match occurring at the very end of the searched string.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: David Rowley <drowley@postgresql.org>
+Branch: master [7027dd499] 2026-01-26 23:27:15 +1300
+Branch: REL_18_STABLE [ccde5be68] 2026-01-26 23:46:23 +1300
+Branch: REL_17_STABLE [cae812741] 2026-01-26 23:47:07 +1300
+Branch: REL_16_STABLE [4297a3519] 2026-01-26 23:47:37 +1300
+-->
+     <para>
+      Avoid possible planner failure when a query contains duplicate
+      window function calls (Meng Zhang, David Rowley)
+      <ulink url="https://postgr.es/c/ccde5be68">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Confusion over de-duplication of such calls could result in errors
+      like <quote>WindowFunc with winref 2 assigned to WindowAgg with
+      winref 1</quote>.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Richard Guo <rguo@postgresql.org>
+Branch: master [325808cac] 2025-12-25 12:12:52 +0900
+Branch: REL_18_STABLE [382ce9cb7] 2025-12-25 12:15:09 +0900
+-->
+     <para>
+      Fix planner error with set-returning functions and grouping sets
+      (Richard Guo)
+      <ulink url="https://postgr.es/c/382ce9cb7">&#xA7;</ulink>
+     </para>
+
+     <para>
+      When constructing a ProjectSet plan node, the planner failed to
+      detect that subexpressions involving grouping expressions were
+      already computed by the input plan.  This led to inefficient plans
+      or errors such as <quote>variable not found in subplan target
+      list</quote>.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Richard Guo <rguo@postgresql.org>
+Branch: master [34740b90b] 2026-01-19 11:13:23 +0900
+Branch: REL_18_STABLE [7650eabb6] 2026-01-19 11:14:51 +0900
+-->
+     <para>
+      Avoid incorrect optimization when a subquery's grouping clause
+      contains a volatile or set-returning function (Richard Guo)
+      <ulink url="https://postgr.es/c/7650eabb6">&#xA7;</ulink>
+     </para>
+
+     <para>
+      The planner was willing to push down outer-query restrictions
+      referencing such a grouping column, leading to incorrect behavior
+      due to multiple evaluation of a volatile function, or errors caused
+      by introduction of a set-returning function into the
+      subquery's <literal>WHERE</literal>/<literal>HAVING</literal>
+      clauses.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Richard Guo <rguo@postgresql.org>
+Branch: master [559f9e90d] 2025-12-29 11:40:45 +0900
+Branch: REL_18_STABLE [7e9f852a7] 2025-12-29 11:44:14 +0900
+-->
+     <para>
+      Look through PlaceHolderVar nodes when searching for statistics
+      about an expression (Richard Guo)
+      <ulink url="https://postgr.es/c/7e9f852a7">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This change allows the planner to find relevant statistics about
+      expressions pulled up from subqueries or used in <literal>GROUP
+      BY</literal>, avoiding falling back to a default estimate.
+      (Arguably we should adjust any found statistics to account for an
+      increased probability of the value being NULL, but we've never done
+      the equivalent thing for plain Vars either.)  While this restriction
+      is old, changes in <productname>PostgreSQL</productname> version 18
+      made PlaceHolderVars more common than before, so make the change to
+      avoid plan regressions in affected cases.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Richard Guo <rguo@postgresql.org>
+Branch: master [ad66f705f] 2025-12-29 11:38:49 +0900
+Branch: REL_18_STABLE [b4cf74420] 2025-12-29 11:43:06 +0900
+-->
+     <para>
+      Look through no-op PlaceHolderVar nodes when matching expressions to
+      indexes (Richard Guo)
+      <ulink url="https://postgr.es/c/b4cf74420">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Because <productname>PostgreSQL</productname> version 18 uses
+      PlaceHolderVars in more cases than before, some queries that
+      formerly could use an index failed to do so.  Add logic to prevent
+      that regression.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: master [ed931377a] 2025-11-17 13:54:52 -0500
+Branch: REL_18_STABLE [bf5b13a8a] 2025-11-17 13:55:26 -0500
+-->
+     <para>
+      Fix planner's conversion of <literal>OR</literal> clauses to
+      ScalarArrayOp index conditions (Tender Wang, Tom Lane)
+      <ulink url="https://postgr.es/c/bf5b13a8a">&#xA7;</ulink>
+     </para>
+
+     <para>
+      The code did not handle RelabelType nodes correctly, and could
+      generate invalid expressions or fail to perform a valid conversion.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: master [5528e8d10] 2025-11-27 13:09:59 -0500
+Branch: REL_18_STABLE [a212877dc] 2025-11-27 13:09:59 -0500
+Branch: REL_17_STABLE [e79b27662] 2025-11-27 13:09:59 -0500
+Branch: REL_16_STABLE [b497766a8] 2025-11-27 13:09:59 -0500
+Branch: REL_15_STABLE [f19502f04] 2025-11-27 13:09:59 -0500
+Branch: REL_14_STABLE [9e77323fc] 2025-11-27 13:09:59 -0500
+-->
+     <para>
+      Allow indexscans on partial hash indexes even when the index's
+      predicate implies the truth of the WHERE clause (Tom Lane)
+      <ulink url="https://postgr.es/c/a212877dc">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Normally we drop a WHERE clause that is implied by the predicate,
+      since it's pointless to test it; it must hold for every index
+      entry.  However that can prevent creation of an indexscan plan if
+      the index is one that requires a WHERE clause on the leading index
+      key, as hash indexes do.  Don't drop implied clauses when
+      considering such an index.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Heikki Linnakangas <heikki.linnakangas@iki.fi>
+Branch: master [951b60f7a] 2025-12-18 15:08:48 +0200
+Branch: REL_18_STABLE [d77a5f981] 2025-12-18 15:09:26 +0200
+Branch: REL_17_STABLE [4b6d096a0] 2025-12-18 15:09:23 +0200
+Branch: REL_16_STABLE [a5277700e] 2025-12-18 15:09:21 +0200
+Branch: REL_15_STABLE [460d97020] 2025-12-18 15:09:19 +0200
+Branch: REL_14_STABLE [ab4256869] 2025-12-18 15:09:17 +0200
+-->
+     <para>
+      Do not emit WAL for unlogged BRIN indexes (Kirill Reshke)
+      <ulink url="https://postgr.es/c/d77a5f981">&#xA7;</ulink>
+     </para>
+
+     <para>
+      One seldom-taken code path incorrectly emitted a WAL record
+      relating to a BRIN index even if the index was marked unlogged.
+      Crash recovery would then fail to replay that record, complaining
+      that the file already exists.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tomas Vondra <tomas.vondra@postgresql.org>
+Branch: master [db14dcdec] 2026-01-26 20:05:17 +0100
+Branch: REL_18_STABLE [eee71a66c] 2026-01-26 20:05:00 +0100
+-->
+     <para>
+      Use the correct ordering function in parallel GIN index builds
+      (Tomas Vondra)
+      <ulink url="https://postgr.es/c/eee71a66c">&#xA7;</ulink>
+     </para>
+
+     <para>
+      The parallel code used the default ordering operator (which is
+      determined by the column data type's btree opclass), whereas it
+      should use the ordering function specified by the GIN opclass, if
+      any.  This led to a failure if the data type has no btree opclass,
+      or to an invalid index if the opclass specifies an ordering function
+      that doesn't agree with the btree opclass.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Heikki Linnakangas <heikki.linnakangas@iki.fi>
+Branch: master [8eeb4a0f7] 2025-11-12 20:59:36 +0200
+Branch: REL_18_STABLE [321ec5462] 2025-11-12 21:00:42 +0200
+Branch: REL_17_STABLE [d02c03ddc] 2025-11-12 21:01:13 +0200
+Branch: REL_16_STABLE [053e1868b] 2025-11-12 21:01:42 +0200
+Branch: REL_15_STABLE [1a469d7b5] 2025-11-12 21:02:12 +0200
+Branch: REL_14_STABLE [eba917d36] 2025-11-12 21:02:36 +0200
+Branch: master [797e9ea6e] 2025-11-12 20:59:44 +0200
+Branch: REL_18_STABLE [7b069a187] 2025-11-12 21:00:46 +0200
+Branch: REL_17_STABLE [c2682810a] 2025-11-12 21:01:16 +0200
+Branch: REL_16_STABLE [44e8c60be] 2025-11-12 21:01:45 +0200
+Branch: REL_15_STABLE [0c862646c] 2025-11-12 21:02:14 +0200
+Branch: REL_14_STABLE [c2e58c071] 2025-11-12 21:02:38 +0200
+Branch: master [0bdc777e8] 2025-11-12 21:19:03 +0200
+Branch: REL_18_STABLE [82fa6b78d] 2025-11-12 21:26:58 +0200
+Branch: REL_17_STABLE [d80d5f099] 2025-11-12 21:27:02 +0200
+Branch: REL_16_STABLE [0e8eaa218] 2025-11-12 21:27:05 +0200
+Branch: REL_15_STABLE [21a9014cf] 2025-11-12 21:27:07 +0200
+Branch: REL_14_STABLE [84f1bf4af] 2025-11-12 21:27:11 +0200
+-->
+     <para>
+      Prevent truncation of CLOG that is still needed by
+      unread <command>NOTIFY</command> messages (Joel Jacobson, Heikki
+      Linnakangas)
+      <ulink url="https://postgr.es/c/321ec5462">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/7b069a187">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/82fa6b78d">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This fix prevents <quote>could not access status of
+      transaction</quote> errors when a backend is slow to
+      absorb <command>NOTIFY</command> messages.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Heikki Linnakangas <heikki.linnakangas@iki.fi>
+Branch: master [1b4699090] 2025-11-12 20:59:28 +0200
+Branch: REL_18_STABLE [aab4a84bb] 2025-11-12 21:00:25 +0200
+Branch: REL_17_STABLE [b821c9292] 2025-11-12 21:01:08 +0200
+Branch: REL_16_STABLE [c1a5bde00] 2025-11-12 21:01:39 +0200
+Branch: REL_15_STABLE [b1da37de2] 2025-11-12 21:02:07 +0200
+Branch: REL_14_STABLE [7cb05dd2d] 2025-11-12 21:02:32 +0200
+-->
+     <para>
+      Escalate errors occurring during <command>NOTIFY</command> message
+      processing to FATAL, i.e. close the connection (Heikki Linnakangas)
+      <ulink url="https://postgr.es/c/aab4a84bb">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Formerly, if a backend got an error while absorbing
+      a <command>NOTIFY</command> message, it would advance past that
+      message, report the error to the client, and move on.  That behavior
+      was fraught with problems though.  One big concern is that the
+      client has no good way to know that a notification was lost, and
+      certainly no way to know what was in it.  Depending on the
+      application logic, missing a notification could cause the
+      application to get stuck waiting, for example.  Also, any remaining
+      messages would not get processed until someone sent a
+      new <command>NOTIFY</command>.
+     </para>
+
+     <para>
+      Also, if the connection is idle at the time of receiving
+      a <command>NOTIFY</command> signal, any ERROR would be escalated to
+      FATAL anyway, due to unrelated concerns.  Therefore, we've chosen to
+      make that happen in all cases, for consistency and to provide a
+      clear signal to the application that it might have missed some
+      notifications.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Michael Paquier <michael@paquier.xyz>
+Branch: master [e217dc748] 2026-01-14 08:44:12 +0900
+Branch: REL_18_STABLE [9c3caad02] 2026-01-14 08:44:52 +0900
+-->
+     <para>
+      Consider grouping expressions when computing a query ID hash
+      (Jian He)
+      <ulink url="https://postgr.es/c/9c3caad02">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Previously, two queries that were the same except in <literal>GROUP
+      BY</literal> expressions would be merged
+      by <filename>contrib/pg_stat_statements</filename> and other users
+      of query IDs.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Dean Rasheed <dean.a.rasheed@gmail.com>
+Branch: master [1b92fe7bb] 2025-11-16 22:14:06 +0000
+Branch: REL_18_STABLE [5749d95d4] 2025-11-16 22:15:10 +0000
+Branch: REL_17_STABLE [d6c415c4b] 2025-11-16 22:15:45 +0000
+-->
+     <para>
+      Fix erroneous counting of updates in <command>EXPLAIN ANALYZE
+      MERGE</command> with a concurrent update (Dean Rasheed)
+      <ulink url="https://postgr.es/c/5749d95d4">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This situation led to an incorrect count of <quote>skipped</quote>
+      tuples in <command>EXPLAIN</command>'s output, or to an assertion
+      failure in an assert-enabled build.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Heikki Linnakangas <heikki.linnakangas@iki.fi>
+Branch: master [955f55068] 2025-12-23 13:37:16 +0200
+Branch: REL_18_STABLE [3e3a80f62] 2025-12-23 13:37:23 +0200
+Branch: REL_17_STABLE [bb87d7fef] 2025-12-23 13:37:25 +0200
+Branch: REL_16_STABLE [7efef18ff] 2025-12-23 13:37:27 +0200
+Branch: REL_15_STABLE [5d5487cd2] 2025-12-23 13:37:29 +0200
+Branch: REL_14_STABLE [b6201c76e] 2025-12-23 13:37:31 +0200
+-->
+     <para>
+      Fix bug in following update chain when locking a tuple (Jasper
+      Smit)
+      <ulink url="https://postgr.es/c/3e3a80f62">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This code path neglected to check the xmin of the first new tuple in
+      the update chain, making it possible to lock an unrelated tuple if
+      the original updater aborted and the space was immediately reclaimed
+      by <command>VACUUM</command> and then re-used.
+      That could cause unexpected transaction delays or deadlocks.
+      Errors associated with having identified the wrong tuple have also
+      been observed.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Robert Haas <rhaas@postgresql.org>
+Branch: master [ecd275718] 2026-01-19 12:09:32 -0500
+Branch: REL_18_STABLE [c80b0c9d6] 2026-01-19 12:09:48 -0500
+Branch: REL_17_STABLE [ad569b54a] 2026-01-19 12:10:00 -0500
+-->
+     <para>
+      Fix incorrect handling of incremental backups of large tables
+      (Robert Haas, Oleg Tkachenko)
+      <ulink url="https://postgr.es/c/c80b0c9d6">&#xA7;</ulink>
+     </para>
+
+     <para>
+      If a table exceeding 1GB (or in general, the installation's segment
+      size) is truncated by <literal>VACUUM</literal> between the base
+      backup and the incremental
+      backup, <application>pg_combinebackup</application> could fail with
+      an error about <quote>truncation block length in excess of segment
+      size</quote>.  This prevented restoring the incremental backup.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Amit Langote <amitlan@postgresql.org>
+Branch: master [9cbb1d21d] 2026-01-16 13:02:42 +0900
+Branch: REL_18_STABLE [1943ceb38] 2026-01-16 13:14:21 +0900
+Branch: REL_17_STABLE [4071fe900] 2026-01-16 13:19:53 +0900
+Branch: REL_16_STABLE [980b7c736] 2026-01-16 13:19:59 +0900
+Branch: REL_15_STABLE [b926ff137] 2026-01-16 13:20:05 +0900
+Branch: REL_14_STABLE [f6df78173] 2026-01-16 13:20:11 +0900
+-->
+     <para>
+      Fix potential backend process crash at process exit due to trying to
+      release a lock in an already-unmapped shared memory segment
+      (Rahila Syed)
+      <ulink url="https://postgr.es/c/1943ceb38">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Andres Freund <andres@anarazel.de>
+Branch: master [807764990] 2026-01-15 11:09:07 -0500
+Branch: REL_18_STABLE [7f1b3a4ce] 2026-01-15 11:09:49 -0500
+-->
+     <para>
+      Fix race condition in async I/O code (Andres Freund)
+      <ulink url="https://postgr.es/c/7f1b3a4ce">&#xA7;</ulink>
+     </para>
+
+     <para>
+      It was possible for the result code of an asynchronous I/O operation
+      to be overwritten before it was fetched.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Heikki Linnakangas <heikki.linnakangas@iki.fi>
+Branch: master [102bdaa9b] 2026-01-15 16:48:45 +0200
+Branch: REL_18_STABLE [09532a78b] 2026-01-15 16:49:42 +0200
+Branch: REL_17_STABLE [d3ad4cef6] 2026-01-15 16:50:30 +0200
+Branch: REL_16_STABLE [c7946e6f3] 2026-01-15 16:50:37 +0200
+Branch: REL_15_STABLE [a563ac619] 2026-01-15 16:50:42 +0200
+Branch: REL_14_STABLE [46be454ca] 2026-01-15 16:50:46 +0200
+-->
+     <para>
+      Guard against incorrect truncation of the multixact log after a
+      crash (Heikki Linnakangas)
+      <ulink url="https://postgr.es/c/09532a78b">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Michael Paquier <michael@paquier.xyz>
+Branch: master [36b8f4974] 2025-12-27 17:23:30 +0900
+Branch: REL_18_STABLE [06907e864] 2025-12-27 17:23:51 +0900
+Branch: REL_17_STABLE [52b27f585] 2025-12-27 17:23:53 +0900
+Branch: REL_16_STABLE [c48829ed8] 2025-12-27 17:23:54 +0900
+Branch: REL_15_STABLE [300575fe2] 2025-12-27 17:23:56 +0900
+Branch: REL_14_STABLE [ea3524cff] 2025-12-27 17:23:58 +0900
+-->
+     <para>
+      Fix possibly mis-encoded result
+      of <function>pg_stat_get_backend_activity()</function> (Chao Li)
+      <ulink url="https://postgr.es/c/06907e864">&#xA7;</ulink>
+     </para>
+
+     <para>
+      The shared-memory buffer holding a session's activity string can
+      end with an incomplete multibyte character.  Readers are supposed
+      to truncate off any such incomplete character, but this function
+      failed to do so.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Fujii Masao <fujii@postgresql.org>
+Branch: master [b3ccb0a2c] 2025-12-19 12:05:37 +0900
+Branch: REL_18_STABLE [b863d8d87] 2025-12-19 12:07:10 +0900
+Branch: REL_17_STABLE [699293d27] 2025-12-19 12:07:21 +0900
+Branch: REL_16_STABLE [3853f6168] 2025-12-19 12:08:20 +0900
+Branch: REL_15_STABLE [0fc2f533a] 2025-12-19 12:09:10 +0900
+Branch: REL_14_STABLE [1a9a49699] 2025-12-19 12:09:16 +0900
+-->
+     <para>
+      Guard against recursive memory context logging (Fujii Masao)
+      <ulink url="https://postgr.es/c/b863d8d87">&#xA7;</ulink>
+     </para>
+
+     <para>
+      A constant flow of signals requesting memory context logging could
+      cause recursive execution of the logging code, which in theory could
+      lead to stack overflow.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Robert Haas <rhaas@postgresql.org>
+Branch: master [f1a6e622b] 2025-12-16 12:24:55 -0500
+Branch: REL_18_STABLE [57df5ab80] 2025-12-16 10:59:05 -0500
+Branch: REL_17_STABLE [1d0fc2499] 2025-12-16 10:59:04 -0500
+Branch: REL_16_STABLE [12c2f843c] 2025-12-16 10:59:02 -0500
+Branch: REL_15_STABLE [bd2726d3e] 2025-12-16 10:59:01 -0500
+Branch: REL_14_STABLE [1d9f7fbba] 2025-12-16 10:59:00 -0500
+-->
+     <para>
+      Fix memory context usage when reinitializing a parallel execution
+      context (Jakub Wartak, Jeevan Chalke)
+      <ulink url="https://postgr.es/c/57df5ab80">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This error could result in a crash due to a subsidiary data
+      structure having a shorter lifespan than the parallel context.
+      The problem is not known to be reachable using only
+      core <productname>PostgreSQL</productname>, but we have reports of
+      trouble in extensions.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Heikki Linnakangas <heikki.linnakangas@iki.fi>
+Branch: master [789d65364] 2025-12-03 19:15:08 +0200
+Branch: REL_18_STABLE [e46041fd9] 2025-12-03 19:15:18 +0200
+Branch: REL_17_STABLE [8ba61bc06] 2025-12-03 19:15:21 +0200
+Branch: REL_16_STABLE [635166913] 2025-12-03 19:15:24 +0200
+Branch: REL_15_STABLE [8cfb174a6] 2025-12-03 19:15:26 +0200
+Branch: REL_14_STABLE [81416e101] 2025-12-03 19:15:29 +0200
+Branch: master [4d936c3ff] 2025-12-05 11:32:38 +0200
+Branch: REL_18_STABLE [02ba5e3be] 2025-12-05 11:35:20 +0200
+Branch: REL_17_STABLE [cad40cec2] 2025-12-05 11:35:44 +0200
+Branch: REL_16_STABLE [4d689a176] 2025-12-05 11:36:36 +0200
+Branch: REL_15_STABLE [b9a02b978] 2025-12-05 11:36:52 +0200
+Branch: REL_14_STABLE [489695554] 2025-12-05 11:37:06 +0200
+-->
+     <para>
+      Set next multixid's offset when creating a new multixid, to remove
+      the wait loop that was needed in corner cases (Andrey Borodin)
+      <ulink url="https://postgr.es/c/e46041fd9">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/02ba5e3be">&#xA7;</ulink>
+     </para>
+
+     <para>
+      The previous logic could get stuck waiting for an update that would
+      never occur.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Dean Rasheed <dean.a.rasheed@gmail.com>
+Branch: master [3881561d7] 2025-11-29 12:28:59 +0000
+Branch: REL_18_STABLE [b880d9a02] 2025-11-29 12:31:30 +0000
+Branch: REL_17_STABLE [c09096503] 2025-11-29 12:32:12 +0000
+Branch: REL_16_STABLE [4d288e33b] 2025-11-29 12:33:04 +0000
+Branch: REL_15_STABLE [134a8ee22] 2025-11-29 12:33:35 +0000
+Branch: REL_14_STABLE [2d5b97b8c] 2025-11-29 12:34:45 +0000
+-->
+     <para>
+      Avoid rewriting data-modifying CTEs more than once (Bernice Southey,
+      Dean Rasheed)
+      <ulink url="https://postgr.es/c/b880d9a02">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Formerly, when updating an auto-updatable view or a relation with
+      rules, if the original query had any data-modifying CTEs, the rewriter
+      would rewrite those CTEs multiple times due to recursion.  This was
+      inefficient and could produce false errors if a CTE included an
+      update of an always-generated column.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Nathan Bossart <nathan@postgresql.org>
+Branch: master [dbdc717ac] 2025-11-26 15:12:25 -0600
+Branch: REL_18_STABLE [b83bcc0df] 2025-11-26 15:12:25 -0600
+Branch: REL_17_STABLE [2fc5c5062] 2025-11-26 15:12:25 -0600
+-->
+     <para>
+      Allow retrying initialization of a DSM registry entry
+      (Nathan Bossart)
+      <ulink url="https://postgr.es/c/b83bcc0df">&#xA7;</ulink>
+     </para>
+
+     <para>
+      If we fail partway through initialization of a dynamic shared memory
+      entry, allow the next attempt to use that entry to retry
+      initialization.  Previously the entry was left in a
+      permanently-failed state.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tomas Vondra <tomas.vondra@postgresql.org>
+Branch: master [3fccbd94c] 2026-01-27 00:21:40 +0100
+Branch: REL_18_STABLE [9796c4f56] 2026-01-26 23:37:03 +0100
+-->
+     <para>
+      Avoid failure of NUMA status views when a page has been swapped out
+      (Tomas Vondra)
+      <ulink url="https://postgr.es/c/9796c4f56">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tomas Vondra <tomas.vondra@postgresql.org>
+Branch: master [599336c64] 2025-11-20 13:26:49 +0100
+Branch: REL_18_STABLE [482e98ac4] 2025-11-20 13:26:14 +0100
+-->
+     <para>
+      Avoid <quote>operation not permitted</quote> errors when querying
+      NUMA page status with older libnuma versions (Tomas Vondra)
+      <ulink url="https://postgr.es/c/482e98ac4">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Michael Paquier <michael@paquier.xyz>
+Branch: master [dc7c77f82] 2025-12-16 13:29:28 +0900
+Branch: REL_18_STABLE [68ebdf2b0] 2025-12-16 13:29:36 +0900
+Branch: REL_17_STABLE [f5927da4f] 2025-12-16 13:29:39 +0900
+Branch: REL_16_STABLE [1aa57e9ed] 2025-12-16 13:29:41 +0900
+Branch: REL_15_STABLE [95ef6f490] 2025-12-16 13:29:42 +0900
+Branch: REL_14_STABLE [14161bca4] 2025-12-16 13:29:44 +0900
+-->
+     <para>
+      Fail recovery if WAL does not exist back to the redo point indicated
+      by the checkpoint record (Nitin Jadhav)
+      <ulink url="https://postgr.es/c/68ebdf2b0">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Add an explicit check for this before starting recovery, so that no
+      harm is done and a useful error message is provided.  Previously,
+      recovery might crash or corrupt the database in this situation.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: David Rowley <drowley@postgresql.org>
+Branch: master [6ca8506ea] 2026-01-06 17:29:12 +1300
+Branch: REL_18_STABLE [bea57a6b4] 2026-01-06 17:29:44 +1300
+Branch: REL_17_STABLE [bb08ac7ac] 2026-01-06 17:30:08 +1300
+Branch: REL_16_STABLE [0687a6eb0] 2026-01-06 17:30:32 +1300
+Branch: REL_15_STABLE [f20b79059] 2026-01-06 17:30:57 +1300
+Branch: REL_14_STABLE [ae45c7296] 2026-01-06 17:31:20 +1300
+-->
+     <para>
+      Avoid scribbling on the source query tree during <command>ALTER
+      PUBLICATION</command> (Sunil S)
+      <ulink url="https://postgr.es/c/bea57a6b4">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This error had the visible effect that an event trigger fired for
+      the query would see only the first <literal>publish</literal>
+      option, even if several had been specified.  If such a query were
+      set up as a prepared statement, re-executions would misbehave too.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Fujii Masao <fujii@postgresql.org>
+Branch: master [d926462d8] 2026-01-06 11:52:22 +0900
+Branch: REL_18_STABLE [797fc5d1b] 2026-01-06 11:54:09 +0900
+Branch: REL_17_STABLE [7a990e801] 2026-01-06 11:54:14 +0900
+Branch: REL_16_STABLE [75f3428f2] 2026-01-06 11:54:46 +0900
+Branch: REL_15_STABLE [f7eb44e0f] 2026-01-06 11:55:46 +0900
+-->
+     <para>
+      Pass connection options specified in <literal>CREATE SUBSCRIPTION
+      ... CONNECTION</literal> to the publisher's walsender (Fujii Masao)
+      <ulink url="https://postgr.es/c/797fc5d1b">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Before this fix, the <literal>options</literal> connection option
+      (if any) was ignored, thus for example preventing setting custom
+      server parameter values in the walsender session.  It was intended
+      for that to work, and it did work before refactoring
+      in <productname>PostgreSQL</productname> version 15 broke it, so
+      restore the previous behavior.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Amit Kapila <akapila@postgresql.org>
+Branch: master [851f6649c] 2026-01-27 05:06:29 +0000
+Branch: REL_18_STABLE [919c9fa13] 2026-01-27 05:45:25 +0000
+Branch: REL_17_STABLE [3243c0177] 2026-01-27 05:49:23 +0000
+Branch: master [3a98f989e] 2026-01-29 03:22:02 +0000
+Branch: REL_18_STABLE [1c60f7236] 2026-01-29 03:34:55 +0000
+Branch: REL_17_STABLE [9649f1adf] 2026-01-29 02:57:02 +0000
+Branch: master [006dd4b2e] 2025-12-08 05:21:22 +0000
+Branch: REL_18_STABLE [d3ceb2084] 2025-12-08 05:33:14 +0000
+Branch: REL_17_STABLE [3510ebeb0] 2026-01-08 07:17:56 +0000
+Branch: REL_16_STABLE [24cce33c3] 2026-01-08 07:07:23 +0000
+Branch: REL_15_STABLE [aae05622a] 2026-01-08 06:54:52 +0000
+Branch: REL_14_STABLE [7406df605] 2026-01-08 06:44:28 +0000
+-->
+     <para>
+      Prevent invalidation of newly created or newly synced replication
+      slots (Zhijie Hou)
+      <ulink url="https://postgr.es/c/919c9fa13">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/1c60f7236">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/d3ceb2084">&#xA7;</ulink>
+     </para>
+
+     <para>
+      A race condition with a concurrent checkpoint could allow WAL to be
+      removed that is needed by the replication slot, causing the slot to
+      immediately get marked invalid.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Masahiko Sawada <msawada@postgresql.org>
+Branch: master [2a5225b99] 2025-12-30 10:56:30 -0800
+Branch: REL_18_STABLE [fd7c86cfa] 2025-12-30 10:56:28 -0800
+Branch: REL_17_STABLE [123b851ab] 2025-12-30 10:56:25 -0800
+Branch: REL_16_STABLE [821466722] 2025-12-30 10:56:23 -0800
+Branch: REL_15_STABLE [fa557d300] 2025-12-30 10:56:21 -0800
+Branch: REL_14_STABLE [57048d6e1] 2025-12-30 10:56:18 -0800
+-->
+     <para>
+      Fix race condition in computing a replication slot's required xmin
+      (Zhijie Hou)
+      <ulink url="https://postgr.es/c/fd7c86cfa">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This could lead to the error <quote>cannot build an initial slot
+      snapshot as oldest safe xid follows snapshot's xmin</quote>.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Michael Paquier <michael@paquier.xyz>
+Branch: master [8e0d32a4a] 2025-12-23 14:32:14 +0900
+Branch: REL_18_STABLE [b07c32619] 2025-12-23 14:32:19 +0900
+Branch: REL_17_STABLE [e063ccc72] 2025-12-23 14:32:21 +0900
+Branch: REL_16_STABLE [e22e9ab0c] 2025-12-23 14:32:22 +0900
+Branch: REL_15_STABLE [90d1beef6] 2025-12-23 14:32:24 +0900
+Branch: REL_14_STABLE [25a04aa52] 2025-12-23 14:32:25 +0900
+-->
+     <para>
+      During initial synchronization of a logical replication
+      subscription, commit the addition of
+      a <structname>pg_replication_origin</structname> entry before
+      starting to copy data (Zhijie Hou)
+      <ulink url="https://postgr.es/c/b07c32619">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Previously, if the copy step failed, the
+      new <structname>pg_replication_origin</structname> entry would be
+      lost due to transaction rollback.  This led to inconsistent state in
+      shared memory.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Amit Kapila <akapila@postgresql.org>
+Branch: master [1528b0d89] 2025-12-24 04:36:39 +0000
+Branch: REL_18_STABLE [2f7ffe124] 2025-12-24 04:21:43 +0000
+Branch: REL_17_STABLE [0ed8f1afb] 2025-12-24 04:05:06 +0000
+Branch: REL_16_STABLE [63a65adf4] 2025-12-24 04:19:57 +0000
+-->
+     <para>
+      Don't advance logical replication progress after a parallel worker
+      apply failure (Zhijie Hou)
+      <ulink url="https://postgr.es/c/2f7ffe124">&#xA7;</ulink>
+     </para>
+
+     <para>
+      The previous behavior allowed transactions to be lost by a
+      subscriber.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Amit Kapila <akapila@postgresql.org>
+Branch: master [04396eacd] 2025-12-09 07:25:20 +0000
+Branch: REL_18_STABLE [6c61c69d5] 2025-12-09 07:12:37 +0000
+Branch: REL_17_STABLE [f2818868a] 2025-12-09 07:02:08 +0000
+-->
+     <para>
+      Fix logical replication slotsync worker processes to handle
+      LOCK_TIMEOUT signals correctly (Zhijie Hou)
+      <ulink url="https://postgr.es/c/6c61c69d5">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Previously, timeout signals were effectively ignored.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Heikki Linnakangas <heikki.linnakangas@iki.fi>
+Branch: master [23b25586d] 2026-01-15 21:02:49 +0200
+Branch: REL_18_STABLE [9ed411e08] 2026-01-15 21:02:54 +0200
+Branch: REL_17_STABLE [c3770181c] 2026-01-15 21:02:59 +0200
+Branch: REL_16_STABLE [a2eeb04f3] 2026-01-15 21:03:12 +0200
+Branch: REL_15_STABLE [ef8465588] 2026-01-15 21:03:16 +0200
+Branch: REL_14_STABLE [2514f1c77] 2026-01-15 20:58:05 +0200
+-->
+     <para>
+      Fix possible failure with <quote>unexpected data beyond EOF</quote>
+      during restart of a streaming replica server (Anthonin Bonnefoy)
+      <ulink url="https://postgr.es/c/9ed411e08">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Amit Langote <amitlan@postgresql.org>
+Branch: master [519fa0433] 2025-11-27 12:07:01 +0900
+Branch: REL_18_STABLE [15ba0702c] 2025-11-27 11:59:40 +0900
+Branch: REL_17_STABLE [b5511fed5] 2025-11-27 11:59:36 +0900
+-->
+     <para>
+      Fix error reporting for SQL/JSON path type mismatches (Jian He)
+      <ulink url="https://postgr.es/c/15ba0702c">&#xA7;</ulink>
+     </para>
+
+     <para>
+      The code could produce a <quote>cache lookup failed for type 0</quote>
+      error instead of the intended complaint about the path expression
+      not being of the right type.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: David Rowley <drowley@postgresql.org>
+Branch: master [349107537] 2026-01-09 11:01:36 +1300
+Branch: REL_18_STABLE [c35e5dd9a] 2026-01-09 11:02:59 +1300
+Branch: REL_17_STABLE [84b787ae6] 2026-01-09 11:03:24 +1300
+Branch: REL_16_STABLE [821c4d27b] 2026-01-09 11:03:48 +1300
+Branch: REL_15_STABLE [3ad05640b] 2026-01-09 11:04:12 +1300
+Branch: REL_14_STABLE [a65995947] 2026-01-09 11:04:39 +1300
+-->
+     <para>
+      Fix erroneous tracking of column position when parsing partition
+      range bounds (myzhen)
+      <ulink url="https://postgr.es/c/c35e5dd9a">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This could, for example, lead to the wrong column name being cited
+      in error messages about casting partition bound values to the
+      column's data type.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Michael Paquier <michael@paquier.xyz>
+Branch: master [74a116a79] 2026-02-06 15:38:16 +0900
+Branch: REL_18_STABLE [acfa422c3] 2026-02-06 15:38:21 +0900
+Branch: REL_17_STABLE [67ad4387b] 2026-02-06 15:38:23 +0900
+Branch: REL_16_STABLE [977a17a3e] 2026-02-06 15:38:25 +0900
+Branch: REL_15_STABLE [4ec943f7d] 2026-02-06 15:38:27 +0900
+Branch: REL_14_STABLE [d32e17160] 2026-02-06 15:38:29 +0900
+Branch: master [c8ec74713] 2026-02-04 16:38:06 +0900
+Branch: REL_18_STABLE [2ca4464b6] 2026-02-04 16:38:10 +0900
+Branch: REL_17_STABLE [263af458e] 2026-02-04 16:38:12 +0900
+Branch: master [a9afa021e] 2026-02-02 10:21:04 +0900
+Branch: REL_18_STABLE [ab61f0087] 2026-02-02 10:21:07 +0900
+Branch: REL_17_STABLE [5995135f1] 2026-02-02 10:21:10 +0900
+Branch: master [6bca4b50d] 2026-01-18 17:24:25 +0900
+Branch: REL_18_STABLE [69ee81932] 2026-01-18 17:24:58 +0900
+Branch: REL_17_STABLE [05ef2371a] 2026-01-18 17:25:00 +0900
+Branch: REL_16_STABLE [e8fd6c9fd] 2026-01-18 17:25:01 +0900
+Branch: REL_15_STABLE [fbf8df580] 2026-01-18 17:25:03 +0900
+Branch: REL_14_STABLE [f1dc7a5b7] 2026-01-18 17:25:04 +0900
+Author: Peter Eisentraut <peter@eisentraut.org>
+Branch: master [1653ce523] 2026-02-07 22:37:02 +0100
+Branch: REL_18_STABLE [cff2ef984] 2026-02-07 22:53:16 +0100
+Branch: REL_17_STABLE [5449fd261] 2026-02-07 22:53:21 +0100
+Branch: REL_16_STABLE [a7bdbbada] 2026-02-07 22:53:25 +0100
+Branch: REL_15_STABLE [9dcd0b3de] 2026-02-07 22:53:34 +0100
+Branch: REL_14_STABLE [3e7bb39df] 2026-02-07 22:53:38 +0100
+-->
+     <para>
+      Fix assorted minor errors in error messages (Man Zeng, Tianchen Zhang)
+      <ulink url="https://postgr.es/c/acfa422c3">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/2ca4464b6">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/ab61f0087">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/69ee81932">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/cff2ef984">&#xA7;</ulink>
+     </para>
+
+     <para>
+      For example, an error report about mismatched timeline number in a
+      backup manifest showed the starting timeline number where it meant
+      to show the ending timeline number.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Thomas Munro <tmunro@postgresql.org>
+Branch: master [e5d99b4d9] 2026-01-22 16:03:47 +1300
+Branch: REL_18_STABLE [f1c6b153c] 2026-01-22 16:10:58 +1300
+Branch: REL_17_STABLE [d0bb0e5b3] 2026-01-22 16:10:28 +1300
+Branch: REL_16_STABLE [7600dc79c] 2026-01-22 16:10:08 +1300
+Branch: REL_15_STABLE [cbdd09ae1] 2026-01-22 16:09:29 +1300
+Branch: REL_14_STABLE [de8081c30] 2026-01-22 16:06:06 +1300
+-->
+     <para>
+      Fix failure to perform function inlining when doing JIT compilation
+      with LLVM version 17 or later (Anthonin Bonnefoy)
+      <ulink url="https://postgr.es/c/f1c6b153c">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Thomas Munro <tmunro@postgresql.org>
+Branch: master [0dceba21d] 2025-11-22 21:21:11 +1300
+Branch: REL_18_STABLE [912cfa314] 2025-11-22 21:21:54 +1300
+Branch: REL_17_STABLE [60215eae7] 2025-11-22 21:22:37 +1300
+Branch: REL_16_STABLE [600acd34b] 2025-11-22 21:23:23 +1300
+Branch: REL_15_STABLE [55164852d] 2025-11-22 21:23:45 +1300
+Branch: REL_14_STABLE [035a1f5ac] 2025-11-22 21:20:27 +1300
+-->
+     <para>
+      Adjust our JIT code to work with LLVM 21 (Holger Hoffst&#xE4;tte)
+      <ulink url="https://postgr.es/c/912cfa314">&#xA7;</ulink>
+     </para>
+
+     <para>
+      The previous coding failed to compile on aarch64 machines.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: master [6d969ca68] 2025-11-17 15:24:34 -0500
+Branch: REL_18_STABLE [db4eba152] 2025-11-17 15:24:40 -0500
+Branch: master [3e83bdd35] 2025-11-18 16:16:46 -0500
+Branch: REL_18_STABLE [6a5170755] 2025-11-18 16:16:51 -0500
+-->
+     <para>
+      Fix aarch64-specific code to build with old (RHEL7-era) system
+      header files (Tom Lane)
+      <ulink url="https://postgr.es/c/db4eba152">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/6a5170755">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Masahiko Sawada <msawada@postgresql.org>
+Branch: master [85d5bd308] 2025-12-31 11:18:14 -0800
+Branch: REL_18_STABLE [640772c6d] 2025-12-31 11:18:17 -0800
+-->
+     <para>
+      Fix incorrect configure probe
+      for <function>io_uring_queue_init_mem()</function> (Masahiko Sawada)
+      <ulink url="https://postgr.es/c/640772c6d">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This error resulted in failure to optimize async I/O buffer
+      allocations in autotools-based builds, though the code did work when
+      building with meson.  The main impact of the omission was
+      slower-than-necessary backend process exits.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Thomas Munro <tmunro@postgresql.org>
+Branch: master [f94e9141a] 2026-02-06 17:38:49 +1300
+Branch: REL_18_STABLE [33e3de6d7] 2026-02-06 17:38:39 +1300
+Branch: REL_17_STABLE [4dac22aa1] 2026-02-06 17:41:42 +1300
+Branch: REL_16_STABLE [e37b59802] 2026-02-06 17:43:49 +1300
+-->
+     <para>
+      Add new server parameter <xref linkend="guc-file-extend-method"/> to
+      control use of <function>posix_fallocate()</function> (Thomas Munro)
+      <ulink url="https://postgr.es/c/33e3de6d7">&#xA7;</ulink>
+     </para>
+
+     <para>
+      <productname>PostgreSQL</productname> version 16 and later will
+      use <function>posix_fallocate()</function>, if the platform provides
+      it, to extend relation files.  However, this has been reported to
+      interact poorly with some file systems: BTRFS compression is
+      disabled by the use of <function>posix_fallocate()</function>, and
+      XFS could produce spurious <literal>ENOSPC</literal> errors in older
+      Linux kernel versions.  To provide a workaround, introduce this new
+      server parameter.  Setting <varname>file_extend_method</varname>
+      to <literal>write_zeros</literal> will cause the server to return to
+      the old method of extending files by writing blocks of zeroes.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Thomas Munro <tmunro@postgresql.org>
+Branch: master [c507ba55f] 2025-12-10 09:01:35 +1300
+Branch: REL_18_STABLE [bebb281b0] 2025-12-10 09:05:21 +1300
+Branch: REL_17_STABLE [f24af0e04] 2025-12-10 09:10:31 +1300
+Branch: REL_16_STABLE [d62a258cd] 2025-12-10 09:11:19 +1300
+Branch: master [bec2a0aa3] 2025-12-21 17:34:20 +1300
+Branch: REL_18_STABLE [a7d06e74d] 2025-12-21 17:34:49 +1300
+Branch: REL_17_STABLE [045185913] 2025-12-21 17:35:46 +1300
+Branch: REL_16_STABLE [0666ccc16] 2025-12-21 17:36:04 +1300
+Branch: master [45d92b76d] 2025-12-29 15:47:31 +1300
+Branch: REL_18_STABLE [4da5c33a3] 2025-12-29 15:48:27 +1300
+Branch: REL_17_STABLE [b3c8119e2] 2025-12-29 15:28:17 +1300
+Branch: REL_16_STABLE [80e8ec772] 2025-12-29 15:31:39 +1300
+-->
+     <para>
+      Honor <function>open()</function>'s <literal>O_CLOEXEC</literal>
+      flag on Windows (Bryan Green, Thomas Munro)
+      <ulink url="https://postgr.es/c/bebb281b0">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/a7d06e74d">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/4da5c33a3">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Make this flag work like it does on POSIX platforms, so that we
+      don't leak file handles into child processes such as <literal>COPY
+      TO/FROM PROGRAM</literal>.  While that leakage hasn't caused many
+      problems, it seems undesirable.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: master [c0bf15729] 2026-02-07 20:05:52 -0500
+Branch: REL_18_STABLE [5eac1d68f] 2026-02-07 20:05:52 -0500
+Branch: REL_17_STABLE [59c2f7efa] 2026-02-07 20:05:52 -0500
+Branch: REL_16_STABLE [7369656fa] 2026-02-07 20:05:52 -0500
+-->
+     <para>
+      Fix failure to parse long options on the server command line in
+      Solaris executables built with meson (Tom Lane)
+      <ulink url="https://postgr.es/c/5eac1d68f">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Thomas Munro <tmunro@postgresql.org>
+Branch: master [32b236644] 2025-11-17 12:48:55 +1300
+Branch: REL_18_STABLE [bcfca332f] 2025-11-17 12:48:47 +1300
+Branch: REL_17_STABLE [d66a922f9] 2025-11-17 12:48:37 +1300
+Branch: REL_16_STABLE [a1407dade] 2025-11-17 12:48:22 +1300
+Branch: REL_15_STABLE [3995e4a9d] 2025-11-18 11:19:56 +1300
+Branch: REL_14_STABLE [29a3e22f3] 2025-11-18 11:21:15 +1300
+-->
+     <para>
+      Support process title changes on GNU/Hurd (Michael Banck)
+      <ulink url="https://postgr.es/c/bcfca332f">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Masahiko Sawada <msawada@postgresql.org>
+Branch: master [c5c808f9b] 2025-12-24 13:55:29 -0800
+Branch: REL_18_STABLE [4e1376900] 2025-12-24 13:55:32 -0800
+-->
+     <para>
+      Fix <application>psql</application>'s tab completion
+      for <command>VACUUM</command> option values (Yugo Nagata)
+      <ulink url="https://postgr.es/c/4e1376900">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Michael Paquier <michael@paquier.xyz>
+Branch: master [4b77282f2] 2026-01-29 16:20:45 +0900
+Branch: REL_18_STABLE [d42735b1e] 2026-01-29 16:20:50 +0900
+-->
+     <para>
+      In <application>psql</application> command prompts,
+      do not show a value for <literal>%P</literal> (pipeline status) when
+      there is no server connection (Chao Li)
+      <ulink url="https://postgr.es/c/d42735b1e">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This makes <literal>%P</literal> act like other prompt escape
+      sequences whose values depend on the active connection.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Nathan Bossart <nathan@postgresql.org>
+Branch: master [7a485bd64] 2026-01-09 10:12:54 -0600
+Branch: REL_18_STABLE [39d555576] 2026-01-09 10:12:54 -0600
+Branch: master [5d1f5079a] 2026-01-11 13:52:50 -0600
+Branch: REL_18_STABLE [56e1f5010] 2026-01-11 13:52:50 -0600
+-->
+     <para>
+      Fix <application>pg_dump</application>'s logic for collecting
+      sequence values (Nathan Bossart)
+      <ulink url="https://postgr.es/c/39d555576">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/56e1f5010">&#xA7;</ulink>
+     </para>
+
+     <para>
+      <application>pg_dump</application> failed if a sequence was dropped
+      concurrently with the dump, even if the sequence was not among the
+      database objects to be dumped.  Also, if the calling user lacks
+      privileges to read a sequence's
+      value, <application>pg_dump</application> emitted incorrect values
+      rather than failing as expected.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Daniel Gustafsson <dgustafsson@postgresql.org>
+Branch: master [ec0da9b89] 2025-12-27 23:05:48 +0100
+Branch: REL_18_STABLE [61c78e1f4] 2025-12-27 23:05:48 +0100
+-->
+     <para>
+      Fix potentially-incorrect quoting
+      of <varname>oauth_validator_libraries</varname> values
+      by <application>pg_dump</application> (ChangAo Chen)
+      <ulink url="https://postgr.es/c/61c78e1f4">&#xA7;</ulink>
+     </para>
+
+     <para>
+      <application>pg_dump</application> applied the wrong quoting rule if
+      it needed to dump a value of this setting.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Noah Misch <noah@leadboat.com>
+Branch: master [d49936f30] 2025-12-18 10:23:47 -0800
+Branch: REL_18_STABLE [573e679a2] 2025-12-18 10:23:51 -0800
+Branch: REL_17_STABLE [1cdc07ad5] 2025-12-18 10:23:51 -0800
+-->
+     <para>
+      Avoid <application>pg_dump</application> assertion failure in
+      binary-upgrade mode (Vignesh C)
+      <ulink url="https://postgr.es/c/573e679a2">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Failure to handle subscription-relation objects in the object
+      sorting code triggered an assertion, though there were no serious
+      ill effects in production builds.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Fujii Masao <fujii@postgresql.org>
+Branch: master [4aa0ac057] 2025-11-14 22:40:39 +0900
+Branch: REL_18_STABLE [00e64e35c] 2025-11-14 22:41:55 +0900
+Branch: REL_17_STABLE [5bc251b28] 2025-11-14 22:42:02 +0900
+-->
+     <para>
+      Fix incorrect error handling in <application>pgbench</application>
+      with multiple <command>\syncpipeline</command> commands
+      in pipeline mode (Yugo Nagata)
+      <ulink url="https://postgr.es/c/00e64e35c">&#xA7;</ulink>
+     </para>
+
+     <para>
+      If multiple <command>\syncpipeline</command> commands are
+      encountered after a query error, <application>pgbench</application>
+      would report <quote>failed to exit pipeline mode</quote>, or get an
+      assertion failure in an assert-enabled build.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Heikki Linnakangas <heikki.linnakangas@iki.fi>
+Branch: master [d5b4f3a6d] 2025-11-19 18:05:42 +0200
+Branch: REL_18_STABLE [19594271c] 2025-11-19 18:06:04 +0200
+Branch: REL_17_STABLE [f2e0ca0af] 2025-11-19 18:06:23 +0200
+Branch: REL_16_STABLE [890cc81b6] 2025-11-19 18:06:24 +0200
+Branch: REL_15_STABLE [7c494072b] 2025-11-19 18:06:26 +0200
+Branch: REL_14_STABLE [11cc0f452] 2025-11-19 18:06:27 +0200
+-->
+     <para>
+      Make <application>pg_resetwal</application> print the updated value
+      when changing OldestXID (Heikki Linnakangas)
+      <ulink url="https://postgr.es/c/19594271c">&#xA7;</ulink>
+     </para>
+
+     <para>
+      It already did that for every other variable it can change.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Heikki Linnakangas <heikki.linnakangas@iki.fi>
+Branch: master [94939c5f3] 2025-11-12 12:20:16 +0200
+Branch: REL_18_STABLE [8747b969f] 2025-11-12 12:21:30 +0200
+Branch: REL_17_STABLE [cb2ef0e92] 2025-11-12 12:23:55 +0200
+Branch: REL_16_STABLE [e039b09f8] 2025-11-12 12:45:16 +0200
+Branch: REL_15_STABLE [97cd4b65a] 2025-11-12 12:46:19 +0200
+-->
+     <para>
+      Make <application>pg_resetwal</application> allow setting next
+      multixact xid to 0 or next multixact offset to UINT32_MAX (Maxim
+      Orlov)
+      <ulink url="https://postgr.es/c/8747b969f">&#xA7;</ulink>
+     </para>
+
+     <para>
+      These are valid values, so rejecting them was incorrect.  In the
+      worst case, if a pg_upgrade is attempted when exactly at the point
+      of multixact wraparound, the upgrade would fail.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Álvaro Herrera <alvherre@kurilemu.de>
+Branch: master [6bd469d26] 2025-12-04 18:12:08 +0100
+Branch: REL_18_STABLE [df93f94dd] 2025-12-04 18:12:08 +0100
+Branch: REL_17_STABLE [ce2f575b7] 2025-12-04 18:12:08 +0100
+Branch: master [1f28982e4] 2026-01-21 18:55:43 +0100
+Branch: REL_18_STABLE [3c83a2a0a] 2026-01-21 18:55:43 +0100
+Branch: REL_17_STABLE [e1a327dc4] 2026-01-21 18:55:43 +0100
+Branch: REL_16_STABLE [098a1fab8] 2026-01-21 18:55:43 +0100
+Branch: REL_15_STABLE [dcddd6987] 2026-01-21 18:55:43 +0100
+Branch: REL_14_STABLE [607a67c5e] 2026-01-21 18:55:43 +0100
+-->
+     <para>
+      In <filename>contrib/amcheck</filename>, use the correct snapshot
+      for btree index parent checks (Mihail Nikalayeu)
+      <ulink url="https://postgr.es/c/df93f94dd">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/3c83a2a0a">&#xA7;</ulink>
+     </para>
+
+     <para>
+      The previous coding caused spurious errors when examining indexes
+      created with <command>CREATE INDEX CONCURRENTLY</command>.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Heikki Linnakangas <heikki.linnakangas@iki.fi>
+Branch: master [cbe04e5d7] 2025-12-02 21:11:15 +0200
+Branch: REL_18_STABLE [19e786727] 2025-12-02 21:15:04 +0200
+Branch: REL_17_STABLE [e8ae59445] 2025-12-02 21:15:28 +0200
+Branch: REL_16_STABLE [182901626] 2025-12-02 21:15:48 +0200
+Branch: REL_15_STABLE [7792bdc45] 2025-12-02 21:16:06 +0200
+Branch: REL_14_STABLE [fbb4b6078] 2025-12-02 21:16:17 +0200
+-->
+     <para>
+      Fix <filename>contrib/amcheck</filename> to
+      handle <quote>half-dead</quote> btree index pages correctly
+      (Heikki Linnakangas)
+      <ulink url="https://postgr.es/c/19e786727">&#xA7;</ulink>
+     </para>
+
+     <para>
+      <filename>amcheck</filename> expected such a page to have a parent
+      downlink, but it does not, leading to a false error report
+      about <quote>mismatch between parent key and child high key</quote>.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Heikki Linnakangas <heikki.linnakangas@iki.fi>
+Branch: master [6c05ef572] 2025-12-02 21:10:51 +0200
+Branch: REL_18_STABLE [50c63ebb0] 2025-12-02 21:14:53 +0200
+Branch: REL_17_STABLE [5a2d1df00] 2025-12-02 21:15:19 +0200
+Branch: REL_16_STABLE [f2a6df9fd] 2025-12-02 21:15:43 +0200
+Branch: REL_15_STABLE [721b58fbe] 2025-12-02 21:16:01 +0200
+Branch: REL_14_STABLE [a4cb21ea9] 2025-12-02 21:16:13 +0200
+-->
+     <para>
+      Fix <filename>contrib/amcheck</filename> to
+      handle incomplete btree root page splits correctly
+      (Heikki Linnakangas)
+      <ulink url="https://postgr.es/c/50c63ebb0">&#xA7;</ulink>
+     </para>
+
+     <para>
+      <filename>amcheck</filename> could report a false error
+      about <quote>block is not true root</quote>.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Michael Paquier <michael@paquier.xyz>
+Branch: master [3f83de20b] 2025-12-11 14:11:06 +0900
+Branch: REL_18_STABLE [580b5c2f3] 2025-12-11 14:11:25 +0900
+-->
+     <para>
+      Fix excessive memory allocation
+      in <filename>contrib/pg_buffercache</filename> (David Geier)
+      <ulink url="https://postgr.es/c/580b5c2f3">&#xA7;</ulink>
+     </para>
+
+     <para>
+      The code allocated twice as much memory as it needed for NUMA
+      page status.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: David Rowley <drowley@postgresql.org>
+Branch: master [4f49e4b55] 2026-01-04 20:32:40 +1300
+Branch: REL_18_STABLE [07c1c6ec5] 2026-01-04 20:33:14 +1300
+Branch: REL_17_STABLE [a5f2dc421] 2026-01-04 20:33:39 +1300
+Branch: REL_16_STABLE [54f82c4aa] 2026-01-04 20:34:01 +1300
+Branch: REL_15_STABLE [c89510431] 2026-01-04 20:34:22 +1300
+Branch: REL_14_STABLE [67a6fd507] 2026-01-04 20:34:45 +1300
+-->
+     <para>
+      Fix edge-case integer overflow
+      in <filename>contrib/intarray</filename>'s selectivity estimator
+      for <literal>@@</literal> (Chao Li)
+      <ulink url="https://postgr.es/c/07c1c6ec5">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This could cause poor selectivity estimates to be produced for cases
+      involving the maximum integer value.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Jeff Davis <jdavis@postgresql.org>
+Branch: master [84d5efa7e] 2025-12-16 10:35:40 -0800
+Branch: REL_18_STABLE [f79e239e0] 2025-12-16 10:36:09 -0800
+Branch: REL_17_STABLE [b8cfe9dc2] 2025-12-16 10:36:29 -0800
+Branch: REL_16_STABLE [b80227c0a] 2025-12-16 10:36:48 -0800
+Branch: REL_15_STABLE [335b2f30b] 2025-12-16 10:37:22 -0800
+Branch: REL_14_STABLE [898991966] 2025-12-16 10:38:15 -0800
+-->
+     <para>
+      Fix multibyte-encoding issue in <filename>contrib/ltree</filename>
+      (Jeff Davis)
+      <ulink url="https://postgr.es/c/f79e239e0">&#xA7;</ulink>
+     </para>
+
+     <para>
+      The previous coding could pass an incomplete multibyte character
+      to <function>lower()</function>, probably resulting in incorrect
+      behavior.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Michael Paquier <michael@paquier.xyz>
+Branch: master [5d95219fa] 2026-01-20 08:11:12 +0900
+Branch: REL_18_STABLE [3304e97b1] 2026-01-20 08:11:16 +0900
+-->
+     <para>
+      Avoid crash in <filename>contrib/pg_stat_statements</filename> when
+      an <literal>IN</literal> list contains both constants and
+      non-constant expressions (Sami Imseih)
+      <ulink url="https://postgr.es/c/3304e97b1">&#xA7;</ulink>
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: master [228fe0c3e] 2026-01-18 14:54:33 -0500
+Branch: REL_18_STABLE [6574bee64] 2026-01-18 14:54:47 -0500
+Branch: REL_17_STABLE [f87c0b84e] 2026-01-18 14:54:54 -0500
+Branch: REL_16_STABLE [d852d105e] 2026-01-18 14:55:01 -0500
+Branch: REL_15_STABLE [00410b76d] 2026-01-18 14:55:07 -0500
+Branch: REL_14_STABLE [8bbf28191] 2026-01-18 14:55:13 -0500
+-->
+     <para>
+      Update time zone data files to <application>tzdata</application>
+      release 2025c (Tom Lane)
+      <ulink url="https://postgr.es/c/6574bee64">&#xA7;</ulink>
+     </para>
+
+     <para>
+      The only change is in historical data for pre-1976 timestamps in
+      Baja California.
+     </para>
+    </listitem>
+
+   </itemizedlist>
+
+  </sect2>
+ </sect1>
+
  <sect1 id="release-18-1">
   <title>Release 18.1</title>
 
@@ -311456,7 +313458,7 @@ Author: Tom Lane <tgl@sss.pgh.pa.us>
    </sect3>
 
    <sect3 id="release-18-libpq">
-    <title><xref linkend="libpq"/></title>
+    <title><link linkend="libpq">Libpq</link></title>
 
     <itemizedlist>
 
@@ -312407,7 +314409,7 @@ Author: Peter Eisentraut <peter@eisentraut.org>
 
      <listitem>
      <para>
-     Add support for Python "Limited <acronym>API</acronym>" in <xref linkend="plpython"/> (Peter Eisentraut)
+     Add support for Python "Limited <acronym>API</acronym>" in <link linkend="plpython">PL/Python</link> (Peter Eisentraut)
      <ulink url="https://postgr.es/c/72a3d0462">&#xA7;</ulink>
      <ulink url="https://postgr.es/c/0793ab810">&#xA7;</ulink>
      </para>
@@ -314019,7 +316021,7 @@ SET client_min_messages = DEBUG1;
   verification functions is <literal>true</literal>, an additional
   phase of verification is performed against the table associated with
   the target index relation.  This consists of a <quote>dummy</quote>
-  <command>CREATE INDEX</command> operation, which checks for the
+  <command>CREATE INDEX CONCURRENTLY</command> operation, which checks for the
   presence of all hypothetical new index tuples against a temporary,
   in-memory summarizing structure (this is built when needed during
   the basic first phase of verification).  The summarizing structure
@@ -319060,6 +321062,17 @@ ALTER TEXT SEARCH CONFIGURATION english
     <para>
      Specifies the data null string,
      the same as <command>COPY</command>'s <literal>NULL</literal> option.
+    </para>
+   </listitem>
+  </varlistentry>
+
+  <varlistentry>
+   <term><literal>default</literal></term>
+
+   <listitem>
+    <para>
+     Specifies the string that represents a default value,
+     the same as <command>COPY</command>'s <literal>DEFAULT</literal> option.
     </para>
    </listitem>
   </varlistentry>
@@ -324294,7 +326307,7 @@ passwordcheck.min_password_length = 12
  </sect2>
 
  <sect2 id="pgbuffercache-pg-buffercache-evict-relation">
-  <title>The <structname>pg_buffercache_evict_relation()</structname> Function</title>
+  <title>The <function>pg_buffercache_evict_relation()</function> Function</title>
   <para>
    The <function>pg_buffercache_evict_relation()</function> function is very
    similar to the <function>pg_buffercache_evict()</function> function.  The
@@ -324312,7 +326325,7 @@ passwordcheck.min_password_length = 12
  </sect2>
 
  <sect2 id="pgbuffercache-pg-buffercache-evict-all">
-  <title>The <structname>pg_buffercache_evict_all()</structname> Function</title>
+  <title>The <function>pg_buffercache_evict_all()</function> Function</title>
   <para>
    The <function>pg_buffercache_evict_all()</function> function is very
    similar to the <function>pg_buffercache_evict()</function> function.  The
@@ -326073,8 +328086,8 @@ LOAD 'pg_overexplain';
    The <literal>DEBUG</literal> option displays miscellaneous information from
    the plan tree that is not normally shown because it is not expected to be
    of general interest. For each individual plan node, it will display the
-   following fields.  See <literal>Plan</literal> in
-   <literal>nodes/plannodes.h</literal> for additional documentation of these
+   following fields.  See <structname>Plan</structname> in
+   <filename>nodes/plannodes.h</filename> for additional documentation of these
    fields.
   </para>
 
@@ -326116,8 +328129,8 @@ LOAD 'pg_overexplain';
 
   <para>
    Once per query, the <literal>DEBUG</literal> option will display the
-   following fields. See <literal>PlannedStmt</literal> in
-   <literal>nodes/plannodes.h</literal> for additional detail.
+   following fields. See <structname>PlannedStmt</structname> in
+   <filename>nodes/plannodes.h</filename> for additional detail.
   </para>
 
   <itemizedlist>
@@ -326131,7 +328144,7 @@ LOAD 'pg_overexplain';
    <listitem>
     <para>
      <literal>Flags</literal>. A comma-separated list of Boolean structure
-     member names from the <literal>PlannedStmt</literal> that are set to
+     member names from the <structname>PlannedStmt</structname> that are set to
      <literal>true</literal>. It covers the following structure members:
      <literal>hasReturning</literal>, <literal>hasModifyingCTE</literal>,
      <literal>canSetTag</literal>, <literal>transientPlan</literal>,
@@ -326211,7 +328224,7 @@ LOAD 'pg_overexplain';
    table entry (e.g.  <literal>relation</literal>,
    <literal>subquery</literal>, or <literal>join</literal>), followed by the
    contents of various range table entry fields that are not normally part of
-   <literal>EXPLAIN</literal> output. Some of these fields are only displayed
+   <command>EXPLAIN</command> output. Some of these fields are only displayed
    for certain kinds of range table entries. For example,
    <literal>Eref</literal> is displayed for all types of range table entries,
    but <literal>CTE Name</literal> is displayed only for range table entries
@@ -326220,7 +328233,7 @@ LOAD 'pg_overexplain';
 
   <para>
    For more information about range table entries, see the definition of
-   <literal>RangeTblEntry</literal> in <literal>nodes/plannodes.h</literal>.
+   <structname>RangeTblEntry</structname> in <filename>nodes/parsenodes.h</filename>.
   </para>
  </sect2>
 

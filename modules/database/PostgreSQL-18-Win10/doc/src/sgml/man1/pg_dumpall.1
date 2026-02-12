@@ -2,12 +2,12 @@
 .\"     Title: pg_dumpall
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
-.\"      Date: 2025
-.\"    Manual: PostgreSQL 18.1 Documentation
-.\"    Source: PostgreSQL 18.1
+.\"      Date: 2026
+.\"    Manual: PostgreSQL 18.2 Documentation
+.\"    Source: PostgreSQL 18.2
 .\"  Language: English
 .\"
-.TH "PG_DUMPALL" "1" "2025" "PostgreSQL 18.1" "PostgreSQL 18.1 Documentation"
+.TH "PG_DUMPALL" "1" "2026" "PostgreSQL 18.2" "PostgreSQL 18.2 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -455,12 +455,12 @@ to be lost, rather than the entire table contents\&.
 .PP
 \fB\-\-statistics\fR
 .RS 4
-Dump statistics\&.
+Dump optimizer statistics\&.
 .RE
 .PP
 \fB\-\-statistics\-only\fR
 .RS 4
-Dump only the statistics, not the schema (data definitions) or data\&. Statistics for tables, materialized views, foreign tables, and indexes are dumped\&.
+Dump only the statistics, not the schema (data definitions) or data\&. Optimizer statistics for tables, materialized views, foreign tables, and indexes are dumped\&.
 .RE
 .PP
 \fB\-\-sequence\-data\fR
@@ -632,13 +632,12 @@ and
 template1
 databases, ensuring that those databases will retain the same properties (for instance, locale and encoding) that they had in the source cluster\&. Without the option, those databases will retain their existing database\-level properties, as well as any pre\-existing contents\&.
 .PP
-If
+When
 \fB\-\-statistics\fR
 is specified,
 \fBpg_dumpall\fR
-will include most optimizer statistics in the resulting dump file\&. However, some statistics may not be included, such as those created explicitly with
-CREATE STATISTICS (\fBCREATE_STATISTICS\fR(7))
-or custom statistics added by an extension\&. Therefore, it may be useful to run
+will include most optimizer statistics in the resulting dump file\&. This does not include all statistics, such as those created explicitly with
+CREATE STATISTICS (\fBCREATE_STATISTICS\fR(7)), custom statistics added by an extension, or statistics collected by the cumulative statistics system\&. Therefore, it may still be useful to run
 \fBANALYZE\fR
 on each database after restoring from a dump file to ensure optimal performance\&. You can also run
 \fBvacuumdb \-a \-z\fR

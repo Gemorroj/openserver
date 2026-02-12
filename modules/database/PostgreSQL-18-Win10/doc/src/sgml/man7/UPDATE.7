@@ -2,12 +2,12 @@
 .\"     Title: UPDATE
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
-.\"      Date: 2025
-.\"    Manual: PostgreSQL 18.1 Documentation
-.\"    Source: PostgreSQL 18.1
+.\"      Date: 2026
+.\"    Manual: PostgreSQL 18.2 Documentation
+.\"    Source: PostgreSQL 18.2
 .\"  Language: English
 .\"
-.TH "UPDATE" "7" "2025" "PostgreSQL 18.1" "PostgreSQL 18.1 Documentation"
+.TH "UPDATE" "7" "2026" "PostgreSQL 18.2" "PostgreSQL 18.2 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -510,7 +510,10 @@ UPDATE work_item SET status = \*(Aqfailed\*(Aq
 .RE
 .\}
 .sp
-This command will need to be repeated until no rows remain to be updated\&. Use of an
+This command will need to be repeated until no rows remain to be updated\&. (This use of
+ctid
+is only safe because the query is repeatedly run, avoiding the problem of changed
+ctids\&.) Use of an
 ORDER BY
 clause allows the command to prioritize which rows will be updated; it can also prevent deadlock with other update operations if they use the same ordering\&. If lock contention is a concern, then
 SKIP LOCKED

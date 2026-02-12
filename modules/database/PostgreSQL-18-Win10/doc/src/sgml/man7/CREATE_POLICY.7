@@ -2,12 +2,12 @@
 .\"     Title: CREATE POLICY
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
-.\"      Date: 2025
-.\"    Manual: PostgreSQL 18.1 Documentation
-.\"    Source: PostgreSQL 18.1
+.\"      Date: 2026
+.\"    Manual: PostgreSQL 18.2 Documentation
+.\"    Source: PostgreSQL 18.2
 .\"  Language: English
 .\"
-.TH "CREATE POLICY" "7" "2025" "PostgreSQL 18.1" "PostgreSQL 18.1 Documentation"
+.TH "CREATE POLICY" "7" "2026" "PostgreSQL 18.2" "PostgreSQL 18.2 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -54,7 +54,9 @@ UPDATE
 are checked against the expression specified in
 WITH CHECK\&. When a
 USING
-expression returns true for a given row then that row is visible to the user, while if false or null is returned then the row is not visible\&. When a
+expression returns true for a given row then that row is visible to the user, while if false or null is returned then the row is not visible\&. Typically, no error occurs when a row is not visible, but see
+Table\ \&300
+for exceptions\&. When a
 WITH CHECK
 expression returns true for a row then that row is inserted or updated, while if false or null is returned then an error occurs\&.
 .PP
@@ -151,7 +153,9 @@ boolean)\&. The conditional expression cannot contain any aggregate or window fu
 \fBSELECT\fR), and will not be available for modification (in an
 \fBUPDATE\fR
 or
-\fBDELETE\fR)\&. Such rows are silently suppressed; no error is reported\&.
+\fBDELETE\fR)\&. Typically, such rows are silently suppressed; no error is reported (but see
+Table\ \&300
+for exceptions)\&.
 .RE
 .PP
 \fIcheck_expression\fR
@@ -205,7 +209,11 @@ command attempts to add rows to the table that do not pass the
 ALL
 policy\*(Aqs
 WITH CHECK
-expression, the entire command will be aborted\&.
+expression (or its
+USING
+expression, if it does not have a
+WITH CHECK
+expression), the entire command will be aborted\&.
 .RE
 .PP
 SELECT
@@ -223,13 +231,68 @@ SELECT
 query, and that queries that require
 SELECT
 permissions, such as
-UPDATE, will also only see those records that are allowed by the
+UPDATE,
+DELETE, and
+MERGE, will also only see those records that are allowed by the
 SELECT
 policy\&. A
 SELECT
 policy cannot have a
 WITH CHECK
-expression, as it only applies in cases where records are being retrieved from the relation\&.
+expression, as it only applies in cases where records are being retrieved from the relation, except as described below\&.
+.sp
+If a data\-modifying query has a
+RETURNING
+clause,
+SELECT
+permissions are required on the relation, and any newly inserted or updated rows from the relation must satisfy the relation\*(Aqs
+SELECT
+policies in order to be available to the
+RETURNING
+clause\&. If a newly inserted or updated row does not satisfy the relation\*(Aqs
+SELECT
+policies, an error will be thrown (inserted or updated rows to be returned are
+\fInever\fR
+silently ignored)\&.
+.sp
+If an
+INSERT
+has an
+ON CONFLICT DO NOTHING/UPDATE
+clause,
+SELECT
+permissions are required on the relation, and the rows proposed for insertion are checked using the relation\*(Aqs
+SELECT
+policies\&. If a row proposed for insertion does not satisfy the relation\*(Aqs
+SELECT
+policies, an error is thrown (the
+INSERT
+is
+\fInever\fR
+silently avoided)\&. In addition, if the
+UPDATE
+path is taken, the row to be updated and the new updated row are checked against the relation\*(Aqs
+SELECT
+policies, and an error is thrown if they are not satisfied (an auxiliary
+UPDATE
+is
+\fInever\fR
+silently avoided)\&.
+.sp
+A
+MERGE
+command requires
+SELECT
+permissions on both the source and target relations, and so each relation\*(Aqs
+SELECT
+policies are applied before they are joined, and the
+MERGE
+actions will only see those records that are allowed by those policies\&. In addition, if an
+UPDATE
+action is executed, the target relation\*(Aqs
+SELECT
+policies are applied to the updated row, as for a standalone
+UPDATE, except that an error is thrown if they are not satisfied\&.
 .RE
 .PP
 INSERT
@@ -250,17 +313,15 @@ policy cannot have a
 USING
 expression, as it only applies in cases where records are being added to the relation\&.
 .sp
-Note that
+Note that an
 INSERT
-with
-ON CONFLICT DO UPDATE
-checks
+with an
+ON CONFLICT DO NOTHING/UPDATE
+clause will check the
 INSERT
 policies\*(Aq
 WITH CHECK
-expressions only for rows appended to the relation by the
-INSERT
-path\&.
+expressions for all rows proposed for insertion, regardless of whether or not they end up being inserted\&.
 .RE
 .PP
 UPDATE
@@ -269,20 +330,19 @@ Using
 UPDATE
 for a policy means that it will apply to
 UPDATE,
-SELECT FOR UPDATE
-and
+SELECT FOR UPDATE, and
 SELECT FOR SHARE
 commands, as well as auxiliary
 ON CONFLICT DO UPDATE
 clauses of
 INSERT
-commands\&.
+commands, and
 MERGE
 commands containing
 UPDATE
-actions are affected as well\&. Since
+actions\&. Since an
 UPDATE
-involves pulling an existing record and replacing it with a new modified record,
+command involves pulling an existing record and replacing it with a new modified record,
 UPDATE
 policies accept both a
 USING
@@ -352,7 +412,11 @@ expressions, an error will be thrown (the
 UPDATE
 path will
 \fInever\fR
-be silently avoided)\&.
+be silently avoided)\&. The same applies to an
+UPDATE
+action of a
+\fBMERGE\fR
+command\&.
 .RE
 .PP
 DELETE
@@ -361,15 +425,29 @@ Using
 DELETE
 for a policy means that it will apply to
 DELETE
-commands\&. Only rows that pass this policy will be seen by a
+commands and
+MERGE
+commands containing
+DELETE
+actions\&. For a
+DELETE
+command, only rows that pass this policy will be seen by the
 DELETE
 command\&. There can be rows that are visible through a
 SELECT
-that are not available for deletion, if they do not pass the
+policy that are not available for deletion, if they do not pass the
 USING
 expression for the
 DELETE
-policy\&.
+policy\&. Note, however, that a
+DELETE
+action in a
+MERGE
+command will see rows that are visible through
+SELECT
+policies, and if the
+DELETE
+policy does not pass for such a row, an error will be thrown\&.
 .sp
 In most cases a
 DELETE
@@ -401,6 +479,13 @@ policy cannot have a
 WITH CHECK
 expression, as it only applies in cases where records are being deleted from the relation, so that there is no new row to check\&.
 .RE
+.PP
+Table\ \&300
+summarizes how the different types of policy apply to specific commands\&. In the table,
+\(lqcheck\(rq
+means that the policy expression is checked and an error is thrown if it returns false or null, whereas
+\(lqfilter\(rq
+means that the row is silently ignored if the policy expression returns false or null\&.
 .sp
 .it 1 an-trap
 .nr an-no-space-flag 1
@@ -441,11 +526,15 @@ l l l l l l
 l l l l l l
 l l l l l l
 l l l l l l
+l l l l l l
+l l l l l l
+l l l l l l
+l l l l l l
 l s s s s s.
 T{
-\fBSELECT\fR
+\fBSELECT\fR / \fBCOPY \&.\&.\&. TO\fR
 T}:T{
-Existing row
+Filter existing row
 T}:T{
 \(em
 T}:T{
@@ -458,35 +547,22 @@ T}
 T{
 \fBSELECT FOR UPDATE/SHARE\fR
 T}:T{
-Existing row
+Filter existing row
 T}:T{
 \(em
 T}:T{
-Existing row
-T}:T{
-\(em
-T}:T{
-\(em
-T}
-T{
-\fBINSERT\fR / \fBMERGE \&.\&.\&. THEN INSERT\fR
-T}:T{
-\(em
-T}:T{
-New row
-T}:T{
-\(em
+Filter existing row
 T}:T{
 \(em
 T}:T{
 \(em
 T}
 T{
-\fBINSERT \&.\&.\&. RETURNING\fR
+\fBINSERT\fR
 T}:T{
-New row [a]
+Check new row\ \&[a]
 T}:T{
-New row
+Check new row
 T}:T{
 \(em
 T}:T{
@@ -495,22 +571,23 @@ T}:T{
 \(em
 T}
 T{
-\fBUPDATE\fR / \fBMERGE \&.\&.\&. THEN UPDATE\fR
+\fBUPDATE\fR
 T}:T{
-Existing & new rows [a]
+Filter existing row\ \&[a] &
+        check new row\ \&[a]
 T}:T{
 \(em
 T}:T{
-Existing row
+Filter existing row
 T}:T{
-New row
+Check new row
 T}:T{
 \(em
 T}
 T{
 \fBDELETE\fR
 T}:T{
-Existing row [a]
+Filter existing row\ \&[a]
 T}:T{
 \(em
 T}:T{
@@ -518,30 +595,107 @@ T}:T{
 T}:T{
 \(em
 T}:T{
-Existing row
+Filter existing row
+T}
+T{
+\fBINSERT \&.\&.\&. ON CONFLICT\fR
+T}:T{
+Check new row\ \&[b]
+T}:T{
+Check new row\ \&[b]
+T}:T{
+\(em
+T}:T{
+\(em
+T}:T{
+\(em
 T}
 T{
 \fBON CONFLICT DO UPDATE\fR
 T}:T{
-Existing & new rows
+Check existing & new rows\ \&[c]
 T}:T{
 \(em
 T}:T{
-Existing row
+Check existing row
 T}:T{
-New row
+Check new row\ \&[c]
 T}:T{
 \(em
+T}
+T{
+\fBMERGE\fR
+T}:T{
+Filter source & target rows
+T}:T{
+\(em
+T}:T{
+\(em
+T}:T{
+\(em
+T}:T{
+\(em
+T}
+T{
+\fBMERGE \&.\&.\&. THEN INSERT\fR
+T}:T{
+Check new row\ \&[a]
+T}:T{
+Check new row
+T}:T{
+\(em
+T}:T{
+\(em
+T}:T{
+\(em
+T}
+T{
+\fBMERGE \&.\&.\&. THEN UPDATE\fR
+T}:T{
+Check new row
+T}:T{
+\(em
+T}:T{
+Check existing row
+T}:T{
+Check new row
+T}:T{
+\(em
+T}
+T{
+\fBMERGE \&.\&.\&. THEN DELETE\fR
+T}:T{
+\(em
+T}:T{
+\(em
+T}:T{
+\(em
+T}:T{
+\(em
+T}:T{
+Check existing row
 T}
 T{
 ----
 .br
 [a]
-If read access is required to the existing or new row (for example, a
+If read access is required to either the existing or new row (for example, a
 WHERE
 or
 RETURNING
 clause that refers to columns from the relation)\&.
+----
+.br
+[b]
+Row proposed for insertion is checked regardless of whether or not a conflict occurs\&.
+----
+.br
+[c]
+New row of the auxiliary
+\fBUPDATE\fR
+command, which might be different from the new row of the original
+\fBINSERT\fR
+command\&.
 T}
 .TE
 .sp 1

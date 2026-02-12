@@ -2,12 +2,12 @@
 .\"     Title: CREATE PUBLICATION
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
-.\"      Date: 2025
-.\"    Manual: PostgreSQL 18.1 Documentation
-.\"    Source: PostgreSQL 18.1
+.\"      Date: 2026
+.\"    Manual: PostgreSQL 18.2 Documentation
+.\"    Source: PostgreSQL 18.2
 .\"  Language: English
 .\"
-.TH "CREATE PUBLICATION" "7" "2025" "PostgreSQL 18.1" "PostgreSQL 18.1 Documentation"
+.TH "CREATE PUBLICATION" "7" "2026" "PostgreSQL 18.2" "PostgreSQL 18.2 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -39,8 +39,12 @@ CREATE PUBLICATION \fIname\fR
 
 where \fIpublication_object\fR is one of:
 
-    TABLE [ ONLY ] \fItable_name\fR [ * ] [ ( \fIcolumn_name\fR [, \&.\&.\&. ] ) ] [ WHERE ( \fIexpression\fR ) ] [, \&.\&.\&. ]
+    TABLE \fItable_and_columns\fR [, \&.\&.\&. ]
     TABLES IN SCHEMA { \fIschema_name\fR | CURRENT_SCHEMA } [, \&.\&.\&. ]
+
+and \fItable_and_columns\fR is:
+
+    [ ONLY ] \fItable_name\fR [ * ] [ ( \fIcolumn_name\fR [, \&.\&.\&. ] ) ] [ WHERE ( \fIexpression\fR ) ]
 .fi
 .SH "DESCRIPTION"
 .PP
@@ -167,7 +171,10 @@ for more details about logical replication of generated columns\&.
 .PP
 publish_via_partition_root (boolean)
 .RS 4
-This parameter determines whether changes in a partitioned table (or on its partitions) contained in the publication will be published using the identity and schema of the partitioned table rather than that of the individual partitions that are actually changed; the latter is the default\&. Enabling this allows the changes to be replicated into a non\-partitioned table or a partitioned table consisting of a different set of partitions\&.
+This parameter controls how changes to a partitioned table (or any of its partitions) are published\&. When set to
+true, changes are published using the identity and schema of the root partitioned table\&. When set to
+false
+(the default), changes are published using the identity and schema of the individual partitions where the changes actually occurred\&. Enabling this option allows the changes to be replicated into a non\-partitioned table or into a partitioned table whose partition structure differs from that of the publisher\&.
 .sp
 There can be a case where a subscription combines multiple publications\&. If a partitioned table is published by any subscribed publications which set
 publish_via_partition_root = true, changes on this partitioned table (or on its partitions) will be published using the identity and schema of this partitioned table rather than that of the individual partitions\&.

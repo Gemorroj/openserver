@@ -2,12 +2,12 @@
 .\"     Title: ALTER PUBLICATION
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
-.\"      Date: 2025
-.\"    Manual: PostgreSQL 18.1 Documentation
-.\"    Source: PostgreSQL 18.1
+.\"      Date: 2026
+.\"    Manual: PostgreSQL 18.2 Documentation
+.\"    Source: PostgreSQL 18.2
 .\"  Language: English
 .\"
-.TH "ALTER PUBLICATION" "7" "2025" "PostgreSQL 18.1" "PostgreSQL 18.1 Documentation"
+.TH "ALTER PUBLICATION" "7" "2026" "PostgreSQL 18.2" "PostgreSQL 18.2 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -34,15 +34,24 @@ ALTER_PUBLICATION \- change the definition of a publication
 .nf
 ALTER PUBLICATION \fIname\fR ADD \fIpublication_object\fR [, \&.\&.\&.]
 ALTER PUBLICATION \fIname\fR SET \fIpublication_object\fR [, \&.\&.\&.]
-ALTER PUBLICATION \fIname\fR DROP \fIpublication_object\fR [, \&.\&.\&.]
+ALTER PUBLICATION \fIname\fR DROP \fIpublication_drop_object\fR [, \&.\&.\&.]
 ALTER PUBLICATION \fIname\fR SET ( \fIpublication_parameter\fR [= \fIvalue\fR] [, \&.\&.\&. ] )
 ALTER PUBLICATION \fIname\fR OWNER TO { \fInew_owner\fR | CURRENT_ROLE | CURRENT_USER | SESSION_USER }
 ALTER PUBLICATION \fIname\fR RENAME TO \fInew_name\fR
 
 where \fIpublication_object\fR is one of:
 
-    TABLE [ ONLY ] \fItable_name\fR [ * ] [ ( \fIcolumn_name\fR [, \&.\&.\&. ] ) ] [ WHERE ( \fIexpression\fR ) ] [, \&.\&.\&. ]
+    TABLE \fItable_and_columns\fR [, \&.\&.\&. ]
     TABLES IN SCHEMA { \fIschema_name\fR | CURRENT_SCHEMA } [, \&.\&.\&. ]
+
+and \fIpublication_drop_object\fR is one of:
+
+    TABLE [ ONLY ] \fItable_name\fR [ * ] [, \&.\&.\&. ]
+    TABLES IN SCHEMA { \fIschema_name\fR | CURRENT_SCHEMA } [, \&.\&.\&. ]
+
+and \fItable_and_columns\fR is:
+
+    [ ONLY ] \fItable_name\fR [ * ] [ ( \fIcolumn_name\fR [, \&.\&.\&. ] ) ] [ WHERE ( \fIexpression\fR ) ]
 .fi
 .SH "DESCRIPTION"
 .PP
@@ -62,11 +71,7 @@ action on the subscribing side in order to become effective\&. Note also that
 DROP TABLES IN SCHEMA
 will not drop any schema tables that were specified using
 FOR TABLE/
-ADD TABLE, and the combination of
-DROP
-with a
-WHERE
-clause is not allowed\&.
+ADD TABLE\&.
 .PP
 The fourth variant of this command listed in the synopsis can change all of the publication properties specified in
 CREATE PUBLICATION (\fBCREATE_PUBLICATION\fR(7))\&. Properties not mentioned in the command retain their previous settings\&.
