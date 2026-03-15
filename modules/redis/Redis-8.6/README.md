@@ -46,7 +46,7 @@ In no event shall the author of this Software be liable for any damages whatsoev
 
 ## Building from source code on Windows
 
-  - Redis binaries are built with the original source [Redis](https://github.com/redis/redis) and have been compiled with Visual Studio 2022 to obtain higher performance and better stability than the binaries built by Cygwin, MSYS, or even WSL2.
+  - Redis binaries are built with the original source [Redis](https://github.com/redis/redis) and have been compiled with Visual Studio 2026 to obtain higher performance and better stability than the binaries built by Cygwin, MSYS, or even WSL2.
 
   - Redis can be installed as a Windows Service.
   
@@ -174,5 +174,6 @@ redis-server --service-install --service-name Sentinel sentinel.conf --sentinel
 
 
   
+
 
 
