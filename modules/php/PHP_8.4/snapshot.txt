@@ -1,9 +1,9 @@
 This snapshot was automatically generated on
-Tue, 10 Mar 2026 16:10:08 +0000
+Wed, 08 Apr 2026 08:34:44 +0000
 
-Version: 8.4.19
+Version: 8.4.20
 Branch: HEAD
-Build: C:\Users\runneradmin\AppData\Local\Temp\php-88c323f5-4a39-471e-8dfb-e0d052fc9bd2\config\vs17\x64\obj\Release_TS
+Build: C:\Users\runneradmin\AppData\Local\Temp\php-9d8bc0e6-77d2-4840-ba24-fce94ec154ad\config\vs17\x64\obj\Release_TS
 
 Built-in Extensions
 ===========================
@@ -50,6 +50,8 @@ Module: php_curl.dll
 	libssl-3-x64.dll
 	libssh2.dll
 	nghttp2.dll
+	brotlidec.dll
+	libzstd.dll
 
 Module: libssl-3-x64.dll
 ===========================
@@ -58,6 +60,10 @@ Module: libssl-3-x64.dll
 Module: libssh2.dll
 ===========================
 	libcrypto-3-x64.dll
+
+Module: brotlidec.dll
+===========================
+	brotlicommon.dll
 
 Module: php_enchant.dll
 ===========================
