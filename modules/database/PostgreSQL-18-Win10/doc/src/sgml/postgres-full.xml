@@ -2,7 +2,7 @@
 <!-- doc/src/sgml/postgres.sgml -->
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 <!ENTITY % version SYSTEM "version.sgml">
-<!ENTITY version "18.2">
+<!ENTITY version "18.3">
 <!ENTITY majorversion "18">
 <!ENTITY % filelist SYSTEM "filelist.sgml">
 <!-- doc/src/sgml/filelist.sgml --><!ENTITY history SYSTEM "history.sgml">
@@ -414,12 +414,12 @@ break is not needed in a wider output rendering.
 --><!ENTITY zwsp "&#x200B;">
 ]>
 <book id="postgres">
- <title>PostgreSQL 18.2 Documentation</title>
+ <title>PostgreSQL 18.3 Documentation</title>
 
  <bookinfo>
   <corpauthor>The PostgreSQL Global Development Group</corpauthor>
   <productname>PostgreSQL</productname>
-  <productnumber>18.2</productnumber>
+  <productnumber>18.3</productnumber>
   <!-- doc/src/sgml/legal.sgml -->
 
 <date>2026</date>
@@ -1187,7 +1187,7 @@ break is not needed in a wider output rendering.
      </para>
 
      <para>
-      If your version is older than 18.2 we will almost certainly
+      If your version is older than 18.3 we will almost certainly
       tell you to upgrade. There are many bug fixes and improvements
       in each new release, so it is quite possible that a bug you have
       encountered in an older release of <productname>PostgreSQL</productname>
@@ -1673,7 +1673,7 @@ createdb: error: database creation failed: ERROR:  permission denied to create d
     In <command>psql</command>, you will be greeted with the following
     message:
 <screen>
-psql (18.2)
+psql (18.3)
 Type "help" for help.
 
 mydb=&gt;
@@ -1708,7 +1708,7 @@ mydb=#
 <prompt>mydb=&gt;</prompt> <userinput>SELECT version();</userinput>
                                          version
 -------------------------------------------------------------------&#x200B;-----------------------
- PostgreSQL 18.2 on x86_64-pc-linux-gnu, compiled by gcc (Debian 4.9.2-10) 4.9.2, 64-bit
+ PostgreSQL 18.3 on x86_64-pc-linux-gnu, compiled by gcc (Debian 4.9.2-10) 4.9.2, 64-bit
 (1 row)
 
 <prompt>mydb=&gt;</prompt> <userinput>SELECT current_date;</userinput>
@@ -73159,7 +73159,7 @@ $ <userinput>kill -INT `head -1 /usr/local/pgsql/data/postmaster.pid`</userinput
       To make the backup, you can use the <application>pg_dumpall</application>
       command from the version you are currently running;  see <xref linkend="backup-dump-all"/> for more details.  For best
       results, however, try to use the <application>pg_dumpall</application>
-      command from <productname>PostgreSQL</productname> 18.2,
+      command from <productname>PostgreSQL</productname> 18.3,
       since this version contains bug fixes and improvements over older
       versions.  While this advice might seem idiosyncratic since you
       haven't installed the new version yet, it is advisable to follow
@@ -151273,7 +151273,7 @@ SELECT (a + b) AS c FROM test_complex;
    <para>
     Additional optimization clauses might be added in future versions of
     <productname>PostgreSQL</productname>.  The ones described here are all
-    the ones that release 18.2 understands.
+    the ones that release 18.3 understands.
    </para>
 
    <para>
@@ -198274,7 +198274,9 @@ CREATE POLICY <replaceable class="parameter">name</replaceable> ON <replaceable 
        </para>
        <para>
          If an <literal>INSERT</literal> has an <literal>ON CONFLICT DO
-         NOTHING/UPDATE</literal> clause, <literal>SELECT</literal>
+         UPDATE</literal> clause, or an <literal>ON CONFLICT DO
+         NOTHING</literal> clause with an arbiter index or constraint
+         specification, then <literal>SELECT</literal>
          permissions are required on the relation, and the rows proposed for
          insertion are checked using the relation's <literal>SELECT</literal>
          policies.  If a row proposed for insertion does not satisfy the
@@ -198520,7 +198522,11 @@ CREATE POLICY <replaceable class="parameter">name</replaceable> ON <replaceable 
       <row>
        <entry><command>INSERT ... ON CONFLICT</command></entry>
        <entry>
-        Check new row&#xA0;<footnote id="rls-on-conflict-priv">
+        Check new row&#xA0;<footnote>
+         <para>
+          If an arbiter index or constraint is specified.
+         </para>
+        </footnote><footnote id="rls-on-conflict-priv">
          <para>
           Row proposed for insertion is checked regardless of whether or not a
           conflict occurs.
@@ -217224,10 +217230,13 @@ INSERT INTO <replaceable class="parameter">table_name</replaceable> [ AS <replac
    <literal>INSERT</literal> privilege on the listed columns.
    Similarly, when <literal>ON CONFLICT DO UPDATE</literal> is specified, you
    only need <literal>UPDATE</literal> privilege on the column(s) that are
-   listed to be updated.  However, <literal>ON CONFLICT DO UPDATE</literal>
-   also requires <literal>SELECT</literal> privilege on any column whose
-   values are read in the <literal>ON CONFLICT DO UPDATE</literal>
-   expressions or <replaceable>condition</replaceable>.
+   listed to be updated.  However, all forms of <literal>ON CONFLICT</literal>
+   also require <literal>SELECT</literal> privilege on any column whose values
+   are read.  This includes any column mentioned in
+   <replaceable>conflict_target</replaceable> (including columns referred to
+   by the arbiter constraint), and any column mentioned in an
+   <literal>ON CONFLICT DO UPDATE</literal> <replaceable>expression</replaceable>,
+   or a <literal>WHERE</literal> clause <replaceable>condition</replaceable>.
   </para>
 
   <para>
@@ -241836,7 +241845,7 @@ $ <userinput>psql postgresql://dbmaster:5433/mydb?sslmode=require</userinput>
     the string <literal>=&gt;</literal>. For example:
 <programlisting>
 $ <userinput>psql testdb</userinput>
-psql (18.2)
+psql (18.3)
 Type "help" for help.
 
 testdb=&gt;
@@ -246510,7 +246519,7 @@ PSQL_EDITOR_LINENUMBER_ARG='--line '
      by appending a dash and the <productname>PostgreSQL</productname>
      major or minor release identifier to the file name,
      for example <filename>~/.psqlrc-18</filename> or
-     <filename>~/.psqlrc-18.2</filename>.
+     <filename>~/.psqlrc-18.3</filename>.
      The most specific version-matching file will be read in preference
      to a non-version-specific file.
      These version suffixes are added after determining the file path
@@ -294208,7 +294217,7 @@ EXPLAIN (ANALYZE, TIMING OFF, BUFFERS OFF) SELECT * FROM t WHERE a &lt;= 49 AND 
 
  <para>
   <xref linkend="errcodes-table"/> lists all the error codes defined in
-  <productname>PostgreSQL</productname> 18.2.  (Some are not actually
+  <productname>PostgreSQL</productname> 18.3.  (Some are not actually
   used at present, but are defined by the SQL standard.)
   The error classes are also shown.  For each error class there is a
   <quote>standard</quote> error code having the last three characters
@@ -296767,7 +296776,7 @@ $ <userinput>cal 9 1752</userinput>
  <para>
   <xref linkend="keywords-table"/> lists all tokens that are key words
   in the SQL standard and in <productname>PostgreSQL</productname>
-  18.2.  Background information can be found in <xref linkend="sql-syntax-identifiers"/>.
+  18.3.  Background information can be found in <xref linkend="sql-syntax-identifiers"/>.
   (For space reasons, only the latest two versions of the SQL standard, and
   SQL-92 for historical comparison, are included.  The differences between
   those and the other intermediate standard versions are small.)
@@ -307886,6 +307895,285 @@ For new features, add links to the documentation sections.
 
 <!-- doc/src/sgml/release-18.sgml -->
 <!-- See header comment in release.sgml about typical markup -->
+
+ <sect1 id="release-18-3">
+  <title>Release 18.3</title>
+
+  <formalpara>
+  <title>Release date:</title>
+  <para>2026-02-26</para>
+  </formalpara>
+
+  <para>
+   This release contains a small number of fixes from 18.2.
+   For information about new features in major release 18, see
+   <xref linkend="release-18"/>.
+  </para>
+
+  <sect2 id="release-18-3-migration">
+   <title>Migration to Version 18.3</title>
+
+   <para>
+    A dump/restore is not required for those running 18.X.
+   </para>
+
+   <para>
+    However, if you are upgrading from a version earlier than 18.2,
+    see <xref linkend="release-18-2"/>.
+   </para>
+  </sect2>
+
+  <sect2 id="release-18-3-changes">
+   <title>Changes</title>
+
+   <itemizedlist>
+
+    <listitem>
+<!--
+Author: Heikki Linnakangas <heikki.linnakangas@iki.fi>
+Branch: REL_18_STABLE [817f74600] 2026-02-16 17:16:59 +0200
+Branch: REL_17_STABLE [4a36c89f1] 2026-02-16 17:18:17 +0200
+Branch: REL_16_STABLE [23064542f] 2026-02-16 17:20:29 +0200
+Branch: REL_15_STABLE [899de38d8] 2026-02-16 17:20:51 +0200
+Branch: REL_14_STABLE [547a8aaa7] 2026-02-16 17:20:56 +0200
+-->
+     <para>
+      Fix failure after replaying a multixid truncation record from WAL
+      that was generated by an older minor version (Heikki Linnakangas)
+      <ulink url="https://postgr.es/c/817f74600">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Erroneous logic for coping with the way that previous versions
+      handled multixid wraparound led to replay failure, with messages
+      like <quote>could not access status of transaction</quote>.
+      A typical scenario in which this could occur is a standby server of
+      the latest minor version consuming WAL from a primary server of an
+      older version.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Noah Misch <noah@leadboat.com>
+Branch: master [9f4fd119b] 2026-02-14 12:16:16 -0800
+Branch: REL_18_STABLE [6e045e1a6] 2026-02-14 12:16:19 -0800
+Branch: REL_17_STABLE [5d5232bc3] 2026-02-14 12:16:20 -0800
+Branch: REL_16_STABLE [bdfb37228] 2026-02-14 12:16:20 -0800
+Branch: REL_15_STABLE [a20eb248c] 2026-02-14 12:16:21 -0800
+Branch: REL_14_STABLE [14b1fd617] 2026-02-14 12:16:21 -0800
+Branch: master [8cef93d8a] 2026-02-16 18:04:58 -0800
+Branch: REL_18_STABLE [d04b34d68] 2026-02-16 18:05:01 -0800
+Branch: REL_17_STABLE [50d361f62] 2026-02-16 18:05:02 -0800
+Branch: REL_16_STABLE [2280ab354] 2026-02-16 18:05:02 -0800
+Branch: REL_15_STABLE [ec86152e0] 2026-02-16 18:05:02 -0800
+Branch: REL_14_STABLE [a0769e74d] 2026-02-16 18:05:03 -0800
+Branch: master [4644f8b23] 2026-02-14 12:16:16 -0800
+Branch: REL_18_STABLE [4174e41b9] 2026-02-14 12:16:19 -0800
+Branch: REL_17_STABLE [8e73530f1] 2026-02-14 12:16:20 -0800
+Branch: REL_16_STABLE [45eb47230] 2026-02-14 12:16:20 -0800
+Branch: REL_15_STABLE [5b305ebcc] 2026-02-14 12:16:20 -0800
+Branch: REL_14_STABLE [44fc85bbf] 2026-02-14 12:16:21 -0800
+-->
+     <para>
+      Avoid incorrect complaint of invalid encoding
+      when <function>substring()</function> is applied
+      to <quote>toasted</quote> data (Noah Misch)
+      <ulink url="https://postgr.es/c/6e045e1a6">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/d04b34d68">&#xA7;</ulink>
+      <ulink url="https://postgr.es/c/4174e41b9">&#xA7;</ulink>
+     </para>
+
+     <para>
+      The fix for CVE-2026-2006 was too aggressive and could raise an
+      error about an incomplete character in cases that are actually
+      valid.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Heikki Linnakangas <heikki.linnakangas@iki.fi>
+Branch: master [18bcdb75d] 2026-02-20 11:56:42 +0200
+Branch: REL_18_STABLE [041e02e6a] 2026-02-20 11:56:50 +0200
+-->
+     <para>
+      Fix oversight in the fix for CVE-2026-2007 (Zsolt Parragi)
+      <ulink url="https://postgr.es/c/041e02e6a">&#xA7;</ulink>
+     </para>
+
+     <para>
+      If the <quote>bounds</quote> array needed to be expanded, because
+      the input contained more trigrams than the initial guess,
+      <function>generate_trgm_only</function> didn't return the modified
+      array pointer to its caller.  That would lead to incorrect output
+      from <function>strict_word_similarity()</function> and related
+      functions, or in rare cases a crash.  The faulty code is reached if
+      the input string becomes longer when it's converted to lower case.
+      The only known instances of that occur when an ICU locale is used
+      with certain single-byte encodings.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: master [759b03b24] 2026-02-18 14:14:44 -0500
+Author: Andrew Dunstan <andrew@dunslane.net>
+Branch: REL_18_STABLE [2f6ee7b38] 2026-02-18 10:31:03 -0500
+-->
+     <para>
+      Fix the volatility marking
+      of <function>json_strip_nulls()</function>
+      and <function>jsonb_strip_nulls()</function> (Andrew Dunstan)
+      <ulink url="https://postgr.es/c/2f6ee7b38">&#xA7;</ulink>
+     </para>
+
+     <para>
+      These functions have always been considered immutable, but
+      refactoring in version 18 accidentally marked them stable instead.
+      That prevents their use in index expressions and could cause
+      unnecessary repeat evaluations in queries.  This fix corrects the
+      marking in newly-initialized database clusters (including clusters
+      that are <application>pg_upgrade</application>'d to 18.3 or later).
+      However it will not help existing clusters made using 18.0 through
+      18.2.
+     </para>
+
+     <para>
+      If this mistake affects your usage of these functions, the
+      recommended fix for an existing cluster is a manual catalog update.
+      As superuser, perform
+<programlisting>
+UPDATE pg_catalog.pg_proc SET provolatile = 'i' WHERE oid IN ('3261','3262');
+</programlisting>
+      in each affected database.  Update <literal>template0</literal>
+      and <literal>template1</literal> as well, so that databases made in
+      future will have the fix.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Richard Guo <rguo@postgresql.org>
+Branch: master [691977d37] 2026-02-20 17:57:53 +0900
+Branch: REL_18_STABLE [ed57c207c] 2026-02-20 18:00:02 +0900
+Branch: REL_17_STABLE [bcaf1b510] 2026-02-20 18:01:56 +0900
+Branch: REL_16_STABLE [ec20a4552] 2026-02-20 18:04:26 +0900
+-->
+     <para>
+      Fix computation of the set of potentially-nulling outer joins for
+      the output of a <literal>LATERAL UNION ALL</literal> subquery
+      (Richard Guo)
+      <ulink url="https://postgr.es/c/ed57c207c">&#xA7;</ulink>
+     </para>
+
+     <para>
+      This error could lead to skipping <literal>NOT NULL</literal> tests
+      in the mistaken belief that they were unnecessary, resulting in
+      wrong query output.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Álvaro Herrera <alvherre@kurilemu.de>
+Branch: master [0eeffd31b] 2026-02-21 12:22:08 +0100
+Branch: REL_18_STABLE [8d9a97e0b] 2026-02-21 12:22:08 +0100
+-->
+     <para>
+      Avoid name collisions between user-written constraints and
+      automatically-named <literal>NOT NULL</literal> constraints
+      (Laurenz Albe)
+      <ulink url="https://postgr.es/c/8d9a97e0b">&#xA7;</ulink>
+     </para>
+
+     <para>
+      As of version 18, <literal>NOT NULL</literal> constraints have
+      full-fledged <structname>pg_constraint</structname> entries, and
+      therefore require names.  The logic for choosing a name for an
+      unnamed <literal>NOT NULL</literal> constraint failed to avoid
+      conflicts with user-written constraints elsewhere in the
+      same <command>CREATE TABLE</command> statement.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Heikki Linnakangas <heikki.linnakangas@iki.fi>
+Branch: master [78a5e3074] 2026-02-11 18:50:57 +0200
+Branch: REL_18_STABLE [53463b4b2] 2026-02-11 18:51:06 +0200
+Branch: REL_17_STABLE [842473337] 2026-02-11 18:51:12 +0200
+Branch: REL_16_STABLE [2332911ae] 2026-02-11 18:51:19 +0200
+Branch: REL_15_STABLE [ebc53ca7b] 2026-02-11 18:51:25 +0200
+Branch: REL_14_STABLE [82b495cdd] 2026-02-11 18:51:32 +0200
+-->
+     <para>
+      Fix <function>pg_stat_get_backend_wait_event()</function>
+      and <function>pg_stat_get_backend_wait_event_type()</function>
+      to report values for auxiliary processes (Heikki Linnakangas)
+      <ulink url="https://postgr.es/c/53463b4b2">&#xA7;</ulink>
+     </para>
+
+     <para>
+      Previously these functions returned NULL for auxiliary processes,
+      but that's inconsistent with
+      the <structname>pg_stat_activity</structname> view.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Tom Lane <tgl@sss.pgh.pa.us>
+Branch: master [9863c9075] 2026-02-11 16:53:14 -0500
+Branch: REL_18_STABLE [ce4b7e3a1] 2026-02-11 16:53:14 -0500
+Branch: REL_17_STABLE [dfd850980] 2026-02-11 16:53:14 -0500
+Branch: REL_16_STABLE [c66f4cff1] 2026-02-11 16:53:14 -0500
+Branch: REL_15_STABLE [254b15cbf] 2026-02-11 16:53:14 -0500
+Branch: REL_14_STABLE [2b93d3820] 2026-02-11 16:53:14 -0500
+-->
+     <para>
+      Fix casting a composite-type variable to a domain type when
+      returning its value from a PL/pgSQL function (Tom Lane)
+      <ulink url="https://postgr.es/c/ce4b7e3a1">&#xA7;</ulink>
+     </para>
+
+     <para>
+      If the variable's value is NULL, a <quote>cache lookup failed for
+      type 0</quote> error resulted.
+     </para>
+    </listitem>
+
+    <listitem>
+<!--
+Author: Michael Paquier <michael@paquier.xyz>
+Branch: master [a6f823e77] 2026-02-17 08:41:26 +0900
+Branch: REL_18_STABLE [4a0843c53] 2026-02-17 08:41:30 +0900
+Branch: REL_17_STABLE [0dfbe42da] 2026-02-17 08:41:32 +0900
+Branch: REL_16_STABLE [31d0b917d] 2026-02-17 08:41:34 +0900
+Branch: REL_15_STABLE [63c05e03b] 2026-02-17 08:41:35 +0900
+Branch: REL_14_STABLE [f604cc695] 2026-02-17 08:41:37 +0900
+-->
+     <para>
+      Fix potential null pointer dereference
+      in <filename>contrib/hstore</filename>'s binary input function
+      (Michael Paquier)
+      <ulink url="https://postgr.es/c/4a0843c53">&#xA7;</ulink>
+     </para>
+
+     <para>
+      <type>hstore</type>'s receive function crashed on input containing
+      duplicate keys.  <type>hstore</type> values generated by Postgres
+      would never contain duplicate keys, so this mistake has gone
+      unnoticed.  The crash could be provoked by malicious or corrupted
+      data.
+     </para>
+    </listitem>
+
+   </itemizedlist>
+
+  </sect2>
+ </sect1>
 
  <sect1 id="release-18-2">
   <title>Release 18.2</title>

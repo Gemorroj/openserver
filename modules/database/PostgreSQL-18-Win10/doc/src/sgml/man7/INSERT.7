@@ -3,11 +3,11 @@
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
 .\"      Date: 2026
-.\"    Manual: PostgreSQL 18.2 Documentation
-.\"    Source: PostgreSQL 18.2
+.\"    Manual: PostgreSQL 18.3 Documentation
+.\"    Source: PostgreSQL 18.3
 .\"  Language: English
 .\"
-.TH "INSERT" "7" "2026" "PostgreSQL 18.2" "PostgreSQL 18.2 Documentation"
+.TH "INSERT" "7" "2026" "PostgreSQL 18.3" "PostgreSQL 18.3 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -113,13 +113,17 @@ privilege on the listed columns\&. Similarly, when
 ON CONFLICT DO UPDATE
 is specified, you only need
 UPDATE
-privilege on the column(s) that are listed to be updated\&. However,
-ON CONFLICT DO UPDATE
-also requires
+privilege on the column(s) that are listed to be updated\&. However, all forms of
+ON CONFLICT
+also require
 SELECT
-privilege on any column whose values are read in the
+privilege on any column whose values are read\&. This includes any column mentioned in
+\fIconflict_target\fR
+(including columns referred to by the arbiter constraint), and any column mentioned in an
 ON CONFLICT DO UPDATE
-expressions or
+\fIexpression\fR, or a
+WHERE
+clause
 \fIcondition\fR\&.
 .PP
 Use of the

@@ -3,11 +3,11 @@
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
 .\"      Date: 2026
-.\"    Manual: PostgreSQL 18.2 Documentation
-.\"    Source: PostgreSQL 18.2
+.\"    Manual: PostgreSQL 18.3 Documentation
+.\"    Source: PostgreSQL 18.3
 .\"  Language: English
 .\"
-.TH "CREATE POLICY" "7" "2026" "PostgreSQL 18.2" "PostgreSQL 18.2 Documentation"
+.TH "CREATE POLICY" "7" "2026" "PostgreSQL 18.3" "PostgreSQL 18.3 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -258,8 +258,10 @@ silently ignored)\&.
 If an
 INSERT
 has an
-ON CONFLICT DO NOTHING/UPDATE
-clause,
+ON CONFLICT DO UPDATE
+clause, or an
+ON CONFLICT DO NOTHING
+clause with an arbiter index or constraint specification, then
 SELECT
 permissions are required on the relation, and the rows proposed for insertion are checked using the relation\*(Aqs
 SELECT
@@ -600,9 +602,9 @@ T}
 T{
 \fBINSERT \&.\&.\&. ON CONFLICT\fR
 T}:T{
-Check new row\ \&[b]
+Check new row\ \&[b][c]
 T}:T{
-Check new row\ \&[b]
+Check new row\ \&[c]
 T}:T{
 \(em
 T}:T{
@@ -613,13 +615,13 @@ T}
 T{
 \fBON CONFLICT DO UPDATE\fR
 T}:T{
-Check existing & new rows\ \&[c]
+Check existing & new rows\ \&[d]
 T}:T{
 \(em
 T}:T{
 Check existing row
 T}:T{
-Check new row\ \&[c]
+Check new row\ \&[d]
 T}:T{
 \(em
 T}
@@ -687,10 +689,14 @@ clause that refers to columns from the relation)\&.
 ----
 .br
 [b]
-Row proposed for insertion is checked regardless of whether or not a conflict occurs\&.
+If an arbiter index or constraint is specified\&.
 ----
 .br
 [c]
+Row proposed for insertion is checked regardless of whether or not a conflict occurs\&.
+----
+.br
+[d]
 New row of the auxiliary
 \fBUPDATE\fR
 command, which might be different from the new row of the original

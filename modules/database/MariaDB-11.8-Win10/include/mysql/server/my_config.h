@@ -519,16 +519,16 @@ this is the case with Microsoft Windows VirtualFree(MEM_DECOMMIT) */
 
 #define MYSQL_VERSION_MAJOR 11
 #define MYSQL_VERSION_MINOR 8
-#define MYSQL_VERSION_PATCH 5
+#define MYSQL_VERSION_PATCH 6
 #define MYSQL_VERSION_EXTRA ""
 
 #define PACKAGE "mysql"
 #define PACKAGE_BUGREPORT ""
 #define PACKAGE_NAME "MySQL Server"
-#define PACKAGE_STRING "MySQL Server 11.8.5"
+#define PACKAGE_STRING "MySQL Server 11.8.6"
 #define PACKAGE_TARNAME "mysql"
-#define PACKAGE_VERSION "11.8.5"
-#define VERSION "11.8.5"
+#define PACKAGE_VERSION "11.8.6"
+#define VERSION "11.8.6"
 #define PROTOCOL_VERSION 10
 #define PCRE2_CODE_UNIT_WIDTH 8
 
