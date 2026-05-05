@@ -1,15 +1,15 @@
-08 November 2022 First VS17 release
+07 January 2016
 
                                                     Apache Lounge Distribution
 
-                                       mod_log_rotate 1.0.2 for Apache 2.4 Win64 VS17
+                                       mod_log_rotate 1.0.2 for Apache 2.4 Win64 VS18
 # Author : hexten
 # Binary by: Steffen
 # Mail: info@apachelounge.com
 # Home: http://www.apachelounge.com/
 
 
-Build with Visual Studio® 2022 (VS17)
+Build with Visual Studio® 2026 (VS18)
 
 # Install:
 

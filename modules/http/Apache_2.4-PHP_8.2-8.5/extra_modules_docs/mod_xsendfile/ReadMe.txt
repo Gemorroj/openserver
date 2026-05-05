@@ -1,8 +1,8 @@
-08 November First VS17 release
+27 April 2026
 
                                                 Apache Lounge Distribution
 
-                                          mod_xsendfile 1.0-P1 Apache 2.4 Win64 VS17
+                                         mod_xsendfile-1.0-P1 Apache 2.4 Win64 VS18
 
 # Original source by: Nils Maier
 # Original Home: https://tn123.org/mod_xsendfile/
@@ -13,7 +13,7 @@
 # Included fix: https://github.com/nmaier/mod_xsendfile/issues/8
 
 
-Build with Visual Studio® 2022 (VS17)
+Build with Visual Studio® 2026 (VS18)
 
 # Install:
 

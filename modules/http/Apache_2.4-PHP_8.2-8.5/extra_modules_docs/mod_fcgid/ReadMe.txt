@@ -1,9 +1,9 @@
-08 November 2022 First VS17 release
+07 January 2026
 
 
                                             Apache Lounge Distribution
 
-                                    mod_fcgid 2.3.10 for Apache 2.4 Win64 VS17
+                                    mod_fcgid 2.3.10 for Apache 2.4 Win64 VS18
 
 Announcement & Changelog: https://www.apachelounge.com/viewtopic.php?p=25673
 
@@ -12,7 +12,7 @@ Announcement & Changelog: https://www.apachelounge.com/viewtopic.php?p=25673
 # Mail: info@apachelounge.com
 # Home: http://www.apachelounge.com/
 
-Build with Visual Studio® 2022 (VS17)
+Build with Visual Studio® 2026 (VS18)
 
 
 # Install:
