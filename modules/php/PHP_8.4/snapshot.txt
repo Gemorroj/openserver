@@ -1,9 +1,9 @@
 This snapshot was automatically generated on
-Wed, 08 Apr 2026 08:34:44 +0000
+Wed, 06 May 2026 09:36:22 +0000
 
-Version: 8.4.20
+Version: 8.4.21
 Branch: HEAD
-Build: C:\Users\runneradmin\AppData\Local\Temp\php-9d8bc0e6-77d2-4840-ba24-fce94ec154ad\config\vs17\x64\obj\Release_TS
+Build: C:\Users\runneradmin\AppData\Local\Temp\php-a17ab42b-6bea-4052-b4ff-fa14592010fc\config\vs17\x64\obj\Release_TS
 
 Built-in Extensions
 ===========================
@@ -72,7 +72,12 @@ Module: php_enchant.dll
 Module: libenchant2.dll
 ===========================
 	glib-2.dll
+	gobject-2.dll
 	gmodule-2.dll
+
+Module: gobject-2.dll
+===========================
+	glib-2.dll
 
 Module: gmodule-2.dll
 ===========================

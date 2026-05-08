@@ -1,9 +1,9 @@
 This snapshot was automatically generated on
-Tue, 13 Jan 2026 23:09:47 +0000
+Tue, 05 May 2026 17:42:44 +0000
 
-Version: 8.3.30
+Version: 8.3.31
 Branch: HEAD
-Build: C:\Users\runneradmin\AppData\Local\Temp\php-17f07cb2-a66f-4d1c-9652-1d79b9fcc310\config\vs16\x64\obj\Release_TS
+Build: C:\Users\runneradmin\AppData\Local\Temp\php-34750f74-e9c4-42fc-9d14-8ced2e6a9cf6\config\vs16\x64\obj\Release_TS
 
 Built-in Extensions
 ===========================
@@ -50,6 +50,8 @@ Module: php_curl.dll
 	libssl-3-x64.dll
 	libssh2.dll
 	nghttp2.dll
+	brotlidec.dll
+	libzstd.dll
 
 Module: libssl-3-x64.dll
 ===========================
@@ -59,6 +61,10 @@ Module: libssh2.dll
 ===========================
 	libcrypto-3-x64.dll
 
+Module: brotlidec.dll
+===========================
+	brotlicommon.dll
+
 Module: php_enchant.dll
 ===========================
 	libenchant2.dll
@@ -66,7 +72,12 @@ Module: php_enchant.dll
 Module: libenchant2.dll
 ===========================
 	glib-2.dll
+	gobject-2.dll
 	gmodule-2.dll
+
+Module: gobject-2.dll
+===========================
+	glib-2.dll
 
 Module: gmodule-2.dll
 ===========================
