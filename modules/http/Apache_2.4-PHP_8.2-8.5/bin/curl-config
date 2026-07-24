@@ -82,7 +82,7 @@ while test "$#" -gt 0; do
     ;;
 
   --feature|--features)
-    for feature in alt-svc AsynchDNS brotli HSTS HTTP2 HTTPS-proxy IDN IPv6 Kerberos Largefile libz MultiSSL NativeCA NTLM SPNEGO SSL SSPI threadsafe TLS-SRP Unicode UnixSockets ''; do
+    for feature in alt-svc AsynchDNS brotli HSTS HTTP2 HTTPS-proxy IDN IPv6 Kerberos Largefile libz MultiSSL NativeCA NTLM SPNEGO SSL SSPI threadsafe TLS-SRP Unicode UnixSockets zstd ''; do
       test -n "$feature" && echo "$feature"
     done
     ;;
@@ -155,7 +155,7 @@ while test "$#" -gt 0; do
       curllibdir=''
     fi
     if test 'yes' = 'no'; then
-      echo "${curllibdir}-lcurl -lssl -lcrypto -lcrypto C:/Apache24/lib/z.lib C:/Apache24/lib/brotlidec.lib C:/Apache24/lib/brotlicommon.lib C:/Apache24/bin/nghttp2.dll -lwldap32 -lnormaliz -lbcrypt -ladvapi32 -lcrypt32 -lsecur32 -lws2_32 -liphlpapi"
+      echo "${curllibdir}-lcurl -lssl -lcrypto -lcrypto C:/Apache24/lib/z.lib C:/Apache24/lib/brotlidec.lib C:/Apache24/lib/brotlicommon.lib C:/Apache24/lib/zstd_static.lib C:/Apache24/bin/nghttp2.dll -lwldap32 -lnormaliz -lbcrypt -ladvapi32 -lcrypt32 -lsecur32 -lws2_32 -liphlpapi"
     else
       echo "${curllibdir}-lcurl"
     fi
@@ -167,7 +167,7 @@ while test "$#" -gt 0; do
 
   --static-libs)
     if test 'yes' != 'no'; then
-      echo "${exec_prefix}/lib/libcurl.lib  -lssl -lcrypto -lcrypto C:/Apache24/lib/z.lib C:/Apache24/lib/brotlidec.lib C:/Apache24/lib/brotlicommon.lib C:/Apache24/bin/nghttp2.dll -lwldap32 -lnormaliz -lbcrypt -ladvapi32 -lcrypt32 -lsecur32 -lws2_32 -liphlpapi"
+      echo "${exec_prefix}/lib/libcurl.lib  -lssl -lcrypto -lcrypto C:/Apache24/lib/z.lib C:/Apache24/lib/brotlidec.lib C:/Apache24/lib/brotlicommon.lib C:/Apache24/lib/zstd_static.lib C:/Apache24/bin/nghttp2.dll -lwldap32 -lnormaliz -lbcrypt -ladvapi32 -lcrypt32 -lsecur32 -lws2_32 -liphlpapi"
     else
       echo 'curl was built with static libraries disabled' >&2
       exit 1
