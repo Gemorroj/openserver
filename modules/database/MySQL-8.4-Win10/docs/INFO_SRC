@@ -1,8 +1,8 @@
-commit: e8e314a9bc9c0fdf568435c552c75a76a486767a
-date: 2025-12-14 11:05:12 +0100
-build-date: 2025-12-15 11:55:58 +0000
-short: e8e314a9bc9c
-branch: mysql-8.4.8-release
+commit: fe442869f39a69d69f2cb4384d6c6b5763faa1d0
+date: 2026-06-30 18:04:10 +0200
+build-date: 2026-06-30 16:14:14 +0000
+short: fe442869f39a
+branch: mysql-8.4.11-release
 
-MySQL source 8.4.8
+MySQL source 8.4.11
 MySQL release maturity LTS
