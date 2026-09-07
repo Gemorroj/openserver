@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>19.6. Replication</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="runtime-config-wal.html" title="19.5. Write Ahead Log" /><link rel="next" href="runtime-config-query.html" title="19.7. Query Planning" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">19.6. Replication</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="runtime-config-wal.html" title="19.5. Write Ahead Log">Prev</a> </td><td width="10%" align="left"><a accesskey="u" href="runtime-config.html" title="Chapter 19. Server Configuration">Up</a></td><th width="60%" align="center">Chapter 19. Server Configuration</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="PostgreSQL 18.3 Documentation">Home</a></td><td width="10%" align="right"> <a accesskey="n" href="runtime-config-query.html" title="19.7. Query Planning">Next</a></td></tr></table><hr /></div><div class="sect1" id="RUNTIME-CONFIG-REPLICATION"><div class="titlepage"><div><div><h2 class="title" style="clear: both">19.6. Replication <a href="#RUNTIME-CONFIG-REPLICATION" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="runtime-config-replication.html#RUNTIME-CONFIG-REPLICATION-SENDER">19.6.1. Sending Servers</a></span></dt><dt><span class="sect2"><a href="runtime-config-replication.html#RUNTIME-CONFIG-REPLICATION-PRIMARY">19.6.2. Primary Server</a></span></dt><dt><span class="sect2"><a href="runtime-config-replication.html#RUNTIME-CONFIG-REPLICATION-STANDBY">19.6.3. Standby Servers</a></span></dt><dt><span class="sect2"><a href="runtime-config-replication.html#RUNTIME-CONFIG-REPLICATION-SUBSCRIBER">19.6.4. Subscribers</a></span></dt></dl></div><p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>19.6. Replication</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="runtime-config-wal.html" title="19.5. Write Ahead Log" /><link rel="next" href="runtime-config-query.html" title="19.7. Query Planning" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">19.6. Replication</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="runtime-config-wal.html" title="19.5. Write Ahead Log">Prev</a> </td><td width="10%" align="left"><a accesskey="u" href="runtime-config.html" title="Chapter 19. Server Configuration">Up</a></td><th width="60%" align="center">Chapter 19. Server Configuration</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="PostgreSQL 18.6 Documentation">Home</a></td><td width="10%" align="right"> <a accesskey="n" href="runtime-config-query.html" title="19.7. Query Planning">Next</a></td></tr></table><hr /></div><div class="sect1" id="RUNTIME-CONFIG-REPLICATION"><div class="titlepage"><div><div><h2 class="title" style="clear: both">19.6. Replication <a href="#RUNTIME-CONFIG-REPLICATION" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="runtime-config-replication.html#RUNTIME-CONFIG-REPLICATION-SENDER">19.6.1. Sending Servers</a></span></dt><dt><span class="sect2"><a href="runtime-config-replication.html#RUNTIME-CONFIG-REPLICATION-PRIMARY">19.6.2. Primary Server</a></span></dt><dt><span class="sect2"><a href="runtime-config-replication.html#RUNTIME-CONFIG-REPLICATION-STANDBY">19.6.3. Standby Servers</a></span></dt><dt><span class="sect2"><a href="runtime-config-replication.html#RUNTIME-CONFIG-REPLICATION-SUBSCRIBER">19.6.4. Subscribers</a></span></dt></dl></div><p>
      These settings control the behavior of the built-in
      <em class="firstterm">streaming replication</em> feature (see
      <a class="xref" href="warm-standby.html#STREAMING-REPLICATION" title="26.2.5. Streaming Replication">Section 26.2.5</a>), and the built-in
@@ -61,8 +61,50 @@
          Also, <code class="varname">wal_level</code> must be set
          to <code class="literal">replica</code> or higher to allow replication slots to
          be used.
-        </p></dd><dt id="GUC-WAL-KEEP-SIZE"><span class="term"><code class="varname">wal_keep_size</code> (<code class="type">integer</code>)
+        </p></dd><dt id="GUC-OUTPUT-PLUGIN-LIBRARIES"><span class="term"><code class="varname">output_plugin_libraries</code> (<code class="type">string</code>)
        <a id="id-1.6.6.9.5.3.3.1.3" class="indexterm"></a>
+       </span> <a href="#GUC-OUTPUT-PLUGIN-LIBRARIES" class="id_link">#</a></dt><dd><p>
+         Lists the libraries installed in <a class="xref" href="runtime-config-client.html#GUC-DYNAMIC-LIBRARY-PATH">dynamic_library_path</a>
+         that are also trusted for use as logical output plugins by replication
+         clients. Any <a class="link" href="logicaldecoding-example.html" title="47.1. Logical Decoding Examples">logical decoding</a>
+         or <a class="link" href="protocol-replication.html" title="54.4. Streaming Replication Protocol">replication</a> requests for
+         other libraries will be refused. All users are subject to this
+         restriction. The default is <code class="literal">'pgoutput, test_decoding'</code>,
+         which are the two logical output plugins included in the standard
+         <span class="productname">PostgreSQL</span> distribution.
+        </p><p>
+         The format is a comma-separated list of library names, where each name
+         is interpreted as for the <a class="link" href="sql-load.html" title="LOAD"><code class="command">LOAD</code></a>
+         command (but logical decoding clients must specify a plugin name that
+         <span class="emphasis"><em>exactly</em></span> matches an entry in the list, without
+         variations in case or path structure). Whitespace between entries is
+         ignored; surround a library name with double quotes if you need to
+         include whitespace or commas in the name.
+        </p><p>
+         It is the responsibility of the server administrator to ensure that
+         libraries added to this list do not unintentionally give additional
+         privileges to non-superusers when they are loaded into the server.
+        </p><div class="note"><h3 class="title">Note</h3><p>
+          When updating the server from a version that does not have the
+          <code class="literal">output_plugin_libraries</code> parameter, the following
+          query can help construct the list of plugins that are required by all
+          persistent logical replication slots:
+</p><pre class="programlisting">
+SELECT DISTINCT plugin FROM pg_replication_slots WHERE plugin IS NOT NULL;
+</pre><p>
+          Review the list carefully for safety before adjusting
+          <code class="literal">output_plugin_libraries</code>.
+         </p><p>
+          The above query can only display plugins which were successfully
+          added to replication slots at some point in the past. Newly refused
+          requests will appear in the logs with a message similar to
+</p><pre class="programlisting">
+ERROR:  library "..." may not be used as an output plugin
+DETAIL:  The configuration parameter "output_plugin_libraries" (currently 'pgoutput, test_decoding') does not name this library as a trusted output plugin.
+HINT:  If it is safe for all REPLICATION users to use this library as an output plugin, add it to "output_plugin_libraries" and reload the server configuration.
+</pre><p>
+         </p></div></dd><dt id="GUC-WAL-KEEP-SIZE"><span class="term"><code class="varname">wal_keep_size</code> (<code class="type">integer</code>)
+       <a id="id-1.6.6.9.5.3.4.1.3" class="indexterm"></a>
        </span> <a href="#GUC-WAL-KEEP-SIZE" class="id_link">#</a></dt><dd><p>
         Specifies the minimum size of past WAL files kept in the
         <code class="filename">pg_wal</code>
@@ -88,7 +130,7 @@
         This parameter can only be set in the
         <code class="filename">postgresql.conf</code> file or on the server command line.
        </p></dd><dt id="GUC-MAX-SLOT-WAL-KEEP-SIZE"><span class="term"><code class="varname">max_slot_wal_keep_size</code> (<code class="type">integer</code>)
-       <a id="id-1.6.6.9.5.3.4.1.3" class="indexterm"></a>
+       <a id="id-1.6.6.9.5.3.5.1.3" class="indexterm"></a>
        </span> <a href="#GUC-MAX-SLOT-WAL-KEEP-SIZE" class="id_link">#</a></dt><dd><p>
         Specify the maximum size of WAL files
         that <a class="link" href="warm-standby.html#STREAMING-REPLICATION-SLOTS" title="26.2.6. Replication Slots">replication
@@ -105,7 +147,7 @@
         This parameter can only be set in the <code class="filename">postgresql.conf</code>
         file or on the server command line.
        </p></dd><dt id="GUC-IDLE-REPLICATION-SLOT-TIMEOUT"><span class="term"><code class="varname">idle_replication_slot_timeout</code> (<code class="type">integer</code>)
-      <a id="id-1.6.6.9.5.3.5.1.3" class="indexterm"></a>
+      <a id="id-1.6.6.9.5.3.6.1.3" class="indexterm"></a>
       </span> <a href="#GUC-IDLE-REPLICATION-SLOT-TIMEOUT" class="id_link">#</a></dt><dd><p>
         Invalidate replication slots that have remained inactive (not used by
         a <a class="link" href="protocol-replication.html" title="54.4. Streaming Replication Protocol">replication connection</a>)
@@ -134,7 +176,7 @@
         be inactive because they don't perform logical decoding to produce
         changes.
        </p></dd><dt id="GUC-WAL-SENDER-TIMEOUT"><span class="term"><code class="varname">wal_sender_timeout</code> (<code class="type">integer</code>)
-      <a id="id-1.6.6.9.5.3.6.1.3" class="indexterm"></a>
+      <a id="id-1.6.6.9.5.3.7.1.3" class="indexterm"></a>
       </span> <a href="#GUC-WAL-SENDER-TIMEOUT" class="id_link">#</a></dt><dd><p>
         Terminate replication connections that are inactive for longer
         than this amount of time. This is useful for
@@ -151,7 +193,7 @@
         of a standby if located on a remote location, with a high-latency
         network connection.
        </p></dd><dt id="GUC-TRACK-COMMIT-TIMESTAMP"><span class="term"><code class="varname">track_commit_timestamp</code> (<code class="type">boolean</code>)
-      <a id="id-1.6.6.9.5.3.7.1.3" class="indexterm"></a>
+      <a id="id-1.6.6.9.5.3.8.1.3" class="indexterm"></a>
       </span> <a href="#GUC-TRACK-COMMIT-TIMESTAMP" class="id_link">#</a></dt><dd><p>
         Record commit time of transactions.
         This parameter can only be set at server start.
@@ -630,4 +672,4 @@ ANY <em class="replaceable"><code>num_sync</code></em> ( <em class="replaceable"
         The default value is 2. This parameter can only be set in the
         <code class="filename">postgresql.conf</code> file or on the server command
         line.
-       </p></dd></dl></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="runtime-config-wal.html" title="19.5. Write Ahead Log">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="runtime-config.html" title="Chapter 19. Server Configuration">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="runtime-config-query.html" title="19.7. Query Planning">Next</a></td></tr><tr><td width="40%" align="left" valign="top">19.5. Write Ahead Log </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="PostgreSQL 18.3 Documentation">Home</a></td><td width="40%" align="right" valign="top"> 19.7. Query Planning</td></tr></table></div></body></html>
+       </p></dd></dl></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="runtime-config-wal.html" title="19.5. Write Ahead Log">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="runtime-config.html" title="Chapter 19. Server Configuration">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="runtime-config-query.html" title="19.7. Query Planning">Next</a></td></tr><tr><td width="40%" align="left" valign="top">19.5. Write Ahead Log </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="PostgreSQL 18.6 Documentation">Home</a></td><td width="40%" align="right" valign="top"> 19.7. Query Planning</td></tr></table></div></body></html>

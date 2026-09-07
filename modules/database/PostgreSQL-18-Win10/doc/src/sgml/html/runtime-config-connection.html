@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>19.3. Connections and Authentication</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="runtime-config-file-locations.html" title="19.2. File Locations" /><link rel="next" href="runtime-config-resource.html" title="19.4. Resource Consumption" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">19.3. Connections and Authentication</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="runtime-config-file-locations.html" title="19.2. File Locations">Prev</a> </td><td width="10%" align="left"><a accesskey="u" href="runtime-config.html" title="Chapter 19. Server Configuration">Up</a></td><th width="60%" align="center">Chapter 19. Server Configuration</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="PostgreSQL 18.3 Documentation">Home</a></td><td width="10%" align="right"> <a accesskey="n" href="runtime-config-resource.html" title="19.4. Resource Consumption">Next</a></td></tr></table><hr /></div><div class="sect1" id="RUNTIME-CONFIG-CONNECTION"><div class="titlepage"><div><div><h2 class="title" style="clear: both">19.3. Connections and Authentication <a href="#RUNTIME-CONFIG-CONNECTION" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="runtime-config-connection.html#RUNTIME-CONFIG-CONNECTION-SETTINGS">19.3.1. Connection Settings</a></span></dt><dt><span class="sect2"><a href="runtime-config-connection.html#RUNTIME-CONFIG-TCP-SETTINGS">19.3.2. TCP Settings</a></span></dt><dt><span class="sect2"><a href="runtime-config-connection.html#RUNTIME-CONFIG-CONNECTION-AUTHENTICATION">19.3.3. Authentication</a></span></dt><dt><span class="sect2"><a href="runtime-config-connection.html#RUNTIME-CONFIG-CONNECTION-SSL">19.3.4. SSL</a></span></dt></dl></div><div class="sect2" id="RUNTIME-CONFIG-CONNECTION-SETTINGS"><div class="titlepage"><div><div><h3 class="title">19.3.1. Connection Settings <a href="#RUNTIME-CONFIG-CONNECTION-SETTINGS" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-LISTEN-ADDRESSES"><span class="term"><code class="varname">listen_addresses</code> (<code class="type">string</code>)
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>19.3. Connections and Authentication</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="runtime-config-file-locations.html" title="19.2. File Locations" /><link rel="next" href="runtime-config-resource.html" title="19.4. Resource Consumption" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">19.3. Connections and Authentication</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="runtime-config-file-locations.html" title="19.2. File Locations">Prev</a> </td><td width="10%" align="left"><a accesskey="u" href="runtime-config.html" title="Chapter 19. Server Configuration">Up</a></td><th width="60%" align="center">Chapter 19. Server Configuration</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="PostgreSQL 18.6 Documentation">Home</a></td><td width="10%" align="right"> <a accesskey="n" href="runtime-config-resource.html" title="19.4. Resource Consumption">Next</a></td></tr></table><hr /></div><div class="sect1" id="RUNTIME-CONFIG-CONNECTION"><div class="titlepage"><div><div><h2 class="title" style="clear: both">19.3. Connections and Authentication <a href="#RUNTIME-CONFIG-CONNECTION" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="runtime-config-connection.html#RUNTIME-CONFIG-CONNECTION-SETTINGS">19.3.1. Connection Settings</a></span></dt><dt><span class="sect2"><a href="runtime-config-connection.html#RUNTIME-CONFIG-TCP-SETTINGS">19.3.2. TCP Settings</a></span></dt><dt><span class="sect2"><a href="runtime-config-connection.html#RUNTIME-CONFIG-CONNECTION-AUTHENTICATION">19.3.3. Authentication</a></span></dt><dt><span class="sect2"><a href="runtime-config-connection.html#RUNTIME-CONFIG-CONNECTION-SSL">19.3.4. SSL</a></span></dt></dl></div><div class="sect2" id="RUNTIME-CONFIG-CONNECTION-SETTINGS"><div class="titlepage"><div><div><h3 class="title">19.3.1. Connection Settings <a href="#RUNTIME-CONFIG-CONNECTION-SETTINGS" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-LISTEN-ADDRESSES"><span class="term"><code class="varname">listen_addresses</code> (<code class="type">string</code>)
       <a id="id-1.6.6.6.2.2.1.1.3" class="indexterm"></a>
       </span> <a href="#GUC-LISTEN-ADDRESSES" class="id_link">#</a></dt><dd><p>
          Specifies the TCP/IP address(es) on which the server is
@@ -300,7 +300,17 @@
         encrypted with SCRAM-SHA-256 as the iteration count is fixed at the
         time of encryption. In order to make use of a changed value, a new
         password must be set.
-       </p></dd><dt id="GUC-MD5-PASSWORD-WARNINGS"><span class="term"><code class="varname">md5_password_warnings</code> (<code class="type">boolean</code>)
+       </p><div class="note"><h3 class="title">Note</h3><p>
+         If a role password was created with a different iteration count than
+         the value of <code class="literal">scram_iterations</code> specified in the
+         <code class="filename">postgresql.conf</code> file or on the server command
+         line, an unauthenticated user can discern the existence of the role by
+         observing discrepancies in the server's responses to connection
+         attempts.  If you find this concerning, ensure that all role passwords
+         are created with <code class="literal">scram_iterations</code> set to the value
+         specified in the <code class="filename">postgresql.conf</code> file or on the
+         server command line.
+        </p></div></dd><dt id="GUC-MD5-PASSWORD-WARNINGS"><span class="term"><code class="varname">md5_password_warnings</code> (<code class="type">boolean</code>)
       <a id="id-1.6.6.6.4.2.4.1.3" class="indexterm"></a>
       </span> <a href="#GUC-MD5-PASSWORD-WARNINGS" class="id_link">#</a></dt><dd><p>
         Controls whether a <code class="literal">WARNING</code> about MD5 password
@@ -492,15 +502,15 @@
        </p></dd><dt id="GUC-SSL-GROUPS"><span class="term"><code class="varname">ssl_groups</code> (<code class="type">string</code>)
       <a id="id-1.6.6.6.5.3.10.1.3" class="indexterm"></a>
       </span> <a href="#GUC-SSL-GROUPS" class="id_link">#</a></dt><dd><p>
-        Specifies the name of the curve to use in <acronym class="acronym">ECDH</acronym> key
-        exchange.  It needs to be supported by all clients that connect.
-        Multiple curves can be specified by using a colon-separated list.
-        It does not need to be the same curve used by the server's Elliptic
-        Curve key.  This parameter can only be set in the
+        Specifies the named group to use for <acronym class="acronym">TLS</acronym> key
+        exchange.  It needs to be supported by all clients that
+        connect.  Multiple groups can be specified by using a colon-separated
+        list.  It does not need to match the key type used by the server
+        certificate.  This parameter can only be set in the
         <code class="filename">postgresql.conf</code> file or on the server command line.
         The default is <code class="literal">X25519:prime256v1</code>.
        </p><p>
-        <span class="productname">OpenSSL</span> names for the most common curves
+        <span class="productname">OpenSSL</span> names for the most common groups
         are:
         <code class="literal">prime256v1</code> (NIST P-256),
         <code class="literal">secp384r1</code> (NIST P-384),
@@ -597,4 +607,4 @@
        </p><p>
         This parameter can only be set in the <code class="filename">postgresql.conf</code>
         file or on the server command line.
-       </p></dd></dl></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="runtime-config-file-locations.html" title="19.2. File Locations">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="runtime-config.html" title="Chapter 19. Server Configuration">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="runtime-config-resource.html" title="19.4. Resource Consumption">Next</a></td></tr><tr><td width="40%" align="left" valign="top">19.2. File Locations </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="PostgreSQL 18.3 Documentation">Home</a></td><td width="40%" align="right" valign="top"> 19.4. Resource Consumption</td></tr></table></div></body></html>
+       </p></dd></dl></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="runtime-config-file-locations.html" title="19.2. File Locations">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="runtime-config.html" title="Chapter 19. Server Configuration">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="runtime-config-resource.html" title="19.4. Resource Consumption">Next</a></td></tr><tr><td width="40%" align="left" valign="top">19.2. File Locations </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="PostgreSQL 18.6 Documentation">Home</a></td><td width="40%" align="right" valign="top"> 19.4. Resource Consumption</td></tr></table></div></body></html>

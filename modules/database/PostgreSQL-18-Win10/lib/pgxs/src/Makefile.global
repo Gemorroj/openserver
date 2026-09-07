@@ -38,9 +38,9 @@ all:
 maintainer-clean: distclean
 
 # PostgreSQL version number
-VERSION = 18.3
+VERSION = 18.6
 MAJORVERSION = 18
-VERSION_NUM = 180003
+VERSION_NUM = 180006
 
 PACKAGE_URL = https://www.postgresql.org/
 
@@ -63,8 +63,8 @@ endif
 endif
 else # not PGXS
 vpath_build = yes
-abs_top_builddir = D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\postgresql-18.3\meson-build
-abs_top_srcdir = D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\postgresql-18.3
+abs_top_builddir = D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\postgresql-18.6\meson-build
+abs_top_srcdir = D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\postgresql-18.6
 
 ifneq ($(vpath_build),yes)
 top_srcdir = $(top_builddir)
@@ -104,7 +104,7 @@ ifneq (,$(if $(PGXS),,1)$(prefix))
 # Note that prefix, exec_prefix, and datarootdir aren't defined in a PGXS build;
 # makefiles may only use the derived variables such as bindir.
 
-prefix := D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\postgresql-18.3\meson-install
+prefix := D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\postgresql-18.6\meson-install
 exec_prefix := ${prefix}
 datarootdir := ${prefix}/share
 
@@ -287,9 +287,9 @@ LLVM_CXXFLAGS =
 
 # Kind-of compilers
 
-BISON = C:\msys64\usr\bin\bison.EXE
+BISON = C:\msys64\usr\bin\bison.exe
 BISONFLAGS = -Wno-deprecated $(YFLAGS)
-FLEX = C:\msys64\usr\bin\flex.EXE
+FLEX = C:\msys64\usr\bin\flex.exe
 FLEXFLAGS =  $(LFLAGS)
 DTRACE = 
 DTRACEFLAGS = 
@@ -297,7 +297,7 @@ ZIC =
 
 # Linking
 
-AR = C:\msys64\usr\bin\ar.EXE
+AR = C:\msys64\usr\bin\ar.exe
 AROPT = crs
 LIBS = 
 LDAP_LIBS_FE = 
@@ -336,7 +336,7 @@ X = .exe
 # Perl
 
 # quoted to protect pathname with spaces
-PERL		= 'D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\strawberry-perl-5.42.0.1-64bit-portable\perl\bin\perl.EXE'
+PERL		= 'D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\strawberry-perl-5.42.2.1-64bit-portable\perl\bin\perl.exe'
 perl_archlibexp		= 
 perl_privlibexp		= 
 perl_includespec	= 
@@ -345,7 +345,7 @@ perl_embed_ldflags	=
 
 # Miscellaneous
 
-AWK	= C:\msys64\usr\bin\gawk.EXE
+AWK	= C:\msys64\usr\bin\gawk.exe
 LN_S	= ln -s
 LIBCURL_CPPFLAGS = 
 LIBCURL_LDFLAGS = 
@@ -353,15 +353,15 @@ LIBCURL_LDLIBS =
 MSGFMT  = 
 MSGFMT_FLAGS = 
 MSGMERGE = 
-OPENSSL	= D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\openssl\bin\openssl.EXE
-PYTHON	= C:\hostedtoolcache\windows\Python\3.13.12\x64\python3.EXE
-TAR	= C:\msys64\usr\bin\tar.EXE
+OPENSSL	= D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\openssl\bin\openssl.exe
+PYTHON	= C:\hostedtoolcache\windows\Python\3.13.15\x64\python3.exe
+TAR	= C:\msys64\usr\bin\tar.exe
 XGETTEXT = 
 
 GZIP	= gzip
 BZIP2	= bzip2
 LZ4	= 
-ZSTD	= D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\zstd\bin\zstd.EXE
+ZSTD	= D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\zstd\bin\zstd.exe
 
 DOWNLOAD = wget -O $@ --no-use-server-timestamps
 #DOWNLOAD = curl -o $@
@@ -451,7 +451,7 @@ endif
 checkprep:
 	$(if $(EXTRA_INSTALL),for extra in $(EXTRA_INSTALL); do $(MAKE) -C '$(top_builddir)'/$$extra DESTDIR='$(abs_top_builddir)'/tmp_install install || exit; done)
 
-PROVE = D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\strawberry-perl-5.42.0.1-64bit-portable\perl\bin\prove.BAT
+PROVE = D:\a\postgresql-packaging-foundation\postgresql-packaging-foundation\strawberry-perl-5.42.2.1-64bit-portable\perl\bin\prove.bat
 # There are common routines in src/test/perl, and some test suites have
 # extra perl modules in their own directory.
 PG_PROVE_FLAGS = -I $(top_srcdir)/src/test/perl/ -I $(srcdir)
@@ -528,9 +528,9 @@ MKDIR_P = mkdir -p
 
 missing		= $(SHELL) $(top_srcdir)/config/missing
 
-STRIP		= C:\msys64\usr\bin\strip.EXE
-STRIP_STATIC_LIB = C:\msys64\usr\bin\strip.EXE --strip-unneeded
-STRIP_SHARED_LIB = C:\msys64\usr\bin\strip.EXE --strip-unneeded
+STRIP		= C:\msys64\usr\bin\strip.exe
+STRIP_STATIC_LIB = C:\msys64\usr\bin\strip.exe --strip-unneeded
+STRIP_SHARED_LIB = C:\msys64\usr\bin\strip.exe --strip-unneeded
 
 # Documentation
 

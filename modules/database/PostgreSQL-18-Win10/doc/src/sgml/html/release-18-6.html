@@ -1,0 +1,1414 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>E.1. Release 18.6</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="release.html" title="Appendix E. Release Notes" /><link rel="next" href="release-18-4.html" title="E.2. Release 18.4" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">E.1. Release 18.6</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="release.html" title="Appendix E. Release Notes">Prev</a> </td><td width="10%" align="left"><a accesskey="u" href="release.html" title="Appendix E. Release Notes">Up</a></td><th width="60%" align="center">Appendix E. Release Notes</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="PostgreSQL 18.6 Documentation">Home</a></td><td width="10%" align="right"> <a accesskey="n" href="release-18-4.html" title="E.2. Release 18.4">Next</a></td></tr></table><hr /></div><div class="sect1" id="RELEASE-18-6"><div class="titlepage"><div><div><h2 class="title" style="clear: both">E.1. Release 18.6 <a href="#RELEASE-18-6" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="release-18-6.html#RELEASE-18-6-MIGRATION">E.1.1. Migration to Version 18.6</a></span></dt><dt><span class="sect2"><a href="release-18-6.html#RELEASE-18-6-CHANGES">E.1.2. Changes</a></span></dt></dl></div><p><strong>Release date: </strong>2026-08-13</p><p>
+   This release contains a variety of fixes from 18.4.
+   For information about new features in major release 18, see
+   <a class="xref" href="release-18.html" title="E.6. Release 18">Section E.6</a>.
+  </p><p>
+   Note: 18.5 was never released, due to a regression discovered
+   post-wrap.
+  </p><div class="sect2" id="RELEASE-18-6-MIGRATION"><div class="titlepage"><div><div><h3 class="title">E.1.1. Migration to Version 18.6 <a href="#RELEASE-18-6-MIGRATION" class="id_link">#</a></h3></div></div></div><p>
+    A dump/restore is not required for those running 18.X.
+   </p><p>
+    However, the first three security entries below describe configuration
+    adjustments and data cleanups that you may need to make after updating.
+   </p><p>
+    Also, if you have any GIN indexes, see the changelog entry below
+    about possibly-corrupt <code class="structfield">reltuples</code> values for
+    their tables.
+   </p><p>
+    Also, if you use <code class="filename">contrib/btree_gist</code>
+    or <code class="filename">contrib/ltree</code>, you may need to reindex indexes
+    made with those extensions; see the relevant entries below.
+   </p><p>
+    Also, if you are upgrading from a version earlier than 18.2,
+    see <a class="xref" href="release-18-2.html" title="E.4. Release 18.2">Section E.4</a>.
+   </p></div><div class="sect2" id="RELEASE-18-6-CHANGES"><div class="titlepage"><div><div><h3 class="title">E.1.2. Changes <a href="#RELEASE-18-6-CHANGES" class="id_link">#</a></h3></div></div></div><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      Restrict logical decoding output plugins to the set specified by a
+      new server parameter <code class="varname">output_plugin_libraries</code>
+      (Jacob Champion)
+      <a class="ulink" href="https://postgr.es/c/2a29b607d" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/82fd68801" target="_top">§</a>
+     </p><p>
+      Previously, a replication user could select any loadable library for
+      logical decoding, allowing exploits of various sorts.  To allow
+      locking this down without breaking setups that worked before,
+      introduce a whitelist of allowed output plugins.
+     </p><p>
+      By default, only the output plugins shipped as part
+      of <span class="productname">PostgreSQL</span>
+      (<code class="literal">pgoutput</code> and <code class="literal">test_decoding</code>)
+      are included in <code class="varname">output_plugin_libraries</code>.
+      Installations that rely on other output plugins must add them
+      after updating the server, for example
+</p><pre class="programlisting">
+output_plugin_libraries = 'pgoutput, test_decoding, my_trusted_decoder'
+</pre><p>
+     </p><p>
+      Additionally, <code class="command">pg_upgrade --check</code> will fail if the
+      <code class="varname">output_plugin_libraries</code> parameter on the new
+      cluster does not permit the plugins of logical replication slots
+      on the old cluster, when migrating from versions 17 and later.
+      Make necessary additions to the new cluster's setting before
+      performing <span class="application">pg_upgrade</span>.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Vladimir Tokarev and Yu Kunpeng
+      for reporting this problem.
+      (CVE-2026-6471)
+     </p></li><li class="listitem"><p>
+      Fix <code class="filename">contrib/pgcrypto</code>'s PGP encryption to detect
+      unsupported ciphers (Daniel Gustafsson)
+      <a class="ulink" href="https://postgr.es/c/fe32b10fc" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/4c5128ca0" target="_top">§</a>
+     </p><p>
+      Previously, if OpenSSL rejected the requested cipher (for example,
+      because it is running in FIPS mode, or the legacy provider hasn't
+      been loaded), <span class="application">pgcrypto</span> failed to notice
+      the failure and simply XOR'd the non-encrypted block with the
+      plaintext, rendering the <span class="quote">“<span class="quote">encryption</span>”</span> trivially
+      breakable.  This will typically occur with deprecated or non-FIPS
+      cipher algorithms (cipher-algo=blowfish/bf, twofish, cast5, or
+      3des).
+     </p><p>
+      By default, <span class="application">pgcrypto</span> will now fail to
+      decrypt any messages that were affected in this way.  To allow
+      retrieval of such data, a new
+      option <code class="literal">ignore-cipher-failure</code> has been added
+      to <code class="function">pgp_pub_decrypt()</code>
+      and <code class="function">pgp_sym_decrypt()</code>.
+      Setting <code class="literal">ignore-cipher-failure=1</code> will restore
+      their previous behavior, allowing the faulty encryption wrapper to
+      be stripped off:
+</p><pre class="programlisting">
+pgp_sym_decrypt(encrypted_column, <em class="replaceable"><code>any key</code></em>, 'ignore-cipher-failure=1')
+</pre><p>
+      Once the affected messages are identified and stripped of their
+      wrappers, they can then be re-encrypted with a modern algorithm. It
+      is important however that the behavior of OpenSSL be the same as it
+      was when the faulty messages were created: if the set of unsupported
+      algorithms is not the same, this approach will not work. See the
+      documentation for <code class="literal">ignore-cipher-failure</code>.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Shishir Sharma
+      for reporting this problem.
+      (CVE-2026-14663)
+     </p></li><li class="listitem"><p>
+      Fix <span class="application">psql</span> to skip in-line data following a
+      scripted <code class="command">COPY ... FROM STDIN</code> command, even if
+      the <code class="command">COPY</code> fails before
+      sending <code class="literal">PGRES_COPY_IN</code> (Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/29921259e" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/900894d35" target="_top">§</a>
+     </p><p>
+      Previously, if a <code class="literal">COPY</code> command failed at startup
+      (for instance, because the target table doesn't exist)
+      <span class="application">psql</span> would not realize that and would
+      proceed to read the following in-line data as SQL commands.  In the
+      best case that's wrong and in the worst case it's a SQL-injection
+      hazard.  Teach <span class="application">psql</span> to recognize
+      syntactically-valid <code class="command">COPY ... FROM STDIN</code> commands
+      and to skip data on its own authority if the server doesn't respond
+      with <code class="literal">PGRES_COPY_IN</code>.
+     </p><p>
+      While this fix is unlikely to affect any production SQL scripts,
+      test scripts might intentionally exercise failing <code class="command">COPY
+      ... FROM STDIN</code> commands.  Those will need to gain
+      a <code class="literal">\.</code> data terminator line after each such
+      command.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Alexander Lakhin
+      for reporting this problem.
+      (CVE-2026-6464)
+     </p></li><li class="listitem"><p>
+      Cross-check the output row type of a portal
+      running <code class="command">EXECUTE</code> or <code class="command">FETCH</code>
+      (Robert Haas)
+      <a class="ulink" href="https://postgr.es/c/37b8f3b0e" target="_top">§</a>
+     </p><p>
+      <code class="command">EXECUTE</code> and <code class="command">FETCH</code> use two
+      portals: an outer one for the statement itself, and an inner one
+      running the query being executed on its behalf.  It was previously
+      possible to make the declared row types of the two portals diverge,
+      leading to server memory disclosure and arbitrary code execution.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Ben Morris (in collaboration with Claude and Anthropic Research)
+      and Peter Geoghegan
+      for reporting this problem.
+      (CVE-2026-16239)
+     </p></li><li class="listitem"><p>
+      Fix buffer overrun with long time zone abbreviation in
+      <code class="function">to_char()</code> (Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/4fafe2380" target="_top">§</a>
+     </p><p>
+      This can easily crash the server, and exploits leading to arbitrary
+      code execution have been reported.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Hcamael, Amjad Shahzad, Tan Zhen of AntAISecurityLab, Tomer Fichman,
+      Zheng Yu, Amy Burnett (OpenAI Codex Security), Rick de Jager, Heewon
+      Song, Sylvie Mayer, Aleksander Alekseev, and Hillai Ben Sasson
+      for reporting this problem.
+      (CVE-2026-14669)
+     </p></li><li class="listitem"><p>
+      Fix buffer overrun in regexp match/split functions (Masahiko Sawada)
+      <a class="ulink" href="https://postgr.es/c/b7e5c3f63" target="_top">§</a>
+     </p><p>
+      If passed invalidly-encoded data, these functions could write past
+      the end of their conversion buffer.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Francesco Verardi
+      for reporting this problem.
+      (CVE-2026-14664)
+     </p></li><li class="listitem"><p>
+      Harden the <code class="function">ascii()</code> function against invalid
+      input (Michael Paquier)
+      <a class="ulink" href="https://postgr.es/c/08e812c02" target="_top">§</a>
+     </p><p>
+      By supplying invalidly-encoded input, this function could be coaxed
+      to read and return a few bytes of data that it shouldn't.  In
+      assert-enabled builds, its assertions could be triggered too.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Hcamael
+      for reporting this problem.
+      (CVE-2026-18024)
+     </p></li><li class="listitem"><p>
+      Fix multirange type handling
+      in <code class="function">pg_restore_attribute_stats()</code>
+      (OpenAI Security Research Team)
+      <a class="ulink" href="https://postgr.es/c/08454e8b2" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/8d428c6e6" target="_top">§</a>
+     </p><p>
+      <code class="function">pg_restore_attribute_stats()</code> treated multirange
+      types just like their underlying range type.  This works correctly
+      for the bounds histogram, but it was wrong for all the other
+      statistics kinds.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Amy Burnett (OpenAI Codex Security)
+      for reporting this problem.
+      (CVE-2026-16238)
+     </p></li><li class="listitem"><p>
+      Make <code class="function">scalarineqsel()</code> check that a constant it
+      expects to be of type <code class="type">tid</code> actually is (Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/a2cb5a1cf" target="_top">§</a>
+     </p><p>
+      This expectation will hold for all the built-in operators that use
+      this estimator, but a maliciously-constructed operator could violate
+      it, leading to a crash or server memory disclosure.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Hcamael
+      for reporting this problem.
+      (CVE-2026-14668)
+     </p></li><li class="listitem"><p>
+      Harden <code class="type">tsvector</code> and <code class="type">tsquery</code> code against
+      overly long values (both individual lexemes and total vector/query
+      length) (Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/e25135057" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/dddc8a69f" target="_top">§</a>
+     </p><p>
+      The documented limits were not enforced in all code paths.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Yuhang Wu, Zhenpeng Lin, Zheng Yu, and Hcamael
+      for reporting these problems.
+      (CVE-2026-14662)
+     </p></li><li class="listitem"><p>
+      Fix various places that mistakenly assumed they would not have to
+      deal with more than <code class="literal">FUNC_MAX_ARGS</code> function
+      arguments (Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/7f0e1aac7" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/2a03f21da" target="_top">§</a>
+     </p><p>
+      Notably, the server's actual limit on the number of arguments to an
+      aggregate function is <code class="literal">FUNC_MAX_ARGS - 1</code>, but the
+      parser failed to enforce that, creating hazards downstream.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Zheng Yu, ylwangtju, and Masahiko Sawada
+      for reporting these problems.
+      (CVE-2026-14679)
+     </p></li><li class="listitem"><p>
+      Reject calls from SQL to functions that take or return
+      type <code class="type">internal</code> (Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/54649de65" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/722695db1" target="_top">§</a>
+     </p><p>
+      The existing defenses against doing this have been shown to be
+      insufficient, so add more explicit checks.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Amy Burnett (OpenAI Codex Security)
+      for reporting this problem.
+      (CVE-2026-14680)
+     </p></li><li class="listitem"><p>
+      Preserve the ownership of extended statistics objects when they are
+      rebuilt by <code class="command">ALTER TABLE</code> (Masahiko Sawada)
+      <a class="ulink" href="https://postgr.es/c/a1fa24127" target="_top">§</a>
+     </p><p>
+      Previously, the role running <code class="command">ALTER TABLE</code> gained
+      ownership of such objects, but that seems inappropriate.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Noah Misch
+      for reporting this problem.
+      (CVE-2026-6469)
+     </p></li><li class="listitem"><p>
+      When deparsing an <code class="function">EXTRACT()</code> function call,
+      quote the field name if needed (Nathan Bossart)
+      <a class="ulink" href="https://postgr.es/c/0ddd9098a" target="_top">§</a>
+     </p><p>
+      The parser accepts any string literal as a field name
+      in <code class="function">EXTRACT()</code>, deferring validation to
+      execution.  If the call is stored and deparsed (for example
+      during <span class="application">pg_dump</span>), the string body was
+      regurgitated verbatim, allowing SQL injection.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Ben Morris (in collaboration with Claude and Anthropic Research)
+      for reporting this problem.
+      (CVE-2026-15741)
+     </p></li><li class="listitem"><p>
+      Check for <code class="literal">USAGE</code> privilege on data types in places
+      that formerly failed to check that (Nathan Bossart)
+      <a class="ulink" href="https://postgr.es/c/2e91f8548" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/57f59ca1d" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/278053843" target="_top">§</a>
+     </p><p>
+      <code class="command">CREATE TYPE AS RANGE</code> did not check, nor
+      did <code class="command">ALTER TABLE OF</code>, nor did commands that create
+      stored expressions.  These omissions allowed roles
+      without <code class="literal">USAGE</code> privilege to nonetheless create
+      objects depending on the type, possibly blocking the type's owner
+      from changing the type later.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Jingzhou Fu
+      for reporting this problem.
+      (CVE-2026-6470)
+     </p></li><li class="listitem"><p>
+      Invalidate role-dependent cached plans after role changes
+      (Ilya Staroverov, Shinya Kato, Nathan Bossart)
+      <a class="ulink" href="https://postgr.es/c/0b12f56bf" target="_top">§</a>
+     </p><p>
+      Role membership, role attribute, and database ownership changes may
+      impact the expected behavior of row-level security policies, but
+      previously we'd continue to use cached plans that were made
+      according to the old state of affairs.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Ilya Staroverov and Shinya Kato
+      for reporting this problem.
+      (CVE-2026-14666)
+     </p></li><li class="listitem"><p>
+      Reject GSSEncRequest after direct SSL connection (Michael Paquier)
+      <a class="ulink" href="https://postgr.es/c/203a48209" target="_top">§</a>
+     </p><p>
+      After establishing a TLS-encrypted connection, the server would
+      still accept a request for GSSAPI encryption.  If that succeeded,
+      the connection would proceed using TLS encryption, but it would look
+      like a GSS connection to the <code class="filename">pg_hba</code> rules.
+      Thus, a <code class="filename">pg_hba</code> policy intending to disallow TLS
+      would not be enforced correctly.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      p4p3r
+      for reporting this problem.
+      (CVE-2026-14681)
+     </p></li><li class="listitem"><p>
+      Make mock SCRAM authentication secrets more plausible (Nathan Bossart)
+      <a class="ulink" href="https://postgr.es/c/822143c4d" target="_top">§</a>
+     </p><p>
+      If a SCRAM login is attempted against a role that doesn't exist or
+      doesn't have a SCRAM secret, we generate a mock secret and carry out
+      the authentication handshake anyway, to avoid revealing these facts
+      to an attacker.  But the mock secret was made with a fixed iteration
+      count, which in itself can be an observable response discrepancy.
+      Use the configuration setting <code class="varname">scram_iterations</code>
+      instead, to make the mock secret look more like the installation's
+      real secrets.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Radim Marek
+      for reporting this problem.
+      (CVE-2026-14672)
+     </p></li><li class="listitem"><p>
+      Fix out-of-bounds writes in <span class="application">ecpg</span>
+      applications caused by invalid <code class="type">bytea</code> data received from
+      the server (Michael Paquier)
+      <a class="ulink" href="https://postgr.es/c/a14ba29b1" target="_top">§</a>
+     </p><p>
+      <span class="application">ecpg</span> assumed without checking that
+      any <code class="type">bytea</code> value must begin with <code class="literal">\x</code>.
+      A broken or malicious server might send a string shorter than 2
+      bytes, resulting in memory clobber in the application.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      ylwangtju
+      for reporting this problem.
+      (CVE-2026-16241)
+     </p></li><li class="listitem"><p>
+      Do not do backquote expansion on the argument
+      of <span class="application">psql</span>'s <code class="command">\unrestrict</code>
+      command (Nathan Bossart)
+      <a class="ulink" href="https://postgr.es/c/71ca694c7" target="_top">§</a>
+     </p><p>
+      This oversight in the fix for CVE-2025-8714 allows a malicious
+      server to inject shell commands into plain-text dump output that
+      will be run at restore time on the machine
+      running <span class="application">psql</span>, the exact scenario that
+      CVE-2025-8714 intended to prevent.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Lucas Velgus, Filip Janus, and Daniel Bakker
+      for reporting this problem.
+      (CVE-2026-18408)
+     </p></li><li class="listitem"><p>
+      Remove <span class="application">pg_dump</span>'s assumption that
+      <code class="structname">pg_proc</code>.<code class="structfield">protrftypes</code>
+      cannot have more than <code class="literal">FUNC_MAX_ARGS</code> entries
+      (Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/3392cce5c" target="_top">§</a>
+     </p><p>
+      Since there could be entries for both input and output arguments,
+      it's feasible for this array's length to exceed
+      <code class="literal">FUNC_MAX_ARGS</code> (which constrains only input
+      arguments).  Even if that were not so,
+      <span class="application">pg_dump</span> cannot assume that the server was
+      built with the same value of <code class="literal">FUNC_MAX_ARGS</code> that
+      it has.  An overrun would lead to a memory clobber
+      inside <span class="application">pg_dump</span>.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Masahiko Sawada
+      for reporting this problem.
+      (CVE-2026-19385)
+     </p></li><li class="listitem"><p>
+      Harden <span class="application">PL/Perl</span>
+      against <span class="quote">“<span class="quote">tied</span>”</span> Perl arrays and hashes (Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/87c4b8219" target="_top">§</a>
+     </p><p>
+      A tied object that doesn't behave like a regular one could lead to
+      memory overwrite, or to constructing a corrupt result array (which
+      would likely cause problems later).
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Hcamael
+      for reporting this problem.
+      (CVE-2026-14670)
+     </p></li><li class="listitem"><p>
+      Fix integer overflows in memory-allocation calculations
+      in <span class="application">PL/Perl</span>
+      and <span class="application">PL/Tcl</span> (Heikki Linnakangas)
+      <a class="ulink" href="https://postgr.es/c/028ee716a" target="_top">§</a>
+     </p><p>
+      This is the same type of problem as CVE-2026-6473, just in a
+      different part of the code, and is fixed in the same way.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      the Tulya Project (Team Dhiutsa, Bitecope Technologies Private Ltd)
+      for reporting this problem.
+      (CVE-2026-14677)
+     </p></li><li class="listitem"><p>
+      Ensure that <code class="filename">contrib/amcheck</code> functions
+      restrict <code class="varname">search_path</code> before executing index
+      expressions (Noah Misch)
+      <a class="ulink" href="https://postgr.es/c/0a61fcde0" target="_top">§</a>
+     </p><p>
+      Because amcheck will run such index expressions as the owner of
+      their tables, a caller could potentially
+      hijack <code class="varname">search_path</code>-dependent functions to run
+      arbitrary code as the table owner.  By default this is not a
+      vulnerability because only superusers are allowed to call amcheck
+      functions; but if that privilege was granted out, it created a
+      larger hazard than the documentation suggests.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Yuelin Wang and Jacob Brazeal
+      for reporting this problem.
+      (CVE-2026-14673)
+     </p></li><li class="listitem"><p>
+      Fix integer overflows in <code class="filename">contrib/fuzzystrmatch</code>'s
+      <code class="function">levenshtein()</code>
+      and <code class="function">levenshtein_less_equal()</code> functions
+      (Nathan Bossart)
+      <a class="ulink" href="https://postgr.es/c/e88eb4e76" target="_top">§</a>
+     </p><p>
+      Passing large cost values to these functions could cause integer
+      overflows, thereby producing nonsensical results, and even causing
+      out-of-bounds writes in some cases.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Ben Morris (in collaboration with Claude and Anthropic Research)
+      for reporting this problem.
+      (CVE-2026-15742)
+     </p></li><li class="listitem"><p>
+      Fix buffer overrun
+      in <code class="filename">contrib/pg_stat_statements</code> (Álvaro Herrera)
+      <a class="ulink" href="https://postgr.es/c/8a31ffc2d" target="_top">§</a>
+     </p><p>
+      Query normalization didn't accurately account for the amount of
+      space the normalized string would require.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Sajeeb Lohani (with TrendAI Zero Day Initiative) and Yuelin Wang
+      for reporting this problem.
+      (CVE-2026-14676)
+     </p></li><li class="listitem"><p>
+      Fix datatype error in <code class="filename">contrib/pg_trgm</code>'s GiST
+      picksplit function (Heikki Linnakangas)
+      <a class="ulink" href="https://postgr.es/c/849019a50" target="_top">§</a>
+     </p><p>
+      This mistake resulted in reading past the end of the buffer,
+      typically causing bad split decisions; but a crash could ensue
+      if you're very unlucky.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Mehmet D. Ince
+      for reporting this problem.
+      (CVE-2026-14678)
+     </p></li><li class="listitem"><p>
+      Remove the plan cache in <code class="filename">contrib/refint</code>
+      (Ayush Tiwari)
+      <a class="ulink" href="https://postgr.es/c/79a506228" target="_top">§</a>
+     </p><p>
+      This caching behavior has several serious bugs, notably that
+      <code class="function">check_foreign_key()</code> embeds the new key values
+      in its cascade-UPDATE queries, so a cached plan reuses the
+      originally-needed values rather than the key values that should be
+      used.  The simplest solution is to remove it.
+     </p><p>
+      The <span class="productname">PostgreSQL</span> Project thanks
+      Hcamael
+      for reporting this problem.
+      (CVE-2026-14671)
+     </p></li><li class="listitem"><p>
+      Ensure that parallel GIN index builds update the table's
+      <code class="structname">pg_class</code>.<code class="structfield">reltuples</code>
+      value correctly (Jan Nidzwetzki, Tomas Vondra)
+      <a class="ulink" href="https://postgr.es/c/d4420a972" target="_top">§</a>
+     </p><p>
+      A parallel worker could report an uninitialized value for the
+      number of rows it processed, leading to a bogus value
+      for <code class="structfield">reltuples</code>, even Infinity or NaN.
+      Such values could lead to subsequent autovacuum and autoanalyze
+      operations never deciding that the table needs to be processed.
+      If so, the situation will not self-heal.  A manual
+      <code class="command">ANALYZE</code> command, or creation of another index,
+      will be needed to reset <code class="structfield">reltuples</code> to
+      the correct value.  If you have any tables with GIN indexes, it's
+      recommended to check to see if
+      their <code class="structfield">reltuples</code> entries look sane.
+      A query such as this may be helpful:
+</p><pre class="programlisting">
+SELECT DISTINCT t.oid::regclass, t.reltuples
+FROM pg_class t
+  JOIN pg_index i ON t.oid = i.indrelid
+  JOIN pg_class ic ON i.indexrelid = ic.oid
+WHERE t.relhasindex AND ic.relam = 2742;
+</pre><p>
+     </p></li><li class="listitem"><p>
+      Fix mis-handling of asynchronous reads when rescanning an
+      asynchronous Append plan node (Alexander Korotkov, Gleb Kashkin,
+      Etsuro Fujita)
+      <a class="ulink" href="https://postgr.es/c/4ea497a92" target="_top">§</a>
+     </p><p>
+      When an upper plan node rescans an Append before having read the
+      entire Append output, we need to discard any in-flight requests sent
+      to external servers (by <code class="filename">postgres_fdw</code> for
+      example).  This was not done correctly in cases where a subplan has
+      parameter changes or is discarded by partition pruning in the next
+      scan.  The outcome could be incorrect query results, an infinite
+      loop, or an assertion failure.
+     </p></li><li class="listitem"><p>
+      Fix error in partition pruning for RANGE-partitioned tables
+      (David Rowley)
+      <a class="ulink" href="https://postgr.es/c/02e69be47" target="_top">§</a>
+     </p><p>
+      In some cases the DEFAULT partition would be skipped when it should
+      not be, which could lead to rows missing from query results.
+     </p></li><li class="listitem"><p>
+      Correctly update foreign-data-wrapper state in a ModifyTable plan
+      node after pruning result relations (Ayush Tiwari, Rafia Sabih)
+      <a class="ulink" href="https://postgr.es/c/1ef917e3a" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/bba4e095d" target="_top">§</a>
+     </p><p>
+      Previously, if run-time partition pruning determined that some
+      partitions of a partitioned target table need not be scanned
+      and the table had any foreign-table partitions, a crash
+      or erroneous behavior was likely.
+     </p></li><li class="listitem"><p>
+      Fix missed concurrent update in <code class="command">UPDATE</code>
+      with <code class="literal">RETURNING OLD</code> on a table that has
+      a <code class="literal">BEFORE UPDATE</code> trigger (Dean Rasheed)
+      <a class="ulink" href="https://postgr.es/c/4908225be" target="_top">§</a>
+     </p><p>
+      If the target row was concurrently updated, then at isolation
+      level <code class="literal">READ COMMITTED</code> any <code class="literal">OLD</code>
+      values in <code class="literal">RETURNING</code> should reflect the updated
+      row.  But stale values were returned if there was a trigger
+      (although the trigger itself, and the final output row, saw the
+      correct values).
+     </p></li><li class="listitem"><p>
+      Fix hash join performance issue when there are multiple join keys
+      and many NULL values (David Rowley)
+      <a class="ulink" href="https://postgr.es/c/f70acc8a2" target="_top">§</a>
+     </p><p>
+      Null-keyed tuples should not get inserted into the hash table, since
+      they will never match any other tuples.  The code got this wrong if
+      the null was in a non-last join column, bloating the hash table
+      quite a lot if many inputs contain nulls.
+     </p></li><li class="listitem"><p>
+      Fix parsing of
+      parenthesized <code class="literal">OLD</code>/<code class="literal">NEW</code>
+      in <code class="literal">RETURNING</code> expressions (Marko Grujic)
+      <a class="ulink" href="https://postgr.es/c/9108fed3e" target="_top">§</a>
+     </p><p>
+      Expressions such as <code class="literal">(old).colname</code>
+      and <code class="literal">(old).*</code> were mis-handled, effectively
+      converting them to <code class="literal">NEW</code> references.
+     </p></li><li class="listitem"><p>
+      Fix planner's nullability and strictness checks
+      for <code class="literal"><em class="replaceable"><code>value</code></em> IN
+      (<em class="replaceable"><code>array</code></em>)</code> expressions
+      (Ayush Tiwari)
+      <a class="ulink" href="https://postgr.es/c/277122036" target="_top">§</a>
+     </p><p>
+      These checks should only succeed if the array operand is known to be
+      non-empty, but that consideration was missed, allowing optimizations
+      to be applied that should not be.  This could result in wrong query
+      answers if the array actually was empty.
+     </p></li><li class="listitem"><p>
+      Fix incorrect join removal logic (Matheus Alcantara, Richard Guo)
+      <a class="ulink" href="https://postgr.es/c/21f5e659e" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/9e40d07e1" target="_top">§</a>
+     </p><p>
+      In edge cases, it was possible for a constant output value coming
+      from within the nullable side of an outer join to not be replaced by
+      NULL when it should be.
+     </p></li><li class="listitem"><p>
+      Clean up PlaceHolderVars more thoroughly during join removal
+      (Richard Guo, Arne Roland)
+      <a class="ulink" href="https://postgr.es/c/e02526795" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/18105e6db" target="_top">§</a>
+     </p><p>
+      This fix corrects various edge cases that could trip assertions or
+      result in incorrect plans.
+     </p></li><li class="listitem"><p>
+      Add missed checks for hashability of equality comparisons on
+      container datatypes (arrays, composites, ranges) (Andrei Lepikhov,
+      Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/11aed8d19" target="_top">§</a>
+     </p><p>
+      The planner must verify hashability of the container's component
+      type(s) before deciding it can use a hash-based plan type.  This
+      step was missed in some places, leading to <span class="quote">“<span class="quote">could not identify
+      a hash function</span>”</span> failures at execution.
+     </p></li><li class="listitem"><p>
+      Avoid pushing <code class="literal">WHERE</code> clauses down past a grouping
+      step that has a different equivalence rule (Richard Guo)
+      <a class="ulink" href="https://postgr.es/c/fe5d62951" target="_top">§</a>
+     </p><p>
+      A test on a grouping column that is grouped by a nondeterministic
+      collation is safe to push down only if it is a comparison using that
+      same collation.  Otherwise it might filter some rows the grouping
+      would have merged.
+     </p></li><li class="listitem"><p>
+      Fix mis-optimization of <code class="function">COUNT</code> window functions
+      that have an <code class="literal">EXCLUDE</code> clause or
+      lack <code class="literal">ORDER BY</code> (Chengpeng Yan, David Rowley)
+      <a class="ulink" href="https://postgr.es/c/cf184ec77" target="_top">§</a>
+     </p><p>
+      These window functions were treated as monotonic when they should
+      not be, allowing wrong answers to be computed.
+     </p></li><li class="listitem"><p>
+      Avoid <span class="quote">“<span class="quote">cache lookup failed for collation 0</span>”</span> error when
+      planner looks up statistics for a column of type <code class="type">"char"</code>
+      (Feng Wu)
+      <a class="ulink" href="https://postgr.es/c/5fd1c3f28" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Fix <code class="command">ALTER COLUMN ... DROP EXPRESSION</code> to work when
+      there are multiple levels of partitions (Alberto Piai)
+      <a class="ulink" href="https://postgr.es/c/c374f2807" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Fix attaching partitions of indexes that are exclusion constraints
+      (Japin Li)
+      <a class="ulink" href="https://postgr.es/c/19e3aa704" target="_top">§</a>
+     </p><p>
+      Notably, this oversight broke dump/restore of partitioned exclusion
+      constraints.
+     </p></li><li class="listitem"><p>
+      Prevent setting <code class="literal">NO INHERIT</code> on
+      partitioned <code class="literal">NOT NULL</code> constraints
+      via <code class="command">ALTER CONSTRAINT</code> (Andreas Karlsson)
+      <a class="ulink" href="https://postgr.es/c/41247cdf6" target="_top">§</a>
+     </p><p>
+      <code class="literal">NOT NULL</code> constraints on partitioned tables are
+      supposed to be inherited by all partitions, and therefore must not
+      be marked <code class="literal">NO INHERIT</code>.  This rule was correctly
+      enforced by constraint creation, but not by <code class="command">ALTER TABLE
+      ... ALTER CONSTRAINT</code>.
+     </p></li><li class="listitem"><p>
+      Disallow renaming a rule to <code class="literal">_RETURN</code> (Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/a7f7958ab" target="_top">§</a>
+     </p><p>
+      That name is reserved for a view's <code class="literal">ON SELECT</code>
+      rule, but <code class="command">ALTER RULE</code> allowed renaming other rules
+      to <code class="literal">_RETURN</code>, causing trouble later.
+     </p></li><li class="listitem"><p>
+      Fix missing lock release for role membership grants in <code class="command">DROP
+      OWNED BY</code> (Jeff Davis)
+      <a class="ulink" href="https://postgr.es/c/a0daa0b41" target="_top">§</a>
+     </p><p>
+      This oversight resulted in a warning message, followed by retaining
+      a lock on the membership grant until the end of the transaction.
+     </p></li><li class="listitem"><p>
+      Fix failure of <code class="command">EXPLAIN</code> when
+      deparsing <code class="literal">SQL/JSON</code> aggregates (Richard Guo)
+      <a class="ulink" href="https://postgr.es/c/45364e496" target="_top">§</a>
+     </p><p>
+      Some plan structures resulted in <span class="quote">“<span class="quote">invalid
+      JsonConstructorExpr underlying node type</span>”</span> errors.
+     </p></li><li class="listitem"><p>
+      Fix use of <code class="command">REINDEX CONCURRENTLY</code> with
+      a deferred uniqueness constraint (Nitin Motiani)
+      <a class="ulink" href="https://postgr.es/c/e4527519b" target="_top">§</a>
+     </p><p>
+      The transient index copy created during <code class="command">REINDEX
+      CONCURRENTLY</code> was incorrectly marked as enforcing immediate
+      uniqueness, causing spurious reports of constraint violation.
+     </p></li><li class="listitem"><p>
+      Fix <code class="literal">LIKE</code> matching with nondeterministic
+      collations and backslashes (Nitin Motiani, Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/a99bd8d58" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/51652c42d" target="_top">§</a>
+     </p><p>
+      When using a nondeterministic collation,  <code class="literal">LIKE</code>
+      mishandled an escaped backslash (<code class="literal">\\</code>), treating it
+      as effectively not there.  It also did the wrong thing with a
+      leading backslash preceding an ordinary character; in that case the
+      backslash should be effectively ignored, but it caused the ordinary
+      character to be matched exactly rather than allowing the
+      nondeterministic collation to decide if there's a match.
+     </p></li><li class="listitem"><p>
+      Fix <code class="literal">LIKE</code>/regex optimization for indexscan with
+      exact-match pattern (Jelte Fennema-Nio)
+      <a class="ulink" href="https://postgr.es/c/d0bb49e61" target="_top">§</a>
+     </p><p>
+      Refactoring for <code class="literal">LIKE</code> with non-deterministic
+      collations accidentally broke the optimization for converting
+      a <code class="literal">LIKE</code> or regex exact-match pattern to an
+      equality index condition when the index collation doesn't match
+      the expression collation.  Among other things, that
+      made <span class="application">psql</span>'s
+      <code class="literal">\d <em class="replaceable"><code>tablename</code></em></code>
+      command much slower.
+     </p></li><li class="listitem"><p>
+      Fix matching of localized month/day names
+      in <code class="function">to_date()</code> (Heikki Linnakangas)
+      <a class="ulink" href="https://postgr.es/c/011384ba4" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/5f003855e" target="_top">§</a>
+     </p><p>
+      The matching logic misbehaved in cases where case-folding changes
+      the byte length of the string.
+     </p></li><li class="listitem"><p>
+      Correct case-folding rules for Greek final sigma (Jeff Davis)
+      <a class="ulink" href="https://postgr.es/c/66ec24276" target="_top">§</a>
+     </p><p>
+      If the string is preceded only by Case Ignorable characters, don't
+      consider it to be a final sigma.  This only affects the
+      built-in <code class="literal">pg_unicode_fast</code> locale.
+     </p></li><li class="listitem"><p>
+      Fix incorrect NFC recomposition for Hangul U+11A7 (TBASE)
+      (Diego Frias, Michael Paquier)
+      <a class="ulink" href="https://postgr.es/c/273fe9485" target="_top">§</a>
+     </p><p>
+      This character was treated as a valid T syllable, which it is not,
+      and hence silently swallowed during normalization.
+     </p></li><li class="listitem"><p>
+      Avoid possible truncation of output lexemes in case-insensitive
+      <code class="literal">synonym</code> dictionaries (Jeff Davis)
+      <a class="ulink" href="https://postgr.es/c/89e648498" target="_top">§</a>
+     </p><p>
+      If folding to lower case increased the byte length of a lexeme, it
+      was incorrectly truncated to its original byte length when emitted.
+     </p></li><li class="listitem"><p>
+      Defend against truncated UTF-8 characters in case-conversion logic
+      (Jeff Davis)
+      <a class="ulink" href="https://postgr.es/c/9021c8f3c" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Fix typo in <code class="function">hash_record_extended()</code> (Man Zeng)
+      <a class="ulink" href="https://postgr.es/c/b3f13c032" target="_top">§</a>
+     </p><p>
+      The code failed to initialize the second isnull argument passed to
+      FunctionCallInvoke().  This is harmless for existing in-core
+      extended hash support functions, which will not examine that value.
+      However, extension-provided hash functions could be affected if they
+      inspect <code class="literal">PG_ARGISNULL(1)</code>.
+     </p></li><li class="listitem"><p>
+      Fix <code class="function">pg_get_publication_tables()</code> to not fail if
+      a publishable table is dropped concurrently (Bharath Rupireddy)
+      <a class="ulink" href="https://postgr.es/c/73d63d1c1" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Prevent <code class="function">satisfies_hash_partition()</code> from
+      crashing with <code class="literal">VARIADIC NULL</code> (Robert Haas)
+      <a class="ulink" href="https://postgr.es/c/0c06ebf12" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Report invalid-weight errors more cleanly and consistently
+      in <code class="function">tsvector_filter()</code> and allied functions
+      (Ewan Young)
+      <a class="ulink" href="https://postgr.es/c/c5194139c" target="_top">§</a>
+     </p><p>
+      In particular, report weight characters that are not printable ASCII
+      in octal form (<code class="literal">\<em class="replaceable"><code>nnn</code></em></code>),
+      as <code class="function">charout()</code> would render them.  This avoids
+      possibly producing an invalidly-encoded error message.
+     </p></li><li class="listitem"><p>
+      Reject out-of-range timestamp shift values
+      in <code class="function">uuidv7()</code> (Baji Shaik)
+      <a class="ulink" href="https://postgr.es/c/c31b0fca0" target="_top">§</a>
+     </p><p>
+      The shift value must not be so large as to produce a timestamp out
+      of the range that a v7 UUID can represent.  Previously, a garbage
+      UUID value was produced.
+     </p></li><li class="listitem"><p>
+      Fix mishandling of namespace nodes in <code class="function">xpath()</code>
+      (Michael Paquier)
+      <a class="ulink" href="https://postgr.es/c/4c777d6dd" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/0d145be2c" target="_top">§</a>
+     </p><p>
+      This fix avoids an unexpected <span class="quote">“<span class="quote">could not copy node</span>”</span>
+      error.
+     </p></li><li class="listitem"><p>
+      Fix <code class="type">jsonpath</code>'s <code class="function">.decimal</code> method to
+      not throw a hard error for incorrect precision or scale (Ewan Young)
+      <a class="ulink" href="https://postgr.es/c/84001a04d" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/90789900b" target="_top">§</a>
+     </p><p>
+      Silent mode should suppress these errors, but failed to.
+     </p></li><li class="listitem"><p>
+      Fix NULL-pointer crash when <code class="literal">IS JSON</code> or similar
+      constructs have an argument that is of string category but lacks a
+      cast to type <code class="type">text</code> (Ayush Tiwari)
+      <a class="ulink" href="https://postgr.es/c/35d9a6263" target="_top">§</a>
+     </p><p>
+      There are no such data types in
+      core <span class="productname">PostgreSQL</span>, but the problem is
+      reachable with some extension types.
+     </p></li><li class="listitem"><p>
+      Ensure that <code class="literal">SQL/JSON</code> <code class="literal">ON EMPTY / ON ERROR
+      DEFAULT</code> values are coerced to the correct typmod (Ewan Young)
+      <a class="ulink" href="https://postgr.es/c/441e4c8d6" target="_top">§</a>
+     </p><p>
+      For example, the declared precision and scale of
+      a <code class="type">numeric</code> target column were not applied to the default
+      value.
+     </p></li><li class="listitem"><p>
+      Avoid machine-dependent behavior when dividing the smallest
+      possible <code class="type">money</code> value by -1 (Andrey Rachitskiy)
+      <a class="ulink" href="https://postgr.es/c/6298a41b4" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Fix crash after out-of-memory failure partway through creation of a
+      cache entry for a text search dictionary (Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/81b1e7916" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Fix memory-safety bugs in processing of incorrect ispell/hunspell
+      dictionary files (Andrey Rachitskiy)
+      <a class="ulink" href="https://postgr.es/c/4689ea9ce" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Prevent access to other sessions' temporary tables (Jim Jones,
+      Daniil Davydov, Alexander Korotkov)
+      <a class="ulink" href="https://postgr.es/c/1b0dd0815" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/3aaefe892" target="_top">§</a>
+     </p><p>
+      Some code paths failed to prevent this, leading to silently wrong
+      (inconsistent) results.
+     </p></li><li class="listitem"><p>
+      Prevent <span class="quote">“<span class="quote">no empty local buffer available</span>”</span> errors during
+      temporary table access (Melanie Plageman)
+      <a class="ulink" href="https://postgr.es/c/ed8050370" target="_top">§</a>
+     </p><p>
+      Limit the number of local buffers that the read streaming mechanism
+      is allowed to use.  Previously, a large value
+      of <code class="varname">effective_io_concurrency</code> could allow a single
+      stream to use all the buffers, resulting in failure.
+     </p></li><li class="listitem"><p>
+      Fix the order in which autovacuum processes databases
+      (Rustam Khamidullin)
+      <a class="ulink" href="https://postgr.es/c/4cc49cb70" target="_top">§</a>
+     </p><p>
+      It was unintentionally processing databases from lowest to highest
+      score, when it should be doing the reverse.
+     </p></li><li class="listitem"><p>
+      Restore full use of shared buffer pool
+      in <code class="command">VACUUM</code>'s wraparound failsafe mode
+      (Melanie Plageman)
+      <a class="ulink" href="https://postgr.es/c/585181e07" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/7c25cdb1e" target="_top">§</a>
+     </p><p>
+      An ordinary <code class="command">VACUUM</code> is limited to use just a few
+      shared buffers, so as not to impinge too much on other processing.
+      However, in failsafe mode we want to reclaim transaction IDs as
+      quickly as possible, so that limit is supposed to be abandoned
+      to allow vacuuming to proceed as fast as possible.  This behavior
+      was accidentally broken during refactoring in v18; restore it.
+     </p></li><li class="listitem"><p>
+      Fix memory leak in parallel vacuum worker processes (Baji Shaik)
+      <a class="ulink" href="https://postgr.es/c/4154a1482" target="_top">§</a>
+     </p><p>
+      Progress reports from a parallel worker leaked about 1kB per report,
+      with the waste accumulating for the life of the worker process.
+     </p></li><li class="listitem"><p>
+      Honor query cancel and vacuum delay during GIN index posting-tree
+      cleanup (Paul Kim, Alexander Korotkov)
+      <a class="ulink" href="https://postgr.es/c/7becb647d" target="_top">§</a>
+     </p><p>
+      The posting tree for a common value can be large, so that this
+      missed check could allow vacuum to run for a long time before
+      noticing an interrupt.
+     </p></li><li class="listitem"><p>
+      Fix possible mis-decoding of index tuples during GiST and SP-GiST
+      index-only scans (Peter Geoghegan)
+      <a class="ulink" href="https://postgr.es/c/959b7fa2c" target="_top">§</a>
+     </p><p>
+      This error could lead to emitting corrupted data from an index-only
+      scan plan.  The only affected core opclass is GiST's range_ops, and
+      it could only fail if the range column were not the first index
+      column.
+     </p></li><li class="listitem"><p>
+      Ensure that the new last block of a bulk-extended table is added to
+      its free space map promptly (Jingtang Zhang)
+      <a class="ulink" href="https://postgr.es/c/eabc9a9dd" target="_top">§</a>
+     </p><p>
+      An off-by-one error caused the last block of a multi-block table
+      extension to not be marked as free in the map.  This would
+      eventually get corrected by vacuum, but meanwhile the space wouldn't
+      be used.
+     </p></li><li class="listitem"><p>
+      Avoid possible double-free or infinite error recovery loop in
+      resource cleanup during transaction abort (Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/ac6a58a70" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      When creating directories, tolerate concurrent creation of the same
+      directory (Andrew Dunstan, Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/aa80c34c8" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Fix JIT-compiled tuple deconstruction code to account correctly for
+      virtual generated columns (David Rowley)
+      <a class="ulink" href="https://postgr.es/c/e9692de1d" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Prevent creation of dangling object dependencies by acquiring a
+      shared lock on any object being depended on (Bertrand Drouvot)
+      <a class="ulink" href="https://postgr.es/c/c8cd3d697" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/f9d5a52da" target="_top">§</a>
+     </p><p>
+      The shared lock will conflict with any attempt to drop the
+      depended-on object, eliminating the race condition that formerly
+      existed.  For example, if one session drops a schema (that appears
+      empty to it) concurrently with some other session creating a
+      function in that schema, previously both transactions could commit,
+      leaving an invalid function definition behind.  Now, one transaction
+      or the other will fail.
+     </p></li><li class="listitem"><p>
+      Fix race condition in conflict detection
+      for <code class="literal">SERIALIZABLE</code> isolation mode
+      (Peter Geoghegan)
+      <a class="ulink" href="https://postgr.es/c/d560e730e" target="_top">§</a>
+     </p><p>
+      A conflict could be missed when examining an initially-empty btree
+      index, allowing failure of serializability due to improperly
+      allowing conflicting transactions to commit.
+     </p></li><li class="listitem"><p>
+      Fix race condition in ProcSignalBarrier code (Masahiko Sawada)
+      <a class="ulink" href="https://postgr.es/c/1a9b1cc18" target="_top">§</a>
+     </p><p>
+      This error could result in processes getting stuck, typically after
+      reporting <span class="quote">“<span class="quote">still waiting for backend with
+      PID <em class="replaceable"><code>nnnn</code></em> to accept
+      ProcSignalBarrier</span>”</span>.
+     </p></li><li class="listitem"><p>
+      Fix race conditions when a set of processes that belong to the same
+      lock group exit at the same time (Vlad Lesin)
+      <a class="ulink" href="https://postgr.es/c/ae08eb168" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/12c9b8b42" target="_top">§</a>
+     </p><p>
+      These errors could lead to PANIC aborts, with messages such
+      as <span class="quote">“<span class="quote">latch already owned</span>”</span>.  The issue does not normally
+      arise in regular parallel query, since the leader won't exit before
+      seeing its workers finish; but some extensions reach the problem.
+     </p></li><li class="listitem"><p>
+      Fix WAL logging of operations that clear bits in tables' visibility
+      maps (Melanie Plageman, Andres Freund)
+      <a class="ulink" href="https://postgr.es/c/d0fb1da21" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/f581fa729" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/4d7feebfb" target="_top">§</a>
+     </p><p>
+      Such VM changes were missed by the WAL summarizer, potentially
+      leading to incorrect incremental backups.  We also failed to log
+      full-page images of such VM pages when needed, potentially allowing
+      torn page writes to go uncorrected.  This could lead to misbehavior
+      later, such as wrong results from index-only scans.
+     </p></li><li class="listitem"><p>
+      Prevent WAL summarizer process from getting stuck at a timeline
+      switch (Robert Haas)
+      <a class="ulink" href="https://postgr.es/c/18f0de6b8" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/1d299d6ab" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Fix race with timeline selection in logical decoding during standby
+      promotion (Bertrand Drouvot)
+      <a class="ulink" href="https://postgr.es/c/b4bd13850" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/4bff3aa51" target="_top">§</a>
+     </p><p>
+      Logical decoding being performed on the standby could fail with
+      a <span class="quote">“<span class="quote">requested WAL segment has already been removed</span>”</span>
+      error.  A repeat attempt would succeed, so there was no permanent
+      problem but there was an availability hazard.
+     </p></li><li class="listitem"><p>
+      Avoid exposing a WAL receiver's full connection string during timeline
+      jumps (Chao Li)
+      <a class="ulink" href="https://postgr.es/c/b903d1792" target="_top">§</a>
+     </p><p>
+      The <code class="structname">pg_stat_wal_receiver</code> view should show a
+      sanitized version of the connection string, without sensitive data.
+      But it transiently showed the full string when we re-use an existing
+      WAL receiver.
+     </p></li><li class="listitem"><p>
+      Use run-time checks, not just Asserts, to verify the correct number
+      of columns in tuples received during logical replication (Varik
+      Matevosyan)
+      <a class="ulink" href="https://postgr.es/c/dc3db3a83" target="_top">§</a>
+     </p><p>
+      A malicious or buggy publisher could send inconsistent numbers of
+      columns.  While we could not find a scenario in which this would
+      have serious ill effects, extra caution seems warranted.
+     </p></li><li class="listitem"><p>
+      Clean up quoting of string parameters within constructed replication
+      commands (Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/abb582555" target="_top">§</a>
+     </p><p>
+      Various places that generate replication commands were not being
+      adequately careful about quoting replication slot names and other
+      parameters that need to be inserted into those commands.  This could
+      result in unexpected syntax errors in those commands.  In principle,
+      a crafted replication slot name could result in SQL injection; but
+      such a scenario seems very unlikely to occur in practice, since
+      replication operations can only be invoked by highly-privileged
+      users and there is no reason for them to use a slot name coming from
+      an untrustworthy source.
+     </p></li><li class="listitem"><p>
+      Fix logical decoding of empty prepared transactions (Masahiko Sawada)
+      <a class="ulink" href="https://postgr.es/c/b563fc6bd" target="_top">§</a>
+     </p><p>
+      A prepared transaction that did not cause any decodable updates could
+      result in sending <code class="command">COMMIT/ROLLBACK PREPARED</code> to the
+      output plugin with no preceding <code class="command">PREPARE</code>.  For the
+      built-in subscriber this breaks replication, and other plugins will
+      probably not like it either.
+     </p></li><li class="listitem"><p>
+      Fix corruption of unlogged sequences after standby promotion
+      (Fujii Masao)
+      <a class="ulink" href="https://postgr.es/c/627605713" target="_top">§</a>
+     </p><p>
+      Previously, if an unlogged sequence was created on the primary and
+      replicated to a standby, accessing the sequence after promoting the
+      standby could fail with <span class="quote">“<span class="quote">bad magic number in sequence</span>”</span>
+      or related errors.
+     </p></li><li class="listitem"><p>
+      Fix cascading standby reconnect failure after archive fallback
+      (Marco Nenciarini)
+      <a class="ulink" href="https://postgr.es/c/331016322" target="_top">§</a>
+     </p><p>
+      A cascading standby could fail to reconnect to its upstream standby
+      with <span class="quote">“<span class="quote">requested starting point ... is ahead of the WAL flush
+      position</span>”</span> after falling back to archive recovery.
+     </p></li><li class="listitem"><p>
+      Prevent accepting hot-standby connections before WAL replay has
+      reached a consistent database state (Nikhil Sontakke)
+      <a class="ulink" href="https://postgr.es/c/311e66df9" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Do not try to clear
+      <code class="structname">pg_database</code>.<code class="structfield">dathasloginevt</code>
+      locally on a standby server (Ayush Tiwari)
+      <a class="ulink" href="https://postgr.es/c/97b5c5aaa" target="_top">§</a>
+     </p><p>
+      Event trigger cleanup tried to perform that action on standby
+      servers as well as the primary.  That can't work on a standby,
+      and there's no need anyway since replay of the primary's database
+      change will soon fix it.
+     </p></li><li class="listitem"><p>
+      Avoid race condition while dropping obsolete replication slots
+      (Xuneng Zhou)
+      <a class="ulink" href="https://postgr.es/c/08458bcae" target="_top">§</a>
+     </p><p>
+      An incorrect unlock and log message could occur if another session
+      immediately re-used the dropped slot's shared-memory entry.
+     </p></li><li class="listitem"><p>
+      Avoid race condition while dropping ephemeral replication slots
+      (Zhijie Hou)
+      <a class="ulink" href="https://postgr.es/c/f833c9207" target="_top">§</a>
+     </p><p>
+      The slot-releasing code performed some additional updates to the
+      replication slot's shared-memory entry after releasing the slot.
+      This is unsafe since another session could immediately re-use the
+      dropped slot's shared-memory entry.  Skip those updates in the case
+      of an ephemeral slot.
+     </p></li><li class="listitem"><p>
+      Fix stale progress reports during logical replication table
+      synchronization (Shinya Kato)
+      <a class="ulink" href="https://postgr.es/c/d9cd9b4d7" target="_top">§</a>
+     </p><p>
+      Previously, the <code class="structname">pg_stat_progress_copy</code> view
+      in the subscriber would continue to show the
+      initial <code class="command">COPY</code> operation as active even after the
+      data copy had finished.  The stale entry remained visible until
+      synchronization caught up with the publisher.
+     </p></li><li class="listitem"><p>
+      Clear base backup progress on backup failure (Chao Li)
+      <a class="ulink" href="https://postgr.es/c/e7564ee8c" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/e2ad214dd" target="_top">§</a>
+     </p><p>
+      Previously the <code class="structname">pg_stat_progress_basebackup</code>
+      view would continue to show a stale progress entry after a failure,
+      until the replication client
+      disconnected.  <span class="application">pg_basebackup</span> normally
+      disconnects immediately, but other clients might not.
+     </p></li><li class="listitem"><p>
+      Fix possible PANIC due to concurrent drop of pgstats entries
+      when <code class="varname">track_functions</code> is enabled (Sami Imseih,
+      Michael Paquier)
+      <a class="ulink" href="https://postgr.es/c/5cc59834b" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/8a4f389dd" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/fe464e9e6" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Clean up broken local pgstats entry after failing to obtain space for
+      the corresponding shared hashtable entry (Niall Newman)
+      <a class="ulink" href="https://postgr.es/c/2fd8d45ec" target="_top">§</a>
+     </p><p>
+      Failure to do this led to a null-pointer dereference the next time
+      the local entry was used.
+     </p></li><li class="listitem"><p>
+      Avoid recording incorrect I/O operation statistics after a failed
+      read or write (Bertrand Drouvot)
+      <a class="ulink" href="https://postgr.es/c/13f940b4b" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      In <span class="application">PL/Perl</span>, avoid NULL pointer
+      dereference crash when working with an
+      invalid <code class="type">PostgreSQL::InServer::ARRAY</code> object (Xing Guo)
+      <a class="ulink" href="https://postgr.es/c/e430ecc59" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      In <span class="application">PL/Python</span>, properly check for errors
+      when working with sequence and mapping objects (Richard Guo)
+      <a class="ulink" href="https://postgr.es/c/53482fcb9" target="_top">§</a>
+     </p><p>
+      Previously, a broken object or an unhandled exception could result
+      in a NULL pointer dereference crash.
+     </p></li><li class="listitem"><p>
+      In <span class="application">libpq</span>, always drain all pending bytes
+      from the SSL or GSS decryption buffer
+      during <code class="function">pqReadData()</code> (Jacob Champion)
+      <a class="ulink" href="https://postgr.es/c/2167302b7" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/bb0a54518" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/27761c015" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/87c3a79ea" target="_top">§</a>
+     </p><p>
+      This avoids edge cases where <span class="application">libpq</span> or its
+      calling application waits for more data to arrive on the socket, but
+      actually all the data has already arrived.
+     </p></li><li class="listitem"><p>
+      Improve <span class="application">libpq</span>'s handling of out-of-memory
+      conditions (Anthonin Bonnefoy)
+      <a class="ulink" href="https://postgr.es/c/6b46a5d1b" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Fix <span class="application">libpq</span>'s trace facility to print
+      new-style BackendKeyData and CancelRequest messages correctly
+      (Anthonin Bonnefoy)
+      <a class="ulink" href="https://postgr.es/c/dd5eca055" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Allow <span class="application">libpq</span> to accept
+      ParameterDescription messages exceeding 30000 bytes (Ning Sun)
+      <a class="ulink" href="https://postgr.es/c/b1ab4bc52" target="_top">§</a>
+     </p><p>
+      Previously, this message type was not among those
+      that <span class="application">libpq</span>'s validity heuristics believed
+      could be long.  The limit resulted in failure for prepared queries
+      having more than 7498 parameters, which is unlikely but supported.
+     </p></li><li class="listitem"><p>
+      Fix null-pointer crash in <span class="application">ecpg</span> compiler
+      (Jehan-Guillaume de Rorthais)
+      <a class="ulink" href="https://postgr.es/c/917fdbc63" target="_top">§</a>
+     </p><p>
+      <span class="application">ecpg</span> failed on
+      a <code class="literal">DECLARE</code> section containing a union nested
+      inside a struct.
+     </p></li><li class="listitem"><p>
+      Reject multiple descriptor header items
+      in <span class="application">ecpg</span>'s <code class="literal">GET/SET
+      DESCRIPTOR</code> statements (Masashi Kamura)
+      <a class="ulink" href="https://postgr.es/c/081434b0f" target="_top">§</a>
+     </p><p>
+      Previously the grammar allowed this syntax, but broken C code was
+      generated.  Adjust the grammar and the documentation to allow only
+      one header item.
+     </p></li><li class="listitem"><p>
+      Fix issues with deferred errors in pipeline mode
+      in <span class="application">psql</span> (Michael Paquier)
+      <a class="ulink" href="https://postgr.es/c/1e9bc4074" target="_top">§</a>
+     </p><p>
+      <span class="application">psql</span> could get stuck or suffer an
+      assertion failure in some scenarios where the server reports an
+      error in response to a Sync message, such as a deferred constraint
+      violation.
+     </p></li><li class="listitem"><p>
+      Make line widths match in <span class="application">psql</span>'s expanded
+      aligned output format (Pavel Stehule)
+      <a class="ulink" href="https://postgr.es/c/07a6c262b" target="_top">§</a>
+     </p><p>
+      When the table's data rows are narrower than the record header lines,
+      widen the data rows to match the headers, avoiding unsightly output.
+     </p></li><li class="listitem"><p>
+      Enforce the intended upper limit
+      for <span class="application">psql</span>'s special
+      variable <code class="varname">WATCH_INTERVAL</code>
+      (Sven Klemm, Daniel Gustafsson)
+      <a class="ulink" href="https://postgr.es/c/e0c641ebb" target="_top">§</a>
+     </p><p>
+      If a too-large value was given, <span class="application">psql</span>
+      reported an error but applied the setting anyway.
+     </p></li><li class="listitem"><p>
+      Fix <span class="application">psql</span>'s privilege check for showing
+      database size in <code class="command">\l+</code> (Christoph Berg)
+      <a class="ulink" href="https://postgr.es/c/f2d6cf880" target="_top">§</a>
+     </p><p>
+      The underlying server function permits users who
+      have <code class="literal">pg_read_all_stats</code> privileges to see the
+      sizes of all databases, even if they lack <code class="literal">CONNECT</code>
+      privilege.  But <span class="application">psql</span> was unaware of that
+      provision and would not call the function unless the user
+      has <code class="literal">CONNECT</code> privilege.
+     </p></li><li class="listitem"><p>
+      Fix <span class="application">psql</span>'s tab completion
+      for <code class="command">\df</code> to consider procedures too
+      (Erik Wienhold)
+      <a class="ulink" href="https://postgr.es/c/598af79b1" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Fix thread-safety bug in <span class="application">pgbench</span>
+      (Fujii Masao)
+      <a class="ulink" href="https://postgr.es/c/98dd6c204" target="_top">§</a>
+     </p><p>
+      When <span class="application">pgbench</span> runs with multiple threads
+      and the <code class="option">--verbose-errors</code> option, different threads
+      could attempt to use the same buffer to construct error messages,
+      leading to corrupted log output.
+     </p></li><li class="listitem"><p>
+      In <span class="application">pg_combinebackup</span>, prevent infinite
+      loop if the source file is shorter than expected (Peter Eisentraut)
+      <a class="ulink" href="https://postgr.es/c/d36b72894" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Fix cleanup of publisher-side objects after errors
+      in <span class="application">pg_createsubscriber</span> (Nisha Moond)
+      <a class="ulink" href="https://postgr.es/c/196b4b5ae" target="_top">§</a>
+     </p><p>
+      When <span class="application">pg_createsubscriber</span> fails after
+      creating logical replication objects, it should remove the
+      publication and replication slot that it created on the publisher.
+      Some error cases failed to do so.
+     </p></li><li class="listitem"><p>
+      Use the source cluster's group-read file permissions
+      for <span class="application">pg_recvlogical</span> output files
+      (Fujii Masao)
+      <a class="ulink" href="https://postgr.es/c/89b4b3ae3" target="_top">§</a>
+     </p><p>
+      <span class="application">pg_recvlogical</span> was documented to behave
+      this way, but it never actually enabled group-read.
+     </p></li><li class="listitem"><p>
+      Fix inconsistent behavior of <span class="application">pg_restore</span>
+      with <code class="option">--statistics</code>
+      or <code class="option">--statistics-only</code>
+      (Chao Li, Michael Paquier)
+      <a class="ulink" href="https://postgr.es/c/42ffdedcf" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/477efef08" target="_top">§</a>
+     </p><p>
+      When combined with other selective-restore options such
+      as <code class="option">--schema</code>, these options failed to restore the
+      expected items, unlike <span class="application">pg_dump</span> with
+      similar options.
+     </p></li><li class="listitem"><p>
+      Fix <code class="command">vacuumdb --missing-stats-only</code> to ignore
+      partitioned expression indexes (Baji Shaik)
+      <a class="ulink" href="https://postgr.es/c/7e085aabd" target="_top">§</a>
+     </p><p>
+      Previously, <span class="application">vacuumdb</span> would always attempt
+      to <code class="command">ANALYZE</code> the partitioned table, accomplishing
+      nothing since statistics are never created for partitioned indexes,
+      only for their leaf indexes.
+     </p></li><li class="listitem"><p>
+      In <code class="filename">contrib/amcheck</code>, fix failure to report
+      corruption of a btree metapage's <code class="literal">allequalimage</code>
+      flag (Chao Li)
+      <a class="ulink" href="https://postgr.es/c/12c32bbc8" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      In <code class="filename">contrib/amcheck</code>, fix query-lifespan memory
+      leak while verifying a GIN index (Kirill Reshke)
+      <a class="ulink" href="https://postgr.es/c/1f8ab91c1" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      In <code class="filename">contrib/amcheck</code>, handle short-header varlena
+      datums correctly (Andrey Borodin)
+      <a class="ulink" href="https://postgr.es/c/897e79486" target="_top">§</a>
+     </p><p>
+      This error could result in doing excess work while verifying a btree
+      index, but seems not to have had any worse consequences.
+     </p></li><li class="listitem"><p>
+      In <code class="filename">contrib/btree_gist</code>,
+      fix <code class="literal">NaN</code> handling in the <code class="type">float4</code>
+      and <code class="type">float8</code> opclasses (Bill Kim, Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/1e1d07792" target="_top">§</a>
+     </p><p>
+      Comparisons, as well as the GiST penalty and distance functions, did
+      not account for <code class="literal">NaN</code> and would give the wrong
+      answer when handed one.  It is recommended to
+      reindex <code class="filename">btree_gist</code> indexes on float columns
+      after installing this update, if there is any possibility that there
+      are <code class="literal">NaN</code> entries in those columns.
+     </p></li><li class="listitem"><p>
+      In <code class="filename">contrib/btree_gist</code>, fix sorting
+      of <code class="type">bit</code>/<code class="type">varbit</code> entries during GiST index
+      construction (Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/558c4ea9a" target="_top">§</a>
+     </p><p>
+      Values of bit types were sorted as though they
+      were <code class="type">bytea</code>s, which did not cause any obvious failure
+      but would result in an inefficient index, since the types'
+      representations are different.  It is recommended to
+      reindex <code class="filename">btree_gist</code> indexes on bit columns
+      after installing this update.
+     </p></li><li class="listitem"><p>
+      In <code class="filename">contrib/btree_gist</code>, fix searches using a
+      not-equal operator (Ayush Tiwari)
+      <a class="ulink" href="https://postgr.es/c/12c519207" target="_top">§</a>
+     </p><p>
+      For variable-length data types, the code for scanning non-leaf index
+      pages applied the wrong comparison function, leading to wrong
+      results and potentially crashes.
+     </p></li><li class="listitem"><p>
+      In <code class="filename">contrib/dblink</code>
+      and <code class="filename">contrib/postgres_fdw</code>, ensure that a user-mapping
+      setting for <code class="varname">use_scram_passthrough</code> overrides one
+      for a foreign server (Matheus Alcantara)
+      <a class="ulink" href="https://postgr.es/c/88d7748d2" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/130396e6c" target="_top">§</a>
+     </p><p>
+      Previously the precedence went the other way, but that is
+      inconsistent with the behavior of other foreign-table options.
+     </p></li><li class="listitem"><p>
+      Reject setting <code class="varname">use_scram_passthrough</code>
+      on <code class="filename">contrib/dblink</code> foreign-data wrappers
+      (Matheus Alcantara)
+      <a class="ulink" href="https://postgr.es/c/cd777e27e" target="_top">§</a>
+     </p><p>
+      This option is only meaningful on foreign servers and user
+      mappings, but dblink incorrectly allowed it at the FDW level as
+      well (and then ignored it).
+     </p></li><li class="listitem"><p>
+      Fix unguarded recursion and loops in
+      <code class="filename">contrib/hstore_plperl</code>,
+      <code class="filename">contrib/jsonb_plperl</code>, and
+      <code class="filename">contrib/jsonb_plpython</code>
+      (Aleksander Alekseev)
+      <a class="ulink" href="https://postgr.es/c/e3b7a43fa" target="_top">§</a>
+      <a class="ulink" href="https://postgr.es/c/d65cf6f80" target="_top">§</a>
+     </p><p>
+      Prevent stack overflow when dealing with deeply
+      nested <code class="type">jsonb</code> values, and allow interruption of the infinite
+      loop caused when attempting to dereference circular chains of Perl
+      object references.
+     </p></li><li class="listitem"><p>
+      Fix missed release of statistics catcache entry
+      in <code class="filename">contrib/intarray</code> (Man Zeng)
+      <a class="ulink" href="https://postgr.es/c/e7544c518" target="_top">§</a>
+     </p><p>
+      This oversight led to warnings like <span class="quote">“<span class="quote">resource was not closed:
+      cache pg_statistic</span>”</span>.
+     </p></li><li class="listitem"><p>
+      In <code class="filename">contrib/ltree</code>, fix integer overflow in
+      comparisons (Ayush Tiwari)
+      <a class="ulink" href="https://postgr.es/c/c3e36a9a5" target="_top">§</a>
+     </p><p>
+      <code class="type">ltree</code> values containing more than about 14,653 labels
+      resulted in wrong comparison answers due to overflow.  If a btree
+      index contains such values, it is probably corrupt and should be
+      reindexed after installing this update.
+     </p></li><li class="listitem"><p>
+      In <code class="filename">contrib/pgcrypto</code>, avoid double-free crash
+      after encountering an error while using an OSSLCipher object
+      (Yuelin Wang)
+      <a class="ulink" href="https://postgr.es/c/020426268" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Fix out-of-bounds access
+      in <code class="filename">contrib/pg_prewarm</code>'s autoprewarm worker
+      (Matheus Alcantara)
+      <a class="ulink" href="https://postgr.es/c/3bf2cb225" target="_top">§</a>
+     </p><p>
+      The code tried to fetch a value from one past the end of an array,
+      risking a segfault.
+     </p></li><li class="listitem"><p>
+      Fix array overrun in <code class="filename">contrib/pg_surgery</code>'s
+      <code class="function">heap_force_kill</code> and
+      <code class="function">heap_force_freeze</code> functions (Michael Paquier)
+      <a class="ulink" href="https://postgr.es/c/2b09f8a91" target="_top">§</a>
+     </p><p>
+      Attempting to change a TID whose offset number equals
+      MaxHeapTuplesPerPage wrote one byte past the end of the allocated
+      array, potentially crashing the server.
+     </p></li><li class="listitem"><p>
+      In <code class="filename">contrib/pg_surgery</code>, avoid infinite loop with
+      TID arrays having more than 64K elements (Andrey Rachitskiy)
+      <a class="ulink" href="https://postgr.es/c/19f0391df" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Avoid NULL-pointer dereference
+      in <code class="filename">contrib/refint</code>'s
+      <code class="function">check_foreign_key()</code> (Ayush Tiwari)
+      <a class="ulink" href="https://postgr.es/c/ed0c4d5af" target="_top">§</a>
+     </p><p>
+      In the on-update-cascade case, a null value of a referenced column
+      led to a crash.  This is an oversight in the fix for CVE-2026-6637,
+      but the code that was there before that wasn't really right either.
+     </p></li><li class="listitem"><p>
+      Fix <code class="filename">contrib/seg</code> to print segments
+      with <code class="literal">~</code> certainty indicators correctly
+      (Ewan Young)
+      <a class="ulink" href="https://postgr.es/c/0004cab4d" target="_top">§</a>
+     </p><p>
+      Due to a typo, <code class="function">seg_out()</code> did not print
+      a <code class="literal">~</code> certainty indicator attached to a segment's
+      upper boundary.  Worse, if the lower boundary
+      had <code class="literal">~</code> while the upper boundary had no indicator,
+      the upper boundary was not printed at all, incorrectly converting
+      the value into an open interval.
+     </p></li><li class="listitem"><p>
+      Fix crash with namespace nodes in <code class="filename">contrib/xml2</code>'s
+      <code class="function">xpath_nodeset()</code> function (Andrey Chernyy,
+      Michael Paquier)
+      <a class="ulink" href="https://postgr.es/c/91b57eade" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Support building <span class="productname">PostgreSQL</span> with
+      OpenSSL 4 (Daniel Gustafsson)
+      <a class="ulink" href="https://postgr.es/c/27cf3b5af" target="_top">§</a>
+     </p></li><li class="listitem"><p>
+      Update time zone data files to <span class="application">tzdata</span>
+      release 2026c (Tom Lane)
+      <a class="ulink" href="https://postgr.es/c/5f67124fa" target="_top">§</a>
+     </p><p>
+      Alberta (America/Edmonton) will be on year-round UTC-06
+      (effectively, permanent DST) beginning in November 2026.  This
+      release assumes that their TZ abbreviation will
+      be <code class="literal">CST</code> from that time forward.  That seems likely
+      to change, but it's unclear what new abbreviation will be used.
+     </p><p>
+      Morocco (Africa/Casablanca) will move to permanent UTC+00,
+      without daylight saving time transitions, on 2026-09-20.
+     </p></li></ul></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="release.html" title="Appendix E. Release Notes">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="release.html" title="Appendix E. Release Notes">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="release-18-4.html" title="E.2. Release 18.4">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Appendix E. Release Notes </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="PostgreSQL 18.6 Documentation">Home</a></td><td width="40%" align="right" valign="top"> E.2. Release 18.4</td></tr></table></div></body></html>

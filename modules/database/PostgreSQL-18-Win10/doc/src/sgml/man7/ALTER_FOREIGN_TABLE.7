@@ -3,11 +3,11 @@
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
 .\"      Date: 2026
-.\"    Manual: PostgreSQL 18.3 Documentation
-.\"    Source: PostgreSQL 18.3
+.\"    Manual: PostgreSQL 18.6 Documentation
+.\"    Source: PostgreSQL 18.6
 .\"  Language: English
 .\"
-.TH "ALTER FOREIGN TABLE" "7" "2026" "PostgreSQL 18.3" "PostgreSQL 18.3 Documentation"
+.TH "ALTER FOREIGN TABLE" "7" "2026" "PostgreSQL 18.6" "PostgreSQL 18.6 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -43,7 +43,7 @@ ALTER FOREIGN TABLE [ IF EXISTS ] \fIname\fR
 
 where \fIaction\fR is one of:
 
-    ADD [ COLUMN ] \fIcolumn_name\fR \fIdata_type\fR [ COLLATE \fIcollation\fR ] [ \fIcolumn_constraint\fR [ \&.\&.\&. ] ]
+    ADD [ COLUMN ] [ IF NOT EXISTS ] \fIcolumn_name\fR \fIdata_type\fR [ COLLATE \fIcollation\fR ] [ \fIcolumn_constraint\fR [ \&.\&.\&. ] ]
     DROP [ COLUMN ] [ IF EXISTS ] \fIcolumn_name\fR [ RESTRICT | CASCADE ]
     ALTER [ COLUMN ] \fIcolumn_name\fR [ SET DATA ] TYPE \fIdata_type\fR [ COLLATE \fIcollation\fR ]
     ALTER [ COLUMN ] \fIcolumn_name\fR SET DEFAULT \fIexpression\fR
@@ -72,13 +72,15 @@ where \fIaction\fR is one of:
 \fBALTER FOREIGN TABLE\fR
 changes the definition of an existing foreign table\&. There are several subforms:
 .PP
-ADD COLUMN
+ADD [ COLUMN ] [ IF NOT EXISTS ]
 .RS 4
 This form adds a new column to the foreign table, using the same syntax as
-\fBCREATE FOREIGN TABLE\fR\&. Unlike the case when adding a column to a regular table, nothing happens to the underlying storage: this action simply declares that some new column is now accessible through the foreign table\&.
+\fBCREATE FOREIGN TABLE\fR\&. If
+IF NOT EXISTS
+is specified and a column already exists with this name, no error is thrown\&. Unlike the case when adding a column to a regular table, nothing happens to the underlying storage: this action simply declares that some new column is now accessible through the foreign table\&.
 .RE
 .PP
-DROP COLUMN [ IF EXISTS ]
+DROP [ COLUMN ] [ IF EXISTS ]
 .RS 4
 This form drops a column from a foreign table\&. You will need to say
 CASCADE

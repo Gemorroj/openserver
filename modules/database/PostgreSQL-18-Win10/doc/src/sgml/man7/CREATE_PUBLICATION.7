@@ -3,11 +3,11 @@
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
 .\"      Date: 2026
-.\"    Manual: PostgreSQL 18.3 Documentation
-.\"    Source: PostgreSQL 18.3
+.\"    Manual: PostgreSQL 18.6 Documentation
+.\"    Source: PostgreSQL 18.6
 .\"  Language: English
 .\"
-.TH "CREATE PUBLICATION" "7" "2026" "PostgreSQL 18.3" "PostgreSQL 18.3 Documentation"
+.TH "CREATE PUBLICATION" "7" "2026" "PostgreSQL 18.6" "PostgreSQL 18.6 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -112,7 +112,7 @@ Specifying a schema when the publication also publishes a table with a column li
 .sp
 Only persistent base tables and partitioned tables present in the schema will be included as part of the publication\&. Temporary tables, unlogged tables, foreign tables, materialized views, and regular views from the schema will not be part of the publication\&.
 .sp
-When a partitioned table is published via schema level publication, all of its existing and future partitions are implicitly considered to be part of the publication, regardless of whether they are from the publication schema or not\&. So, even operations that are performed directly on a partition are also published via publications that its ancestors are part of\&.
+When a partitioned table is published via a schema\-level publication, all of its existing and future partitions are implicitly considered to be part of the publication, regardless of whether they are from the publication schema or not\&. So, even operations that are performed directly on a partition are also published via publications that its ancestors are part of\&.
 .RE
 .PP
 WITH ( \fIpublication_parameter\fR [= \fIvalue\fR] [, \&.\&.\&. ] )
@@ -121,7 +121,7 @@ This clause specifies optional parameters for a publication\&. The following par
 .PP
 publish (string)
 .RS 4
-This parameter determines which DML operations will be published by the new publication to the subscribers\&. The value is comma\-separated list of operations\&. The allowed operations are
+This parameter determines which DML operations will be published by the new publication to the subscribers\&. The value is a comma\-separated list of operations\&. The allowed operations are
 insert,
 update,
 delete, and
@@ -157,7 +157,7 @@ stored, the stored generated columns present in the tables associated with publi
 \fBNote\fR
 .ps -1
 .br
-If the subscriber is from a release prior to 18, then initial table synchronization won\*(Aqt copy generated columns even if parameter
+If the subscriber is from a release prior to 18, then initial table synchronization won\*(Aqt copy generated columns even if the parameter
 publish_generated_columns
 is
 stored

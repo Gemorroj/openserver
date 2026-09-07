@@ -741,6 +741,10 @@
       <entry>Waiting for the WAL receiver to exit.</entry>
      </row>
      <row>
+      <entry><literal>WalReceiverUpstreamCatchup</literal></entry>
+      <entry>Waiting for upstream server WAL flush position to catch up to requested start point.</entry>
+     </row>
+     <row>
       <entry><literal>WalReceiverWaitStart</literal></entry>
       <entry>Waiting for startup process to send initial data for streaming replication.</entry>
      </row>

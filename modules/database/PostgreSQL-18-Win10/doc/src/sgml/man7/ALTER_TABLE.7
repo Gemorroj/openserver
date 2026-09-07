@@ -3,11 +3,11 @@
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
 .\"      Date: 2026
-.\"    Manual: PostgreSQL 18.3 Documentation
-.\"    Source: PostgreSQL 18.3
+.\"    Manual: PostgreSQL 18.6 Documentation
+.\"    Source: PostgreSQL 18.6
 .\"  Language: English
 .\"
-.TH "ALTER TABLE" "7" "2026" "PostgreSQL 18.3" "PostgreSQL 18.3 Documentation"
+.TH "ALTER TABLE" "7" "2026" "PostgreSQL 18.6" "PostgreSQL 18.6 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -161,7 +161,7 @@ changes the definition of an existing table\&. There are several subforms descri
 ACCESS EXCLUSIVE
 lock is acquired unless explicitly noted\&. When multiple subcommands are given, the lock acquired will be the strictest one required by any subcommand\&.
 .PP
-ADD COLUMN [ IF NOT EXISTS ]
+ADD [ COLUMN ] [ IF NOT EXISTS ]
 .RS 4
 This form adds a new column to the table, using the same syntax as
 \fBCREATE TABLE\fR\&. If
@@ -169,7 +169,7 @@ IF NOT EXISTS
 is specified and a column already exists with this name, no error is thrown\&.
 .RE
 .PP
-DROP COLUMN [ IF EXISTS ]
+DROP [ COLUMN ] [ IF EXISTS ]
 .RS 4
 This form drops a column from a table\&. Indexes and table constraints involving the column will be automatically dropped as well\&. Multivariate statistics referencing the dropped column will also be removed if the removal of the column would cause the statistics to contain data for only a single column\&. You will need to say
 CASCADE
@@ -748,9 +748,7 @@ ATTACH PARTITION \fIpartition_name\fR { FOR VALUES \fIpartition_bound_spec\fR | 
 This form attaches an existing table (which might itself be partitioned) as a partition of the target table\&. The table can be attached as a partition for specific values using
 FOR VALUES
 or as a default partition by using
-DEFAULT\&. For each index in the target table, a corresponding one will be created in the attached table; or, if an equivalent index already exists, it will be attached to the target table\*(Aqs index, as if
-\fBALTER INDEX ATTACH PARTITION\fR
-had been executed\&. Note that if the existing table is a foreign table, it is currently not allowed to attach the table as a partition of the target table if there are
+DEFAULT\&. For each index in the target table, if a valid equivalent index already exists in the partition, it will be attached to the target table\*(Aqs index, as if ALTER INDEX ATTACH PARTITION had been executed; otherwise, a new corresponding index will be created\&. Invalid indexes on the partition are skipped\&. Note that if the existing table is a foreign table, it is currently not allowed to attach the table as a partition of the target table if there are
 UNIQUE
 indexes on the target table\&. (See also
 CREATE FOREIGN TABLE (\fBCREATE_FOREIGN_TABLE\fR(7))\&.) For each user\-defined row\-level trigger that exists in the target table, a corresponding one is created in the attached table\&.

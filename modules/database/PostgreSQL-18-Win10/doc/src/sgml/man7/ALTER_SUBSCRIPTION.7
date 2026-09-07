@@ -3,11 +3,11 @@
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
 .\"      Date: 2026
-.\"    Manual: PostgreSQL 18.3 Documentation
-.\"    Source: PostgreSQL 18.3
+.\"    Manual: PostgreSQL 18.6 Documentation
+.\"    Source: PostgreSQL 18.6
 .\"  Language: English
 .\"
-.TH "ALTER SUBSCRIPTION" "7" "2026" "PostgreSQL 18.3" "PostgreSQL 18.3 Documentation"
+.TH "ALTER SUBSCRIPTION" "7" "2026" "PostgreSQL 18.6" "PostgreSQL 18.6 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -237,7 +237,7 @@ to
 false, the backend process reports an error if any prepared transactions done by the logical replication worker (from when
 two_phase
 parameter was still
-true) are found\&. You can resolve prepared transactions on the publisher node, or manually roll back them on the subscriber, and then try again\&. The transactions prepared by logical replication worker corresponding to a particular subscription have the following pattern:
+true) are found\&. You can resolve prepared transactions on the publisher node, or manually roll them back on the subscriber, and then try again\&. The transactions prepared by logical replication worker corresponding to a particular subscription have the following pattern:
 \(lqpg_gid_%u_%u\(rq
 (parameters: subscription
 \fIoid\fR, remote transaction id

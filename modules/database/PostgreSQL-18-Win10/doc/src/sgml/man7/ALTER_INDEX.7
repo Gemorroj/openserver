@@ -3,11 +3,11 @@
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
 .\"      Date: 2026
-.\"    Manual: PostgreSQL 18.3 Documentation
-.\"    Source: PostgreSQL 18.3
+.\"    Manual: PostgreSQL 18.6 Documentation
+.\"    Source: PostgreSQL 18.6
 .\"  Language: English
 .\"
-.TH "ALTER INDEX" "7" "2026" "PostgreSQL 18.3" "PostgreSQL 18.3 Documentation"
+.TH "ALTER INDEX" "7" "2026" "PostgreSQL 18.6" "PostgreSQL 18.6 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -84,6 +84,8 @@ invocations instead if desired\&. See also
 ATTACH PARTITION \fIindex_name\fR
 .RS 4
 Causes the named index (possibly schema\-qualified) to become attached to the altered index\&. The named index must be on a partition of the table containing the index being altered, and have an equivalent definition\&. An attached index cannot be dropped by itself, and will automatically be dropped if its parent index is dropped\&.
+.sp
+If the named index is already attached to the altered index, the command will attempt to validate the parent index if the parent is currently invalid\&.
 .RE
 .PP
 DEPENDS ON EXTENSION \fIextension_name\fR

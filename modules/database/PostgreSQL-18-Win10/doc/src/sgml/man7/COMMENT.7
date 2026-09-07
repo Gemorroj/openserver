@@ -3,11 +3,11 @@
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
 .\"      Date: 2026
-.\"    Manual: PostgreSQL 18.3 Documentation
-.\"    Source: PostgreSQL 18.3
+.\"    Manual: PostgreSQL 18.6 Documentation
+.\"    Source: PostgreSQL 18.6
 .\"  Language: English
 .\"
-.TH "COMMENT" "7" "2026" "PostgreSQL 18.3" "PostgreSQL 18.3 Documentation"
+.TH "COMMENT" "7" "2026" "PostgreSQL 18.6" "PostgreSQL 18.6 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -88,13 +88,13 @@ where \fIaggregate_signature\fR is:
 .SH "DESCRIPTION"
 .PP
 \fBCOMMENT\fR
-stores a comment about a database object\&.
+stores, replaces, or removes the comment on a database object\&.
 .PP
-Only one comment string is stored for each object, so to modify a comment, issue a new
+Only one comment string is stored for each object\&. Issuing a new
 \fBCOMMENT\fR
-command for the same object\&. To remove a comment, write
+command for the same object replaces the existing comment\&. Specifying
 NULL
-in place of the text string\&. Comments are automatically dropped when their object is dropped\&.
+or an empty string (\*(Aq\*(Aq) removes the comment\&. Comments are automatically dropped when their object is dropped\&.
 .PP
 A
 SHARE UPDATE EXCLUSIVE
@@ -226,14 +226,14 @@ The name of the language of the transform\&.
 .PP
 \fIstring_literal\fR
 .RS 4
-The new comment contents, written as a string literal\&.
+The new comment contents, written as a string literal\&. An empty string (\*(Aq\*(Aq) removes the comment\&.
 .RE
 .PP
 NULL
 .RS 4
 Write
 NULL
-to drop the comment\&.
+to remove the comment\&.
 .RE
 .SH "NOTES"
 .PP
@@ -315,6 +315,7 @@ COMMENT ON TRANSFORM FOR hstore LANGUAGE plpython3u IS \*(AqTransform between hs
 COMMENT ON TRIGGER my_trigger ON my_table IS \*(AqUsed for RI\*(Aq;
 COMMENT ON TYPE complex IS \*(AqComplex number data type\*(Aq;
 COMMENT ON VIEW my_view IS \*(AqView of departmental costs\*(Aq;
+COMMENT ON VIEW my_view IS NULL;
 .fi
 .if n \{\
 .RE

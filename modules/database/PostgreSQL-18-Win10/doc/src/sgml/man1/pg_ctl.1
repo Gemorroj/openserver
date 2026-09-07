@@ -3,11 +3,11 @@
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
 .\"      Date: 2026
-.\"    Manual: PostgreSQL 18.3 Documentation
-.\"    Source: PostgreSQL 18.3
+.\"    Manual: PostgreSQL 18.6 Documentation
+.\"    Source: PostgreSQL 18.6
 .\"  Language: English
 .\"
-.TH "PG_CTL" "1" "2026" "PostgreSQL 18.3" "PostgreSQL 18.3 Documentation"
+.TH "PG_CTL" "1" "2026" "PostgreSQL 18.6" "PostgreSQL 18.6 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -187,9 +187,7 @@ is used\&.
 \fB\-\-log=\fR\fB\fIfilename\fR\fR
 .RS 4
 Append the server log output to
-\fIfilename\fR\&. If the file does not exist, it is created\&. The
-umask
-is set to 077, so access to the log file is disallowed to other users by default\&.
+\fIfilename\fR\&. If the file does not exist, it is created\&. By default, only the cluster owner can access the log file\&. If group access is enabled in the cluster, users in the same group as the cluster owner can also read it\&.
 .RE
 .PP
 \fB\-m \fR\fB\fImode\fR\fR

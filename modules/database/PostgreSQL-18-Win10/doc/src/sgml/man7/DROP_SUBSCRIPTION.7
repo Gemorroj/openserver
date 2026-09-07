@@ -3,11 +3,11 @@
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
 .\"      Date: 2026
-.\"    Manual: PostgreSQL 18.3 Documentation
-.\"    Source: PostgreSQL 18.3
+.\"    Manual: PostgreSQL 18.6 Documentation
+.\"    Source: PostgreSQL 18.6
 .\"  Language: English
 .\"
-.TH "DROP SUBSCRIPTION" "7" "2026" "PostgreSQL 18.3" "PostgreSQL 18.3 Documentation"
+.TH "DROP SUBSCRIPTION" "7" "2026" "PostgreSQL 18.6" "PostgreSQL 18.6 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -47,6 +47,11 @@ cannot be executed inside a transaction block if the subscription is associated 
 to unset the slot\&.)
 .SH "PARAMETERS"
 .PP
+IF EXISTS
+.RS 4
+Do not throw an error if the subscription does not exist\&. A notice is issued in this case\&.
+.RE
+.PP
 \fIname\fR
 .RS 4
 The name of a subscription to be dropped\&.
@@ -68,7 +73,7 @@ command will fail\&. To proceed in this situation, first disable the subscriptio
 ALTER SUBSCRIPTION \&.\&.\&. DISABLE, and then disassociate it from the replication slot by executing
 ALTER SUBSCRIPTION \&.\&.\&. SET (slot_name = NONE)\&. After that,
 \fBDROP SUBSCRIPTION\fR
-will no longer attempt any actions on a remote host\&. Note that if the remote replication slot still exists, it (and any related table synchronization slots) should then be dropped manually; otherwise it/they will continue to reserve WAL and might eventually cause the disk to fill up\&. See also
+will not attempt to drop the subscription\*(Aqs own replication slot\&. It may still connect to the publisher to drop internally\-created table synchronization slots if some table synchronization is left unfinished; if the publisher is unreachable, those slots (and the main slot, if it still exists) must be dropped manually\&. Otherwise it/they will continue to reserve WAL and might eventually cause the disk to fill up\&. See also
 Section\ \&29.2.1\&.
 .PP
 If a subscription is associated with a replication slot, then

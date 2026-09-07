@@ -3,11 +3,11 @@
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
 .\"      Date: 2026
-.\"    Manual: PostgreSQL 18.3 Documentation
-.\"    Source: PostgreSQL 18.3
+.\"    Manual: PostgreSQL 18.6 Documentation
+.\"    Source: PostgreSQL 18.6
 .\"  Language: English
 .\"
-.TH "CREATE TABLE" "7" "2026" "PostgreSQL 18.3" "PostgreSQL 18.3 Documentation"
+.TH "CREATE TABLE" "7" "2026" "PostgreSQL 18.6" "PostgreSQL 18.6 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -483,7 +483,7 @@ is the default\&. If multiple specifications are made for the same kind of objec
 .PP
 INCLUDING COMMENTS
 .RS 4
-Comments for the copied columns, constraints, and indexes will be copied\&. The default behavior is to exclude comments, resulting in the copied columns and constraints in the new table having no comments\&.
+Comments for the copied columns, check constraints, not\-null constraints, indexes, and extended statistics will be copied\&. The default behavior is to exclude comments, resulting in the corresponding objects in the new table having no comments\&.
 .RE
 .PP
 INCLUDING COMPRESSION

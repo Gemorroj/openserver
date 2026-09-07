@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>ALTER TABLE</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="sql-altersystem.html" title="ALTER SYSTEM" /><link rel="next" href="sql-altertablespace.html" title="ALTER TABLESPACE" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">ALTER TABLE</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="sql-altersystem.html" title="ALTER SYSTEM">Prev</a> </td><td width="10%" align="left"><a accesskey="u" href="sql-commands.html" title="SQL Commands">Up</a></td><th width="60%" align="center">SQL Commands</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="PostgreSQL 18.3 Documentation">Home</a></td><td width="10%" align="right"> <a accesskey="n" href="sql-altertablespace.html" title="ALTER TABLESPACE">Next</a></td></tr></table><hr /></div><div class="refentry" id="SQL-ALTERTABLE"><div class="titlepage"></div><a id="id-1.9.3.35.1" class="indexterm"></a><div class="refnamediv"><h2><span class="refentrytitle">ALTER TABLE</span></h2><p>ALTER TABLE — change the definition of a table</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>ALTER TABLE</title><link rel="stylesheet" type="text/css" href="stylesheet.css" /><link rev="made" href="pgsql-docs@lists.postgresql.org" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="sql-altersystem.html" title="ALTER SYSTEM" /><link rel="next" href="sql-altertablespace.html" title="ALTER TABLESPACE" /></head><body id="docContent" class="container-fluid col-10"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="5" align="center">ALTER TABLE</th></tr><tr><td width="10%" align="left"><a accesskey="p" href="sql-altersystem.html" title="ALTER SYSTEM">Prev</a> </td><td width="10%" align="left"><a accesskey="u" href="sql-commands.html" title="SQL Commands">Up</a></td><th width="60%" align="center">SQL Commands</th><td width="10%" align="right"><a accesskey="h" href="index.html" title="PostgreSQL 18.6 Documentation">Home</a></td><td width="10%" align="right"> <a accesskey="n" href="sql-altertablespace.html" title="ALTER TABLESPACE">Next</a></td></tr></table><hr /></div><div class="refentry" id="SQL-ALTERTABLE"><div class="titlepage"></div><a id="id-1.9.3.35.1" class="indexterm"></a><div class="refnamediv"><h2><span class="refentrytitle">ALTER TABLE</span></h2><p>ALTER TABLE — change the definition of a table</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
 ALTER TABLE [ IF EXISTS ] [ ONLY ] <em class="replaceable"><code>name</code></em> [ * ]
     <em class="replaceable"><code>action</code></em> [, ... ]
 ALTER TABLE [ IF EXISTS ] [ ONLY ] <em class="replaceable"><code>name</code></em> [ * ]
@@ -128,12 +128,12 @@ WITH ( MODULUS <em class="replaceable"><code>numeric_literal</code></em>, REMAIN
    acquired unless explicitly noted. When multiple subcommands are given, the
    lock acquired will be the strictest one required by any subcommand.
 
-  </p><div class="variablelist"><dl class="variablelist"><dt id="SQL-ALTERTABLE-DESC-ADD-COLUMN"><span class="term"><code class="literal">ADD COLUMN [ IF NOT EXISTS ]</code></span> <a href="#SQL-ALTERTABLE-DESC-ADD-COLUMN" class="id_link">#</a></dt><dd><p>
+  </p><div class="variablelist"><dl class="variablelist"><dt id="SQL-ALTERTABLE-DESC-ADD-COLUMN"><span class="term"><code class="literal">ADD [ COLUMN ] [ IF NOT EXISTS ]</code></span> <a href="#SQL-ALTERTABLE-DESC-ADD-COLUMN" class="id_link">#</a></dt><dd><p>
       This form adds a new column to the table, using the same syntax as
       <a class="link" href="sql-createtable.html" title="CREATE TABLE"><code class="command">CREATE TABLE</code></a>. If <code class="literal">IF NOT EXISTS</code>
       is specified and a column already exists with this name,
       no error is thrown.
-     </p></dd><dt id="SQL-ALTERTABLE-DESC-DROP-COLUMN"><span class="term"><code class="literal">DROP COLUMN [ IF EXISTS ]</code></span> <a href="#SQL-ALTERTABLE-DESC-DROP-COLUMN" class="id_link">#</a></dt><dd><p>
+     </p></dd><dt id="SQL-ALTERTABLE-DESC-DROP-COLUMN"><span class="term"><code class="literal">DROP [ COLUMN ] [ IF EXISTS ]</code></span> <a href="#SQL-ALTERTABLE-DESC-DROP-COLUMN" class="id_link">#</a></dt><dd><p>
       This form drops a column from a table.  Indexes and
       table constraints involving the column will be automatically
       dropped as well.
@@ -636,10 +636,11 @@ WITH ( MODULUS <em class="replaceable"><code>numeric_literal</code></em>, REMAIN
       as a partition of the target table. The table can be attached
       as a partition for specific values using <code class="literal">FOR VALUES</code>
       or as a default partition by using <code class="literal">DEFAULT</code>.
-      For each index in the target table, a corresponding
-      one will be created in the attached table; or, if an equivalent
-      index already exists, it will be attached to the target table's index,
-      as if <code class="command">ALTER INDEX ATTACH PARTITION</code> had been executed.
+      For each index in the target table, if a valid equivalent index
+      already exists in the partition, it will be attached to the target
+      table's index, as if ALTER INDEX ATTACH PARTITION had been executed;
+      otherwise, a new corresponding index will be created.  Invalid indexes
+      on the partition are skipped.
       Note that if the existing table is a foreign table, it is currently not
       allowed to attach the table as a partition of the target table if there
       are <code class="literal">UNIQUE</code> indexes on the target table.  (See also
@@ -1159,4 +1160,4 @@ ALTER TABLE measurement
    <code class="command">ALTER TABLE DROP COLUMN</code> can be used to drop the only
    column of a table, leaving a zero-column table.  This is an
    extension of SQL, which disallows zero-column tables.
-  </p></div><div class="refsect1" id="id-1.9.3.35.10"><h2>See Also</h2><span class="simplelist"><a class="xref" href="sql-createtable.html" title="CREATE TABLE"><span class="refentrytitle">CREATE TABLE</span></a></span></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="sql-altersystem.html" title="ALTER SYSTEM">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="sql-commands.html" title="SQL Commands">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="sql-altertablespace.html" title="ALTER TABLESPACE">Next</a></td></tr><tr><td width="40%" align="left" valign="top">ALTER SYSTEM </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="PostgreSQL 18.3 Documentation">Home</a></td><td width="40%" align="right" valign="top"> ALTER TABLESPACE</td></tr></table></div></body></html>
+  </p></div><div class="refsect1" id="id-1.9.3.35.10"><h2>See Also</h2><span class="simplelist"><a class="xref" href="sql-createtable.html" title="CREATE TABLE"><span class="refentrytitle">CREATE TABLE</span></a></span></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="sql-altersystem.html" title="ALTER SYSTEM">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="sql-commands.html" title="SQL Commands">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="sql-altertablespace.html" title="ALTER TABLESPACE">Next</a></td></tr><tr><td width="40%" align="left" valign="top">ALTER SYSTEM </td><td width="20%" align="center"><a accesskey="h" href="index.html" title="PostgreSQL 18.6 Documentation">Home</a></td><td width="40%" align="right" valign="top"> ALTER TABLESPACE</td></tr></table></div></body></html>

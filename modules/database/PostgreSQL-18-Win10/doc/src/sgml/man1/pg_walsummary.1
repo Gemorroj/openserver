@@ -3,11 +3,11 @@
 .\"    Author: The PostgreSQL Global Development Group
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
 .\"      Date: 2026
-.\"    Manual: PostgreSQL 18.3 Documentation
-.\"    Source: PostgreSQL 18.3
+.\"    Manual: PostgreSQL 18.6 Documentation
+.\"    Source: PostgreSQL 18.6
 .\"  Language: English
 .\"
-.TH "PG_WALSUMMARY" "1" "2026" "PostgreSQL 18.3" "PostgreSQL 18.3 Documentation"
+.TH "PG_WALSUMMARY" "1" "2026" "PostgreSQL 18.6" "PostgreSQL 18.6 Documentation"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -35,7 +35,7 @@ pg_walsummary \- print contents of WAL summary files
 .SH "DESCRIPTION"
 .PP
 pg_walsummary
-is used to print the contents of WAL summary files\&. These binary files are found with the
+is used to print the contents of WAL summary files\&. These binary files are found in the
 pg_wal/summaries
 subdirectory of the data directory, and can be converted to text using this tool\&. This is not ordinarily necessary, since WAL summary files primarily exist to support
 incremental backup, but it may be useful for debugging purposes\&.
