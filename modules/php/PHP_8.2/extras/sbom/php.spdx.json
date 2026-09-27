@@ -2,15 +2,15 @@
     "spdxVersion": "SPDX-2.3",
     "dataLicense": "CC0-1.0",
     "SPDXID": "SPDXRef-DOCUMENT",
-    "name": "php-8.2.33",
-    "documentNamespace": "https://php.net/sbom/windows/php/8.2.33/50d6e3f9-4f72-45f7-b067-5f0cede4c494",
+    "name": "php-8.2.34",
+    "documentNamespace": "https://php.net/sbom/windows/php/8.2.34/28fc2a9d-c66e-45ba-ba72-1b47dbe09977",
     "creationInfo": {
-        "created": "2026-07-28T10:50:10Z",
+        "created": "2026-09-22T09:23:01Z",
         "creators": [
             "Organization: PHP Group",
-            "Tool: php-8.2.33"
+            "Tool: php-8.2.34"
         ],
-        "licenseListVersion": "3.28"
+        "licenseListVersion": "3.29"
     },
     "documentDescribes": [
         "SPDXRef-PHP"
@@ -19,7 +19,7 @@
         {
             "name": "php",
             "SPDXID": "SPDXRef-PHP",
-            "versionInfo": "8.2.33",
+            "versionInfo": "8.2.34",
             "downloadLocation": "NOASSERTION",
             "filesAnalyzed": false,
             "licenseConcluded": "PHP-3.01",
@@ -32,19 +32,19 @@
                 {
                     "referenceCategory": "PACKAGE-MANAGER",
                     "referenceType": "purl",
-                    "referenceLocator": "pkg:generic/php@8.2.33"
+                    "referenceLocator": "pkg:generic/php@8.2.34"
                 },
                 {
                     "referenceCategory": "SECURITY",
                     "referenceType": "cpe23Type",
-                    "referenceLocator": "cpe:2.3:a:php:php:8.2.33:*:*:*:*:*:*:*"
+                    "referenceLocator": "cpe:2.3:a:php:php:8.2.34:*:*:*:*:*:*:*"
                 }
             ],
             "annotations": [
                 {
-                    "annotationDate": "2026-07-28T10:50:10Z",
+                    "annotationDate": "2026-09-22T09:23:01Z",
                     "annotationType": "OTHER",
-                    "annotator": "Tool: php-8.2.33",
+                    "annotator": "Tool: php-8.2.34",
                     "comment": "php:dependency-sbom-status=present"
                 }
             ]
@@ -53,7 +53,7 @@
             "name": "Berkeley uuencode",
             "SPDXID": "SPDXRef-Source-Berkeley-uuencode-snapshot-25636b9321c2-1",
             "versionInfo": "snapshot-25636b9321c2",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/ext/standard/uuencode.c",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/ext/standard/uuencode.c",
             "filesAnalyzed": false,
             "licenseConcluded": "BSD-4-Clause-UC",
             "licenseDeclared": "BSD-4-Clause-UC",
@@ -61,7 +61,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at ext/standard/uuencode.c; source digest SHA-256 (file-content-v1): 25636b9321c2859ac28ee4ad7148270ebccaa79143777b623d84985622875597",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at ext/standard/uuencode.c; source digest SHA-256 (file-content-v1): 25636b9321c2859ac28ee4ad7148270ebccaa79143777b623d84985622875597",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -80,7 +80,7 @@
             "name": "Boost.Context assembly",
             "SPDXID": "SPDXRef-Source-Boost.Context-assembly-snapshot-20b96f6ebcd9-2",
             "versionInfo": "snapshot-20b96f6ebcd9",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/Zend/asm",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/Zend/asm",
             "filesAnalyzed": false,
             "licenseConcluded": "BSL-1.0",
             "licenseDeclared": "BSL-1.0",
@@ -88,7 +88,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at Zend/asm; source digest SHA-256 (relative-path-and-file-sha256-v1): 20b96f6ebcd9fe672464b5ff24d28eeb529afedd12fedc3fef835db5094621a8",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at Zend/asm; source digest SHA-256 (relative-path-and-file-sha256-v1): 20b96f6ebcd9fe672464b5ff24d28eeb529afedd12fedc3fef835db5094621a8",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -107,7 +107,7 @@
             "name": "crypt_blowfish",
             "SPDXID": "SPDXRef-Source-crypt-blowfish-1.3-3",
             "versionInfo": "1.3",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/ext/standard/crypt_blowfish.c",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/ext/standard/crypt_blowfish.c",
             "filesAnalyzed": false,
             "licenseConcluded": "bcrypt-Solar-Designer",
             "licenseDeclared": "bcrypt-Solar-Designer",
@@ -115,7 +115,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at ext/standard/crypt_blowfish.c; source digest SHA-256 (file-content-v1): f3f115c759bf08bdb7f41a47fd8afdd7985ee51227298caa72530ffb14c10e94",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at ext/standard/crypt_blowfish.c; source digest SHA-256 (file-content-v1): f3f115c759bf08bdb7f41a47fd8afdd7985ee51227298caa72530ffb14c10e94",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -134,7 +134,7 @@
             "name": "DynASM",
             "SPDXID": "SPDXRef-Source-DynASM-1.5.0-4",
             "versionInfo": "1.5.0",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/ext/opcache/jit/dynasm",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/ext/opcache/jit/dynasm",
             "filesAnalyzed": false,
             "licenseConcluded": "MIT",
             "licenseDeclared": "MIT",
@@ -142,7 +142,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at ext/opcache/jit/dynasm; source digest SHA-256 (relative-path-and-file-sha256-v1): 75e0d7c7b8e447d60d9a6b99ee89d5184bb40d343bf4dad7cb38dd559a283c02",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at ext/opcache/jit/dynasm; source digest SHA-256 (relative-path-and-file-sha256-v1): 75e0d7c7b8e447d60d9a6b99ee89d5184bb40d343bf4dad7cb38dd559a283c02",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -161,7 +161,7 @@
             "name": "FreeSec libcrypt",
             "SPDXID": "SPDXRef-Source-FreeSec-libcrypt-snapshot-6b1d1d57b0af-5",
             "versionInfo": "snapshot-6b1d1d57b0af",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/ext/standard/crypt_freesec.c",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/ext/standard/crypt_freesec.c",
             "filesAnalyzed": false,
             "licenseConcluded": "BSD-3-Clause",
             "licenseDeclared": "BSD-3-Clause",
@@ -169,7 +169,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at ext/standard/crypt_freesec.c; source digest SHA-256 (file-content-v1): 6b1d1d57b0af0da0fcdb3a72c5a2137a7c489303b8d55558db7359f10337aa2f",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at ext/standard/crypt_freesec.c; source digest SHA-256 (file-content-v1): 6b1d1d57b0af0da0fcdb3a72c5a2137a7c489303b8d55558db7359f10337aa2f",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -186,9 +186,9 @@
         },
         {
             "name": "libarchive tar format_octal",
-            "SPDXID": "SPDXRef-Source-libarchive-tar-format-octal-snapshot-616f7c76c6c0-6",
-            "versionInfo": "snapshot-616f7c76c6c0",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/ext/phar/tar.c",
+            "SPDXID": "SPDXRef-Source-libarchive-tar-format-octal-snapshot-8c11b69535d7-6",
+            "versionInfo": "snapshot-8c11b69535d7",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/ext/phar/tar.c",
             "filesAnalyzed": false,
             "licenseConcluded": "BSD-2-Clause",
             "licenseDeclared": "BSD-2-Clause",
@@ -196,11 +196,11 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at ext/phar/tar.c; source digest SHA-256 (file-content-v1): 616f7c76c6c0963cf286498a0f516da9710f96b6418cf44ca0af9e44ebab0b58",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at ext/phar/tar.c; source digest SHA-256 (file-content-v1): 8c11b69535d74c9633c58fa2e038aaea8e75cec870b0ad12ba1f781136c312bf",
             "checksums": [
                 {
                     "algorithm": "SHA256",
-                    "checksumValue": "616f7c76c6c0963cf286498a0f516da9710f96b6418cf44ca0af9e44ebab0b58"
+                    "checksumValue": "8c11b69535d74c9633c58fa2e038aaea8e75cec870b0ad12ba1f781136c312bf"
                 }
             ],
             "externalRefs": [
@@ -215,7 +215,7 @@
             "name": "libavifinfo",
             "SPDXID": "SPDXRef-Source-libavifinfo-96f34d945ac7dac229feddfa94dbae66e202b838-7",
             "versionInfo": "96f34d945ac7dac229feddfa94dbae66e202b838",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/ext/standard/libavifinfo",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/ext/standard/libavifinfo",
             "filesAnalyzed": false,
             "licenseConcluded": "BSD-2-Clause",
             "licenseDeclared": "BSD-2-Clause",
@@ -223,7 +223,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at ext/standard/libavifinfo; source digest SHA-256 (relative-path-and-file-sha256-v1): a1d412355a34d294de9d736e1d64411b5eae62b501885f09e2dbacef45a7011b",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at ext/standard/libavifinfo; source digest SHA-256 (relative-path-and-file-sha256-v1): a1d412355a34d294de9d736e1d64411b5eae62b501885f09e2dbacef45a7011b",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -242,7 +242,7 @@
             "name": "libbcmath",
             "SPDXID": "SPDXRef-Source-libbcmath-0.2-8",
             "versionInfo": "0.2",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/ext/bcmath/libbcmath",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/ext/bcmath/libbcmath",
             "filesAnalyzed": false,
             "licenseConcluded": "LGPL-2.1-only",
             "licenseDeclared": "LGPL-2.1-only",
@@ -250,7 +250,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at ext/bcmath/libbcmath; source digest SHA-256 (relative-path-and-file-sha256-v1): 3353b91facf62f28400a6199f05f14f65a9ac50c75f05a708bb732e157bead9b",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at ext/bcmath/libbcmath; source digest SHA-256 (relative-path-and-file-sha256-v1): 3353b91facf62f28400a6199f05f14f65a9ac50c75f05a708bb732e157bead9b",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -269,7 +269,7 @@
             "name": "libgd",
             "SPDXID": "SPDXRef-Source-libgd-2.0.35-9",
             "versionInfo": "2.0.35",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/ext/gd/libgd",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/ext/gd/libgd",
             "filesAnalyzed": false,
             "licenseConcluded": "GD",
             "licenseDeclared": "GD",
@@ -277,7 +277,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at ext/gd/libgd; source digest SHA-256 (relative-path-and-file-sha256-v1): 7c02244eb8ea0d9823bb31f48bdfc304e10df2e6f6aa18daccde69a05de82df4",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at ext/gd/libgd; source digest SHA-256 (relative-path-and-file-sha256-v1): 7c02244eb8ea0d9823bb31f48bdfc304e10df2e6f6aa18daccde69a05de82df4",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -296,7 +296,7 @@
             "name": "libmagic",
             "SPDXID": "SPDXRef-Source-libmagic-5.40-10",
             "versionInfo": "5.40",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/ext/fileinfo/libmagic",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/ext/fileinfo/libmagic",
             "filesAnalyzed": false,
             "licenseConcluded": "BSD-2-Clause",
             "licenseDeclared": "BSD-2-Clause",
@@ -304,7 +304,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at ext/fileinfo/libmagic; source digest SHA-256 (relative-path-and-file-sha256-v1): 87822d5ec46e290ce988f573062911ebf7f03849c8c188a54df5052f75977b41",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at ext/fileinfo/libmagic; source digest SHA-256 (relative-path-and-file-sha256-v1): 87822d5ec46e290ce988f573062911ebf7f03849c8c188a54df5052f75977b41",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -323,7 +323,7 @@
             "name": "libmbfl",
             "SPDXID": "SPDXRef-Source-libmbfl-1.3.2-11",
             "versionInfo": "1.3.2",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/ext/mbstring/libmbfl",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/ext/mbstring/libmbfl",
             "filesAnalyzed": false,
             "licenseConcluded": "LGPL-2.1-only",
             "licenseDeclared": "LGPL-2.1-only",
@@ -331,7 +331,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at ext/mbstring/libmbfl; source digest SHA-256 (relative-path-and-file-sha256-v1): e3fed9a73dbe85945e1f182dca3c8ba18c7207e8a4fb22b2ef07b876754252c5",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at ext/mbstring/libmbfl; source digest SHA-256 (relative-path-and-file-sha256-v1): e3fed9a73dbe85945e1f182dca3c8ba18c7207e8a4fb22b2ef07b876754252c5",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -350,7 +350,7 @@
             "name": "libzip zip_dirent",
             "SPDXID": "SPDXRef-Source-libzip-zip-dirent-snapshot-350106a71b44-12",
             "versionInfo": "snapshot-350106a71b44",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/ext/phar/zip.c",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/ext/phar/zip.c",
             "filesAnalyzed": false,
             "licenseConcluded": "BSD-3-Clause",
             "licenseDeclared": "BSD-3-Clause",
@@ -358,7 +358,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at ext/phar/zip.c; source digest SHA-256 (file-content-v1): 350106a71b44bb2c528bb7510669a9ff5172bfae51e196eecd3910c0b0086d0e",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at ext/phar/zip.c; source digest SHA-256 (file-content-v1): 350106a71b44bb2c528bb7510669a9ff5172bfae51e196eecd3910c0b0086d0e",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -377,7 +377,7 @@
             "name": "MTRand",
             "SPDXID": "SPDXRef-Source-MTRand-1.0-13",
             "versionInfo": "1.0",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/ext/random/engine_mt19937.c",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/ext/random/engine_mt19937.c",
             "filesAnalyzed": false,
             "licenseConcluded": "BSD-3-Clause",
             "licenseDeclared": "BSD-3-Clause",
@@ -385,7 +385,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at ext/random/engine_mt19937.c; source digest SHA-256 (file-content-v1): 2b97e497f1bf0cc911ba0f5e97fe27a30ecb936e0760e055a35d3e4c314ba2a4",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at ext/random/engine_mt19937.c; source digest SHA-256 (file-content-v1): 2b97e497f1bf0cc911ba0f5e97fe27a30ecb936e0760e055a35d3e4c314ba2a4",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -404,7 +404,7 @@
             "name": "OpenLDAP ucgendat",
             "SPDXID": "SPDXRef-Source-OpenLDAP-ucgendat-snapshot-3977da6ead0f-14",
             "versionInfo": "snapshot-3977da6ead0f",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/ext/mbstring/ucgendat/ucgendat.php",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/ext/mbstring/ucgendat/ucgendat.php",
             "filesAnalyzed": false,
             "licenseConcluded": "OLDAP-2.8 AND MIT",
             "licenseDeclared": "OLDAP-2.8 AND MIT",
@@ -412,7 +412,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at ext/mbstring/ucgendat/ucgendat.php; source digest SHA-256 (file-content-v1): 3977da6ead0fa8468124aed97f207f095b5e0cfbed01406522b9928b33824f42",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at ext/mbstring/ucgendat/ucgendat.php; source digest SHA-256 (file-content-v1): 3977da6ead0fa8468124aed97f207f095b5e0cfbed01406522b9928b33824f42",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -431,7 +431,7 @@
             "name": "pcre2lib",
             "SPDXID": "SPDXRef-Source-pcre2lib-10.40-15",
             "versionInfo": "10.40",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/ext/pcre/pcre2lib",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/ext/pcre/pcre2lib",
             "filesAnalyzed": false,
             "licenseConcluded": "BSD-3-Clause WITH PCRE2-exception",
             "licenseDeclared": "BSD-3-Clause WITH PCRE2-exception",
@@ -439,7 +439,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at ext/pcre/pcre2lib; source digest SHA-256 (relative-path-and-file-sha256-v1): 9a138a5d8a26cfc54b4604ca95cd56eb1c389dc2772cbaa2b07c0ec4ba8618ce",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at ext/pcre/pcre2lib; source digest SHA-256 (relative-path-and-file-sha256-v1): 9a138a5d8a26cfc54b4604ca95cd56eb1c389dc2772cbaa2b07c0ec4ba8618ce",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -458,7 +458,7 @@
             "name": "snprintf",
             "SPDXID": "SPDXRef-Source-snprintf-snapshot-7e283c124dc3-16",
             "versionInfo": "snapshot-7e283c124dc3",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/main/snprintf.c",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/main/snprintf.c",
             "filesAnalyzed": false,
             "licenseConcluded": "ISC AND Apache-1.0",
             "licenseDeclared": "ISC AND Apache-1.0",
@@ -466,7 +466,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at main/snprintf.c; source digest SHA-256 (file-content-v1): 7e283c124dc365d979b5e917678efa2ce18bf74ec2f3d0fce953dc70e208e3ad",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at main/snprintf.c; source digest SHA-256 (file-content-v1): 7e283c124dc365d979b5e917678efa2ce18bf74ec2f3d0fce953dc70e208e3ad",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -485,7 +485,7 @@
             "name": "strlcat",
             "SPDXID": "SPDXRef-Source-strlcat-snapshot-d2244e6a54fe-17",
             "versionInfo": "snapshot-d2244e6a54fe",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/main/strlcat.c",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/main/strlcat.c",
             "filesAnalyzed": false,
             "licenseConcluded": "BSD-3-Clause",
             "licenseDeclared": "BSD-3-Clause",
@@ -493,7 +493,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at main/strlcat.c; source digest SHA-256 (file-content-v1): d2244e6a54fead4265249866946ac7fb5050676fefe683110dbb965ea9a6dce8",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at main/strlcat.c; source digest SHA-256 (file-content-v1): d2244e6a54fead4265249866946ac7fb5050676fefe683110dbb965ea9a6dce8",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -512,7 +512,7 @@
             "name": "strlcpy",
             "SPDXID": "SPDXRef-Source-strlcpy-snapshot-144d697952d1-18",
             "versionInfo": "snapshot-144d697952d1",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/main/strlcpy.c",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/main/strlcpy.c",
             "filesAnalyzed": false,
             "licenseConcluded": "BSD-3-Clause",
             "licenseDeclared": "BSD-3-Clause",
@@ -520,7 +520,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at main/strlcpy.c; source digest SHA-256 (file-content-v1): 144d697952d109c4876660691033dcbe12b9c6124732199c56f31a02422884a6",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at main/strlcpy.c; source digest SHA-256 (file-content-v1): 144d697952d109c4876660691033dcbe12b9c6124732199c56f31a02422884a6",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -539,7 +539,7 @@
             "name": "strnatcmp",
             "SPDXID": "SPDXRef-Source-strnatcmp-snapshot-e14f21965b39-19",
             "versionInfo": "snapshot-e14f21965b39",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/ext/standard/strnatcmp.c",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/ext/standard/strnatcmp.c",
             "filesAnalyzed": false,
             "licenseConcluded": "Zlib",
             "licenseDeclared": "Zlib",
@@ -547,7 +547,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at ext/standard/strnatcmp.c; source digest SHA-256 (file-content-v1): e14f21965b3924bc2231a1f638f990e1b2497b0e4fd51ec50f822837bed9bf68",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at ext/standard/strnatcmp.c; source digest SHA-256 (file-content-v1): e14f21965b3924bc2231a1f638f990e1b2497b0e4fd51ec50f822837bed9bf68",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -566,7 +566,7 @@
             "name": "Tcl scanf implementation",
             "SPDXID": "SPDXRef-Source-Tcl-scanf-implementation-8.3.0-20",
             "versionInfo": "8.3.0",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/ext/standard/scanf.c",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/ext/standard/scanf.c",
             "filesAnalyzed": false,
             "licenseConcluded": "TCL",
             "licenseDeclared": "TCL",
@@ -574,7 +574,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at ext/standard/scanf.c; source digest SHA-256 (file-content-v1): b8fc92fa954fdb70a31307312c5c50335d37fa2c35ff30560e7590010ffe36e1",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at ext/standard/scanf.c; source digest SHA-256 (file-content-v1): b8fc92fa954fdb70a31307312c5c50335d37fa2c35ff30560e7590010ffe36e1",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -593,7 +593,7 @@
             "name": "timelib",
             "SPDXID": "SPDXRef-Source-timelib-2022.12-21",
             "versionInfo": "2022.12",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/ext/date/lib",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/ext/date/lib",
             "filesAnalyzed": false,
             "licenseConcluded": "MIT",
             "licenseDeclared": "MIT",
@@ -601,7 +601,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at ext/date/lib; source digest SHA-256 (relative-path-and-file-sha256-v1): ac31c21e32a8e34a4104406a0fd4ce93685230619a2bbb1f6850e8daa69fe6f3",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at ext/date/lib; source digest SHA-256 (relative-path-and-file-sha256-v1): ac31c21e32a8e34a4104406a0fd4ce93685230619a2bbb1f6850e8daa69fe6f3",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -620,7 +620,7 @@
             "name": "XKCP SHA-3",
             "SPDXID": "SPDXRef-Source-XKCP-SHA-3-snapshot-aba3170bb6e1-22",
             "versionInfo": "snapshot-aba3170bb6e1",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/ext/hash/sha3",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/ext/hash/sha3",
             "filesAnalyzed": false,
             "licenseConcluded": "CC0-1.0 AND Brian-Gladman-3-Clause",
             "licenseDeclared": "CC0-1.0 AND Brian-Gladman-3-Clause",
@@ -628,7 +628,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at ext/hash/sha3; source digest SHA-256 (relative-path-and-file-sha256-v1): aba3170bb6e15ba1bddf0d346e580d3f96c954ac252fe05f888c038cdcda735a",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at ext/hash/sha3; source digest SHA-256 (relative-path-and-file-sha256-v1): aba3170bb6e15ba1bddf0d346e580d3f96c954ac252fe05f888c038cdcda735a",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -647,7 +647,7 @@
             "name": "xxHash",
             "SPDXID": "SPDXRef-Source-xxHash-0.8.1-23",
             "versionInfo": "0.8.1",
-            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.33/ext/hash/xxhash",
+            "downloadLocation": "https://github.com/php/php-src/tree/php-8.2.34/ext/hash/xxhash",
             "filesAnalyzed": false,
             "licenseConcluded": "BSD-2-Clause",
             "licenseDeclared": "BSD-2-Clause",
@@ -655,7 +655,7 @@
             "supplier": "Organization: PHP Group",
             "originator": "NOASSERTION",
             "primaryPackagePurpose": "LIBRARY",
-            "sourceInfo": "Bundled in php-8.2.33 source tree at ext/hash/xxhash; source digest SHA-256 (relative-path-and-file-sha256-v1): eed84bec690cf897913ef78090696aa4ab1c3de676f8c45b322fab844045ceb3",
+            "sourceInfo": "Bundled in php-8.2.34 source tree at ext/hash/xxhash; source digest SHA-256 (relative-path-and-file-sha256-v1): eed84bec690cf897913ef78090696aa4ab1c3de676f8c45b322fab844045ceb3",
             "checksums": [
                 {
                     "algorithm": "SHA256",
@@ -672,10 +672,10 @@
         },
         {
             "name": "ICU",
-            "SPDXID": "SPDXRef-Dependency-ICU-71.1-1-24",
-            "versionInfo": "71.1-1",
-            "packageFileName": "ICU-71.1-1-vs16-x64.zip",
-            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/ICU-71.1-1-vs16-x64.zip",
+            "SPDXID": "SPDXRef-Dependency-ICU-71.1-2-24",
+            "versionInfo": "71.1-2",
+            "packageFileName": "ICU-71.1-2-vs16-x64.zip",
+            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/ICU-71.1-2-vs16-x64.zip",
             "filesAnalyzed": false,
             "licenseConcluded": "Unicode-DFS-2016",
             "licenseDeclared": "Unicode-DFS-2016",
@@ -702,15 +702,15 @@
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "git+https://github.com/winlibs/icu4c.git@707e311c6c78efb721d431953c6f0f7df4ccb82b"
+                    "referenceLocator": "git+https://github.com/winlibs/icu4c.git@38b181c5322d0d28ace5951eafc8308933e7cbd9"
                 }
             ],
             "annotations": [
                 {
                     "annotationType": "OTHER",
                     "annotator": "Tool: winlib-builder-sbom-1.0.0",
-                    "annotationDate": "2026-07-13T03:04:34Z",
-                    "comment": "source-origin=winlibs-fork; upstream=unicode-org/icu@release-71-1; source=winlibs/icu4c@icu4c-71.1-1; source-commit=707e311c6c78efb721d431953c6f0f7df4ccb82b"
+                    "annotationDate": "2026-09-12T03:30:10Z",
+                    "comment": "source-origin=winlibs-fork; upstream=unicode-org/icu@release-71-1; source=winlibs/icu4c@icu4c-71.1-2; source-commit=38b181c5322d0d28ace5951eafc8308933e7cbd9; fixed-vulnerabilities=CVE-2025-5222,OSV-2020-866,OSV-2020-867,OSV-2021-1236; fixed-cves=CVE-2025-5222"
                 }
             ]
         },
@@ -1571,10 +1571,10 @@
         },
         {
             "name": "glib",
-            "SPDXID": "SPDXRef-Dependency-glib-2.88.1-1-65",
-            "versionInfo": "2.88.1-1",
-            "packageFileName": "glib-2.88.1-1-vs16-x64.zip",
-            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/glib-2.88.1-1-vs16-x64.zip",
+            "SPDXID": "SPDXRef-Dependency-glib-2.88.3-65",
+            "versionInfo": "2.88.3",
+            "packageFileName": "glib-2.88.3-vs16-x64.zip",
+            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/glib-2.88.3-vs16-x64.zip",
             "filesAnalyzed": false,
             "licenseConcluded": "LGPL-2.1-or-later",
             "licenseDeclared": "LGPL-2.1-or-later",
@@ -1586,12 +1586,12 @@
                 {
                     "referenceCategory": "PACKAGE-MANAGER",
                     "referenceType": "purl",
-                    "referenceLocator": "pkg:generic/glib@2.88.1"
+                    "referenceLocator": "pkg:generic/glib@2.88.3"
                 },
                 {
                     "referenceCategory": "SECURITY",
                     "referenceType": "cpe23Type",
-                    "referenceLocator": "cpe:2.3:a:gnome:glib:2.88.1:*:*:*:*:*:*:*"
+                    "referenceLocator": "cpe:2.3:a:gnome:glib:2.88.3:*:*:*:*:*:*:*"
                 },
                 {
                     "referenceCategory": "OTHER",
@@ -1601,29 +1601,29 @@
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "https://github.com/GNOME/glib/tree/2.88.1"
+                    "referenceLocator": "https://github.com/GNOME/glib/tree/2.88.3"
                 },
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "git+https://github.com/winlibs/glib.git@dd6ae272f882ba3fb195b181827465993831ff83"
+                    "referenceLocator": "git+https://github.com/winlibs/glib.git@ca9d6adf53e11099045a6d51116dd0b678faa1f3"
                 }
             ],
             "annotations": [
                 {
                     "annotationType": "OTHER",
                     "annotator": "Tool: winlib-builder-sbom-1.0.0",
-                    "annotationDate": "2026-07-13T03:28:56Z",
-                    "comment": "source-origin=winlibs-fork; upstream=GNOME/glib@2.88.1; source=winlibs/glib@glib-2.88.1-1; source-commit=dd6ae272f882ba3fb195b181827465993831ff83"
+                    "annotationDate": "2026-08-17T14:01:37Z",
+                    "comment": "source-origin=winlibs-fork; upstream=GNOME/glib@2.88.3; source=winlibs/glib@glib-2.88.3; source-commit=ca9d6adf53e11099045a6d51116dd0b678faa1f3"
                 }
             ]
         },
         {
             "name": "libffi",
-            "SPDXID": "SPDXRef-Dependency-libffi-3.6.0-66",
-            "versionInfo": "3.6.0",
-            "packageFileName": "libffi-3.6.0-vs16-x64.zip",
-            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/libffi-3.6.0-vs16-x64.zip",
+            "SPDXID": "SPDXRef-Dependency-libffi-3.8.0-66",
+            "versionInfo": "3.8.0",
+            "packageFileName": "libffi-3.8.0-vs16-x64.zip",
+            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/libffi-3.8.0-vs16-x64.zip",
             "licenseConcluded": "MIT",
             "licenseDeclared": "MIT",
             "copyrightText": "See accompanying license and notice files.",
@@ -1634,7 +1634,7 @@
                 {
                     "referenceCategory": "PACKAGE-MANAGER",
                     "referenceType": "purl",
-                    "referenceLocator": "pkg:generic/libffi@3.6.0"
+                    "referenceLocator": "pkg:generic/libffi@3.8.0"
                 },
                 {
                     "referenceCategory": "OTHER",
@@ -1644,20 +1644,20 @@
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "https://github.com/libffi/libffi/tree/v3.6.0"
+                    "referenceLocator": "https://github.com/libffi/libffi/tree/v3.8.0"
                 },
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "git+https://github.com/winlibs/libffi.git@9f75967331946c3ff827e14d74226c15a162e74e"
+                    "referenceLocator": "git+https://github.com/winlibs/libffi.git@30ae078e9dbf2cb36de5db54b9740e89d8ff52e1"
                 }
             ],
             "annotations": [
                 {
                     "annotationType": "OTHER",
                     "annotator": "Tool: winlib-builder-sbom-1.0.0",
-                    "annotationDate": "2026-07-13T03:00:43Z",
-                    "comment": "source-origin=winlibs-fork; upstream=libffi/libffi@v3.6.0; source=winlibs/libffi@libffi-3.6.0; source-commit=9f75967331946c3ff827e14d74226c15a162e74e"
+                    "annotationDate": "2026-08-17T13:55:42Z",
+                    "comment": "source-origin=winlibs-fork; upstream=libffi/libffi@v3.8.0; source=winlibs/libffi@libffi-3.8.0; source-commit=30ae078e9dbf2cb36de5db54b9740e89d8ff52e1"
                 }
             ],
             "filesAnalyzed": false
@@ -1838,7 +1838,7 @@
                 {
                     "annotationType": "OTHER",
                     "annotator": "Tool: winlib-builder-sbom-1.0.0",
-                    "annotationDate": "2026-07-17T03:39:30Z",
+                    "annotationDate": "2026-07-31T23:24:09Z",
                     "comment": "source-origin=winlibs-fork; upstream=AOMediaCodec/libavif@v1.4.2; source=winlibs/libavif@libavif-1.4.2; source-commit=14976153789c7ebf2ca24b22215a964bbc5be213"
                 }
             ]
@@ -1910,10 +1910,10 @@
         },
         {
             "name": "libcurl",
-            "SPDXID": "SPDXRef-Dependency-libcurl-8.21.0-73",
-            "versionInfo": "8.21.0",
-            "packageFileName": "libcurl-8.21.0-vs16-x64.zip",
-            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/libcurl-8.21.0-vs16-x64.zip",
+            "SPDXID": "SPDXRef-Dependency-libcurl-8.22.0-73",
+            "versionInfo": "8.22.0",
+            "packageFileName": "libcurl-8.22.0-vs16-x64.zip",
+            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/libcurl-8.22.0-vs16-x64.zip",
             "filesAnalyzed": false,
             "licenseConcluded": "curl",
             "licenseDeclared": "curl",
@@ -1925,12 +1925,12 @@
                 {
                     "referenceCategory": "PACKAGE-MANAGER",
                     "referenceType": "purl",
-                    "referenceLocator": "pkg:generic/curl@8.21.0"
+                    "referenceLocator": "pkg:generic/curl@8.22.0"
                 },
                 {
                     "referenceCategory": "SECURITY",
                     "referenceType": "cpe23Type",
-                    "referenceLocator": "cpe:2.3:a:haxx:curl:8.21.0:*:*:*:*:*:*:*"
+                    "referenceLocator": "cpe:2.3:a:haxx:curl:8.22.0:*:*:*:*:*:*:*"
                 },
                 {
                     "referenceCategory": "OTHER",
@@ -1940,29 +1940,29 @@
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "https://github.com/curl/curl/tree/curl-8_21_0"
+                    "referenceLocator": "https://github.com/curl/curl/tree/curl-8_22_0"
                 },
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "git+https://github.com/winlibs/curl.git@b49adb2e4efd37ca3f76e8a80d16c3e2c5efdab0"
+                    "referenceLocator": "git+https://github.com/winlibs/curl.git@e4dd89bce50940c78fd32c70ffe31c102a6ce69f"
                 }
             ],
             "annotations": [
                 {
                     "annotationType": "OTHER",
                     "annotator": "Tool: winlib-builder-sbom-1.0.0",
-                    "annotationDate": "2026-07-16T20:02:43Z",
-                    "comment": "source-origin=winlibs-fork; upstream=curl/curl@curl-8_21_0; source=winlibs/curl@libcurl-8.21.0-1; source-commit=b49adb2e4efd37ca3f76e8a80d16c3e2c5efdab0"
+                    "annotationDate": "2026-09-11T21:06:10Z",
+                    "comment": "source-origin=winlibs-fork; upstream=curl/curl@curl-8_22_0; source=winlibs/curl@libcurl-8.22.0; source-commit=e4dd89bce50940c78fd32c70ffe31c102a6ce69f"
                 }
             ]
         },
         {
             "name": "libssh2",
-            "SPDXID": "SPDXRef-Dependency-libssh2-1.11.1-4-74",
-            "versionInfo": "1.11.1-4",
-            "packageFileName": "libssh2-1.11.1-4-vs16-x64.zip",
-            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/libssh2-1.11.1-4-vs16-x64.zip",
+            "SPDXID": "SPDXRef-Dependency-libssh2-1.11.1-6-74",
+            "versionInfo": "1.11.1-6",
+            "packageFileName": "libssh2-1.11.1-6-vs16-x64.zip",
+            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/libssh2-1.11.1-6-vs16-x64.zip",
             "licenseConcluded": "BSD-3-Clause",
             "licenseDeclared": "BSD-3-Clause",
             "copyrightText": "See accompanying license and notice files.",
@@ -1993,25 +1993,25 @@
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "git+https://github.com/winlibs/libssh2.git@b47abdf27c93ee1ff4705e88968c5c628a93107a"
+                    "referenceLocator": "git+https://github.com/winlibs/libssh2.git@7817741ff29d52165b0e8c157acbe4c0ec582117"
                 }
             ],
             "annotations": [
                 {
                     "annotationType": "OTHER",
                     "annotator": "Tool: winlib-builder-sbom-1.0.0",
-                    "annotationDate": "2026-07-13T03:27:24Z",
-                    "comment": "source-origin=winlibs-fork; upstream=libssh2/libssh2@libssh2-1.11.1; source=winlibs/libssh2@libssh2-1.11.1-4; source-commit=b47abdf27c93ee1ff4705e88968c5c628a93107a; fixed-cves=CVE-2026-7598,CVE-2025-15661,CVE-2026-55199,CVE-2026-55200,CVE-2026-58050,CVE-2026-58051"
+                    "annotationDate": "2026-09-11T21:03:37Z",
+                    "comment": "source-origin=winlibs-fork; upstream=libssh2/libssh2@libssh2-1.11.1; source=winlibs/libssh2@libssh2-1.11.1-6; source-commit=7817741ff29d52165b0e8c157acbe4c0ec582117; fixed-cves=CVE-2026-7598,CVE-2025-15661,CVE-2026-55199,CVE-2026-55200,CVE-2026-58050,CVE-2026-58051,CVE-2026-66032,CVE-2026-66033,CVE-2026-66034,CVE-2026-66035"
                 }
             ],
             "filesAnalyzed": false
         },
         {
             "name": "openssl",
-            "SPDXID": "SPDXRef-Dependency-openssl-3.0.21.pl1-75",
-            "versionInfo": "3.0.21.pl1",
-            "packageFileName": "openssl-3.0.21.pl1-vs16-x64.zip",
-            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/openssl-3.0.21.pl1-vs16-x64.zip",
+            "SPDXID": "SPDXRef-Dependency-openssl-3.0.22.pl1-75",
+            "versionInfo": "3.0.22.pl1",
+            "packageFileName": "openssl-3.0.22.pl1-vs16-x64.zip",
+            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/openssl-3.0.22.pl1-vs16-x64.zip",
             "licenseConcluded": "Apache-2.0",
             "licenseDeclared": "Apache-2.0",
             "copyrightText": "See accompanying license and notice files.",
@@ -2022,12 +2022,12 @@
                 {
                     "referenceCategory": "PACKAGE-MANAGER",
                     "referenceType": "purl",
-                    "referenceLocator": "pkg:generic/openssl@3.0.21"
+                    "referenceLocator": "pkg:generic/openssl@3.0.22"
                 },
                 {
                     "referenceCategory": "SECURITY",
                     "referenceType": "cpe23Type",
-                    "referenceLocator": "cpe:2.3:a:openssl:openssl:3.0.21:*:*:*:*:*:*:*"
+                    "referenceLocator": "cpe:2.3:a:openssl:openssl:3.0.22:*:*:*:*:*:*:*"
                 },
                 {
                     "referenceCategory": "OTHER",
@@ -2037,20 +2037,20 @@
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "https://github.com/openssl/openssl/tree/openssl-3.0.21"
+                    "referenceLocator": "https://github.com/openssl/openssl/tree/openssl-3.0.22"
                 },
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "git+https://github.com/winlibs/openssl.git@76409f1973ddc85fa2f6838b2679b1b2ea1e0bb6"
+                    "referenceLocator": "git+https://github.com/winlibs/openssl.git@8b89dd78b48339632e3f655b030290a0f9484bb4"
                 }
             ],
             "annotations": [
                 {
                     "annotationType": "OTHER",
                     "annotator": "Tool: winlib-builder-sbom-1.0.0",
-                    "annotationDate": "2026-07-13T03:22:36Z",
-                    "comment": "source-origin=winlibs-fork; upstream=openssl/openssl@openssl-3.0.21; source=winlibs/openssl@openssl-3.0.21.pl1; source-commit=76409f1973ddc85fa2f6838b2679b1b2ea1e0bb6"
+                    "annotationDate": "2026-09-11T20:53:17Z",
+                    "comment": "source-origin=winlibs-fork; upstream=openssl/openssl@openssl-3.0.22; source=winlibs/openssl@openssl-3.0.22.pl1; source-commit=8b89dd78b48339632e3f655b030290a0f9484bb4"
                 }
             ],
             "filesAnalyzed": false
@@ -2101,10 +2101,10 @@
         },
         {
             "name": "nghttp2",
-            "SPDXID": "SPDXRef-Dependency-nghttp2-1.69.0-1-77",
-            "versionInfo": "1.69.0-1",
-            "packageFileName": "nghttp2-1.69.0-1-vs16-x64.zip",
-            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/nghttp2-1.69.0-1-vs16-x64.zip",
+            "SPDXID": "SPDXRef-Dependency-nghttp2-1.70.0-77",
+            "versionInfo": "1.70.0",
+            "packageFileName": "nghttp2-1.70.0-vs16-x64.zip",
+            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/nghttp2-1.70.0-vs16-x64.zip",
             "licenseConcluded": "MIT",
             "licenseDeclared": "MIT",
             "copyrightText": "See accompanying license and notice files.",
@@ -2115,12 +2115,12 @@
                 {
                     "referenceCategory": "PACKAGE-MANAGER",
                     "referenceType": "purl",
-                    "referenceLocator": "pkg:generic/nghttp2@1.69.0"
+                    "referenceLocator": "pkg:generic/nghttp2@1.70.0"
                 },
                 {
                     "referenceCategory": "SECURITY",
                     "referenceType": "cpe23Type",
-                    "referenceLocator": "cpe:2.3:a:nghttp2:nghttp2:1.69.0:*:*:*:*:*:*:*"
+                    "referenceLocator": "cpe:2.3:a:nghttp2:nghttp2:1.70.0:*:*:*:*:*:*:*"
                 },
                 {
                     "referenceCategory": "OTHER",
@@ -2130,30 +2130,30 @@
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "https://github.com/nghttp2/nghttp2/tree/v1.69.0"
+                    "referenceLocator": "https://github.com/nghttp2/nghttp2/tree/v1.70.0"
                 },
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "git+https://github.com/winlibs/nghttp2.git@2a9c99ffa829858a2c0b245eeb4a6e7c9cae7c62"
+                    "referenceLocator": "git+https://github.com/winlibs/nghttp2.git@50895b5f3cebeb2553a4e40a62561707a1a129e0"
                 }
             ],
             "annotations": [
                 {
                     "annotationType": "OTHER",
                     "annotator": "Tool: winlib-builder-sbom-1.0.0",
-                    "annotationDate": "2026-07-16T20:00:24Z",
-                    "comment": "source-origin=winlibs-fork; upstream=nghttp2/nghttp2@v1.69.0; source=winlibs/nghttp2@nghttp2-1.69.0-1; source-commit=2a9c99ffa829858a2c0b245eeb4a6e7c9cae7c62; fixed-cves=CVE-2026-58055"
+                    "annotationDate": "2026-08-17T13:25:22Z",
+                    "comment": "source-origin=winlibs-fork; upstream=nghttp2/nghttp2@v1.70.0; source=winlibs/nghttp2@nghttp2-1.70.0; source-commit=50895b5f3cebeb2553a4e40a62561707a1a129e0"
                 }
             ],
             "filesAnalyzed": false
         },
         {
             "name": "libenchant2",
-            "SPDXID": "SPDXRef-Dependency-libenchant2-2.8.16-1-78",
-            "versionInfo": "2.8.16-1",
-            "packageFileName": "libenchant2-2.8.16-1-vs16-x64.zip",
-            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/libenchant2-2.8.16-1-vs16-x64.zip",
+            "SPDXID": "SPDXRef-Dependency-libenchant2-2.8.19-78",
+            "versionInfo": "2.8.19",
+            "packageFileName": "libenchant2-2.8.19-vs16-x64.zip",
+            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/libenchant2-2.8.19-vs16-x64.zip",
             "filesAnalyzed": false,
             "licenseConcluded": "LGPL-2.1-or-later",
             "licenseDeclared": "LGPL-2.1-or-later",
@@ -2165,7 +2165,7 @@
                 {
                     "referenceCategory": "PACKAGE-MANAGER",
                     "referenceType": "purl",
-                    "referenceLocator": "pkg:generic/enchant@2.8.16"
+                    "referenceLocator": "pkg:generic/enchant@2.8.19"
                 },
                 {
                     "referenceCategory": "OTHER",
@@ -2175,20 +2175,20 @@
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "https://github.com/AbiWord/enchant/tree/v2.8.16"
+                    "referenceLocator": "https://github.com/AbiWord/enchant/tree/v2.8.19"
                 },
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "git+https://github.com/winlibs/enchant.git@306f758741abb4a67b6e7143784d556eaacebdd9"
+                    "referenceLocator": "git+https://github.com/winlibs/enchant.git@37e09ab3d76d61784d8a9d4cca2badbd56d080f4"
                 }
             ],
             "annotations": [
                 {
                     "annotationType": "OTHER",
                     "annotator": "Tool: winlib-builder-sbom-1.0.0",
-                    "annotationDate": "2026-07-13T03:31:04Z",
-                    "comment": "source-origin=winlibs-fork; upstream=AbiWord/enchant@v2.8.16; source=winlibs/enchant@libenchant2-2.8.16-1; source-commit=306f758741abb4a67b6e7143784d556eaacebdd9"
+                    "annotationDate": "2026-08-17T14:14:00Z",
+                    "comment": "source-origin=winlibs-fork; upstream=AbiWord/enchant@v2.8.19; source=winlibs/enchant@libenchant2-2.8.19; source-commit=37e09ab3d76d61784d8a9d4cca2badbd56d080f4"
                 }
             ]
         },
@@ -2238,10 +2238,10 @@
         },
         {
             "name": "libjpeg-turbo",
-            "SPDXID": "SPDXRef-Dependency-libjpeg-turbo-3.1.4.1-80",
-            "versionInfo": "3.1.4.1",
-            "packageFileName": "libjpeg-turbo-3.1.4.1-vs16-x64.zip",
-            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/libjpeg-turbo-3.1.4.1-vs16-x64.zip",
+            "SPDXID": "SPDXRef-Dependency-libjpeg-turbo-3.2.0-80",
+            "versionInfo": "3.2.0",
+            "packageFileName": "libjpeg-turbo-3.2.0-vs16-x64.zip",
+            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/libjpeg-turbo-3.2.0-vs16-x64.zip",
             "filesAnalyzed": false,
             "licenseConcluded": "BSD-3-Clause AND IJG",
             "licenseDeclared": "BSD-3-Clause AND IJG",
@@ -2253,12 +2253,12 @@
                 {
                     "referenceCategory": "PACKAGE-MANAGER",
                     "referenceType": "purl",
-                    "referenceLocator": "pkg:generic/libjpeg-turbo@3.1.4.1"
+                    "referenceLocator": "pkg:generic/libjpeg-turbo@3.2.0"
                 },
                 {
                     "referenceCategory": "SECURITY",
                     "referenceType": "cpe23Type",
-                    "referenceLocator": "cpe:2.3:a:libjpeg-turbo:libjpeg-turbo:3.1.4.1:*:*:*:*:*:*:*"
+                    "referenceLocator": "cpe:2.3:a:libjpeg-turbo:libjpeg-turbo:3.2.0:*:*:*:*:*:*:*"
                 },
                 {
                     "referenceCategory": "OTHER",
@@ -2268,20 +2268,20 @@
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "https://github.com/libjpeg-turbo/libjpeg-turbo/tree/3.1.4.1"
+                    "referenceLocator": "https://github.com/libjpeg-turbo/libjpeg-turbo/tree/3.2.0"
                 },
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "git+https://github.com/winlibs/libjpeg.git@ca1aee45c747aaf6f66aada3abe6353306ff502b"
+                    "referenceLocator": "git+https://github.com/winlibs/libjpeg.git@66ef88ad97f3c47eb1c7b85f2637ff1073ebce9b"
                 }
             ],
             "annotations": [
                 {
                     "annotationType": "OTHER",
                     "annotator": "Tool: winlib-builder-sbom-1.0.0",
-                    "annotationDate": "2026-07-13T03:02:00Z",
-                    "comment": "source-origin=winlibs-fork; upstream=libjpeg-turbo/libjpeg-turbo@3.1.4.1; source=winlibs/libjpeg@libjpeg-turbo-3.1.4.1; source-commit=ca1aee45c747aaf6f66aada3abe6353306ff502b"
+                    "annotationDate": "2026-08-04T04:08:48Z",
+                    "comment": "source-origin=winlibs-fork; upstream=libjpeg-turbo/libjpeg-turbo@3.2.0; source=winlibs/libjpeg@libjpeg-turbo-3.2.0; source-commit=66ef88ad97f3c47eb1c7b85f2637ff1073ebce9b"
                 }
             ]
         },
@@ -2331,10 +2331,10 @@
         },
         {
             "name": "liblzma",
-            "SPDXID": "SPDXRef-Dependency-liblzma-5.8.3-82",
-            "versionInfo": "5.8.3",
-            "packageFileName": "liblzma-5.8.3-vs16-x64.zip",
-            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/liblzma-5.8.3-vs16-x64.zip",
+            "SPDXID": "SPDXRef-Dependency-liblzma-5.8.4-82",
+            "versionInfo": "5.8.4",
+            "packageFileName": "liblzma-5.8.4-vs16-x64.zip",
+            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/liblzma-5.8.4-vs16-x64.zip",
             "filesAnalyzed": false,
             "licenseConcluded": "0BSD",
             "licenseDeclared": "0BSD",
@@ -2346,7 +2346,7 @@
                 {
                     "referenceCategory": "PACKAGE-MANAGER",
                     "referenceType": "purl",
-                    "referenceLocator": "pkg:generic/xz@5.8.3"
+                    "referenceLocator": "pkg:generic/xz@5.8.4"
                 },
                 {
                     "referenceCategory": "OTHER",
@@ -2356,20 +2356,20 @@
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "https://github.com/tukaani-project/xz/tree/v5.8.3"
+                    "referenceLocator": "https://github.com/tukaani-project/xz/tree/v5.8.4"
                 },
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "git+https://github.com/winlibs/liblzma.git@debf994b6385f384f01815eaac4597e3c2e2cc4e"
+                    "referenceLocator": "git+https://github.com/winlibs/liblzma.git@4b9d0346008efc136ea6c407d9c23da47727fe3b"
                 }
             ],
             "annotations": [
                 {
                     "annotationType": "OTHER",
                     "annotator": "Tool: winlib-builder-sbom-1.0.0",
-                    "annotationDate": "2026-07-13T03:02:30Z",
-                    "comment": "source-origin=winlibs-fork; upstream=tukaani-project/xz@v5.8.3; source=winlibs/liblzma@liblzma-5.8.3; source-commit=debf994b6385f384f01815eaac4597e3c2e2cc4e"
+                    "annotationDate": "2026-09-11T15:33:18Z",
+                    "comment": "source-origin=winlibs-fork; upstream=tukaani-project/xz@v5.8.4; source=winlibs/liblzma@liblzma-5.8.4; source-commit=4b9d0346008efc136ea6c407d9c23da47727fe3b"
                 }
             ]
         },
@@ -2468,10 +2468,10 @@
         },
         {
             "name": "libpq",
-            "SPDXID": "SPDXRef-Dependency-libpq-14.23-85",
-            "versionInfo": "14.23",
-            "packageFileName": "libpq-14.23-vs16-x64.zip",
-            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/libpq-14.23-vs16-x64.zip",
+            "SPDXID": "SPDXRef-Dependency-libpq-14.24-85",
+            "versionInfo": "14.24",
+            "packageFileName": "libpq-14.24-vs16-x64.zip",
+            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/libpq-14.24-vs16-x64.zip",
             "filesAnalyzed": false,
             "licenseConcluded": "PostgreSQL",
             "licenseDeclared": "PostgreSQL",
@@ -2483,12 +2483,12 @@
                 {
                     "referenceCategory": "PACKAGE-MANAGER",
                     "referenceType": "purl",
-                    "referenceLocator": "pkg:generic/postgresql@14.23"
+                    "referenceLocator": "pkg:generic/postgresql@14.24"
                 },
                 {
                     "referenceCategory": "SECURITY",
                     "referenceType": "cpe23Type",
-                    "referenceLocator": "cpe:2.3:a:postgresql:postgresql:14.23:*:*:*:*:*:*:*"
+                    "referenceLocator": "cpe:2.3:a:postgresql:postgresql:14.24:*:*:*:*:*:*:*"
                 },
                 {
                     "referenceCategory": "OTHER",
@@ -2498,20 +2498,20 @@
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "https://github.com/postgres/postgres/tree/REL_14_23"
+                    "referenceLocator": "https://github.com/postgres/postgres/tree/REL_14_24"
                 },
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "git+https://github.com/winlibs/postgresql.git@5c619216c319e12881327daf7defb511ef214b70"
+                    "referenceLocator": "git+https://github.com/winlibs/postgresql.git@d6d085e9377626a66c10144123ad67f0ca42f62d"
                 }
             ],
             "annotations": [
                 {
                     "annotationType": "OTHER",
                     "annotator": "Tool: winlib-builder-sbom-1.0.0",
-                    "annotationDate": "2026-07-13T03:27:31Z",
-                    "comment": "source-origin=winlibs-fork; upstream=postgres/postgres@REL_14_23; source=winlibs/postgresql@libpq-14.23; source-commit=5c619216c319e12881327daf7defb511ef214b70; not-affected-cves=CVE-2017-8806"
+                    "annotationDate": "2026-09-11T21:03:02Z",
+                    "comment": "source-origin=winlibs-fork; upstream=postgres/postgres@REL_14_24; source=winlibs/postgresql@libpq-14.24; source-commit=d6d085e9377626a66c10144123ad67f0ca42f62d; not-affected-cves=CVE-2017-8806"
                 }
             ]
         },
@@ -2598,17 +2598,17 @@
                 {
                     "annotationType": "OTHER",
                     "annotator": "Tool: winlib-builder-sbom-1.0.0",
-                    "annotationDate": "2026-07-13T03:27:59Z",
+                    "annotationDate": "2026-09-11T21:02:57Z",
                     "comment": "source-origin=winlibs-fork; upstream=cyrusimap/cyrus-sasl@cyrus-sasl-2.1.28; source=winlibs/cyrus-sasl@libsasl-2.1.28; source-commit=63a75ce9293206aea981e9f3edcd96645bafd677"
                 }
             ]
         },
         {
             "name": "sqlite3",
-            "SPDXID": "SPDXRef-Dependency-sqlite3-3.53.2-88",
-            "versionInfo": "3.53.2",
-            "packageFileName": "sqlite3-3.53.2-vs16-x64.zip",
-            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/sqlite3-3.53.2-vs16-x64.zip",
+            "SPDXID": "SPDXRef-Dependency-sqlite3-3.53.4-88",
+            "versionInfo": "3.53.4",
+            "packageFileName": "sqlite3-3.53.4-vs16-x64.zip",
+            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/sqlite3-3.53.4-vs16-x64.zip",
             "licenseConcluded": "blessing",
             "licenseDeclared": "blessing",
             "copyrightText": "NONE",
@@ -2619,12 +2619,12 @@
                 {
                     "referenceCategory": "PACKAGE-MANAGER",
                     "referenceType": "purl",
-                    "referenceLocator": "pkg:generic/sqlite@3.53.2"
+                    "referenceLocator": "pkg:generic/sqlite@3.53.4"
                 },
                 {
                     "referenceCategory": "SECURITY",
                     "referenceType": "cpe23Type",
-                    "referenceLocator": "cpe:2.3:a:sqlite:sqlite:3.53.2:*:*:*:*:*:*:*"
+                    "referenceLocator": "cpe:2.3:a:sqlite:sqlite:3.53.4:*:*:*:*:*:*:*"
                 },
                 {
                     "referenceCategory": "OTHER",
@@ -2634,20 +2634,20 @@
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "https://github.com/sqlite/sqlite/tree/version-3.53.2"
+                    "referenceLocator": "https://github.com/sqlite/sqlite/tree/version-3.53.4"
                 },
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "git+https://github.com/winlibs/sqlite3.git@1317473784d608cfe3193628ccbe27ed2dedc3fe"
+                    "referenceLocator": "git+https://github.com/winlibs/sqlite3.git@90771f2f145baf5b9a2e094ff9ad36d700079125"
                 }
             ],
             "annotations": [
                 {
                     "annotationType": "OTHER",
                     "annotator": "Tool: winlib-builder-sbom-1.0.0",
-                    "annotationDate": "2026-07-13T03:03:13Z",
-                    "comment": "source-origin=winlibs-fork; upstream=sqlite/sqlite@version-3.53.2; source=winlibs/sqlite3@sqlite3-3.53.2; source-commit=1317473784d608cfe3193628ccbe27ed2dedc3fe"
+                    "annotationDate": "2026-08-17T12:19:01Z",
+                    "comment": "source-origin=winlibs-fork; upstream=sqlite/sqlite@version-3.53.4; source=winlibs/sqlite3@sqlite3-3.53.4; source-commit=90771f2f145baf5b9a2e094ff9ad36d700079125"
                 }
             ],
             "filesAnalyzed": false
@@ -2786,10 +2786,10 @@
         },
         {
             "name": "libxml2",
-            "SPDXID": "SPDXRef-Dependency-libxml2-2.10.4-8-92",
-            "versionInfo": "2.10.4-8",
-            "packageFileName": "libxml2-2.10.4-8-vs16-x64.zip",
-            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/libxml2-2.10.4-8-vs16-x64.zip",
+            "SPDXID": "SPDXRef-Dependency-libxml2-2.10.4-9-92",
+            "versionInfo": "2.10.4-9",
+            "packageFileName": "libxml2-2.10.4-9-vs16-x64.zip",
+            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/libxml2-2.10.4-9-vs16-x64.zip",
             "filesAnalyzed": false,
             "licenseConcluded": "MIT",
             "licenseDeclared": "MIT",
@@ -2821,15 +2821,15 @@
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "git+https://github.com/winlibs/libxml2.git@53d3ad9aa8a1fa570ae06c05647a8930448818e2"
+                    "referenceLocator": "git+https://github.com/winlibs/libxml2.git@b9ca51098499e5b4d47ed08778369b2f015fa8f3"
                 }
             ],
             "annotations": [
                 {
                     "annotationType": "OTHER",
                     "annotator": "Tool: winlib-builder-sbom-1.0.0",
-                    "annotationDate": "2026-07-16T19:59:53Z",
-                    "comment": "source-origin=winlibs-fork; upstream=GNOME/libxml2@v2.10.4; source=winlibs/libxml2@libxml2-2.10.4-8; source-commit=53d3ad9aa8a1fa570ae06c05647a8930448818e2; fixed-cves=CVE-2024-25062,CVE-2024-34459,CVE-2024-56171,CVE-2025-24928,CVE-2025-27113,CVE-2025-32414,CVE-2025-32415,CVE-2025-49794,CVE-2025-49795,CVE-2025-49796,CVE-2025-6021,CVE-2025-6170,CVE-2025-7425,CVE-2025-8732,CVE-2026-0989,CVE-2026-0990,CVE-2026-0992,CVE-2026-1757,CVE-2022-49043,CVE-2023-45322,CVE-2026-11979,CVE-2026-6653"
+                    "annotationDate": "2026-09-18T08:27:34Z",
+                    "comment": "source-origin=winlibs-fork; upstream=GNOME/libxml2@v2.10.4; source=winlibs/libxml2@libxml2-2.10.4-9; source-commit=b9ca51098499e5b4d47ed08778369b2f015fa8f3; fixed-vulnerabilities=CVE-2024-25062,CVE-2024-34459,CVE-2024-56171,CVE-2025-24928,CVE-2025-27113,CVE-2025-32414,CVE-2025-32415,CVE-2025-49794,CVE-2025-49795,CVE-2025-49796,CVE-2025-6021,CVE-2025-6170,CVE-2025-7425,CVE-2025-8732,CVE-2026-0989,CVE-2026-0990,CVE-2026-0992,CVE-2026-1757,CVE-2022-49043,CVE-2023-45322,CVE-2026-11979,CVE-2026-6653,CVE-2026-86137,CVE-2026-86138,CVE-2026-86140,CVE-2026-86141,CVE-2026-86142,CVE-2026-86143,CVE-2026-86144; fixed-cves=CVE-2024-25062,CVE-2024-34459,CVE-2024-56171,CVE-2025-24928,CVE-2025-27113,CVE-2025-32414,CVE-2025-32415,CVE-2025-49794,CVE-2025-49795,CVE-2025-49796,CVE-2025-6021,CVE-2025-6170,CVE-2025-7425,CVE-2025-8732,CVE-2026-0989,CVE-2026-0990,CVE-2026-0992,CVE-2026-1757,CVE-2022-49043,CVE-2023-45322,CVE-2026-11979,CVE-2026-6653,CVE-2026-86137,CVE-2026-86138,CVE-2026-86140,CVE-2026-86141,CVE-2026-86142,CVE-2026-86143,CVE-2026-86144; not-affected-cves=CVE-2026-86139"
                 }
             ]
         },
@@ -2921,8 +2921,8 @@
                 {
                     "annotationType": "OTHER",
                     "annotator": "Tool: winlib-builder-sbom-1.0.0",
-                    "annotationDate": "2026-07-16T20:01:33Z",
-                    "comment": "source-origin=winlibs-fork; upstream=GNOME/libxslt@v1.1.43; source=winlibs/libxslt@libxslt-1.1.43-2; source-commit=9f399f8d223ddddeaeacd15285a2e993ec326c0f; fixed-cves=CVE-2025-10911,CVE-2025-11731,CVE-2025-7424; not-affected-cves=CVE-2025-7425"
+                    "annotationDate": "2026-09-18T08:32:34Z",
+                    "comment": "source-origin=winlibs-fork; upstream=GNOME/libxslt@v1.1.43; source=winlibs/libxslt@libxslt-1.1.43-2; source-commit=9f399f8d223ddddeaeacd15285a2e993ec326c0f; fixed-vulnerabilities=CVE-2025-10911,CVE-2025-11731,CVE-2025-7424; fixed-cves=CVE-2025-10911,CVE-2025-11731,CVE-2025-7424; not-affected-cves=CVE-2025-7425"
                 }
             ]
         },
@@ -2965,7 +2965,7 @@
                 {
                     "annotationType": "OTHER",
                     "annotator": "Tool: winlib-builder-sbom-1.0.0",
-                    "annotationDate": "2026-07-13T03:27:29Z",
+                    "annotationDate": "2026-09-11T16:03:24Z",
                     "comment": "source-origin=winlibs-fork; upstream=nih-at/libzip@v1.11.4; source=winlibs/libzip@libzip-1.11.4; source-commit=94b3e6583c6ddf77d3fef95699310818a91bc23a"
                 }
             ]
@@ -3016,10 +3016,10 @@
         },
         {
             "name": "net-snmp",
-            "SPDXID": "SPDXRef-Dependency-net-snmp-5.7.3-3-97",
-            "versionInfo": "5.7.3-3",
-            "packageFileName": "net-snmp-5.7.3-3-vs16-x64.zip",
-            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/net-snmp-5.7.3-3-vs16-x64.zip",
+            "SPDXID": "SPDXRef-Dependency-net-snmp-5.7.3-5-97",
+            "versionInfo": "5.7.3-5",
+            "packageFileName": "net-snmp-5.7.3-5-vs16-x64.zip",
+            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/net-snmp-5.7.3-5-vs16-x64.zip",
             "filesAnalyzed": false,
             "licenseConcluded": "BSD-3-Clause",
             "licenseDeclared": "BSD-3-Clause",
@@ -3034,6 +3034,11 @@
                     "referenceLocator": "pkg:generic/net-snmp@5.7.3"
                 },
                 {
+                    "referenceCategory": "SECURITY",
+                    "referenceType": "cpe23Type",
+                    "referenceLocator": "cpe:2.3:a:net-snmp:net-snmp:5.7.3:*:*:*:*:*:*:*"
+                },
+                {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
                     "referenceLocator": "https://github.com/net-snmp/net-snmp"
@@ -3046,24 +3051,24 @@
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "git+https://github.com/winlibs/net-snmp.git@3cdec74894985d67753772b72a07064c3ed2e336"
+                    "referenceLocator": "git+https://github.com/winlibs/net-snmp.git@106c51bea5ae2efeb6e6659a5ebc610ffe0e3e89"
                 }
             ],
             "annotations": [
                 {
                     "annotationType": "OTHER",
                     "annotator": "Tool: winlib-builder-sbom-1.0.0",
-                    "annotationDate": "2026-07-13T03:27:37Z",
-                    "comment": "source-origin=winlibs-fork; upstream=net-snmp/net-snmp@v5.7.3; source=winlibs/net-snmp@net-snmp-5.7.3-3; source-commit=3cdec74894985d67753772b72a07064c3ed2e336"
+                    "annotationDate": "2026-09-12T12:27:19Z",
+                    "comment": "source-origin=winlibs-fork; upstream=net-snmp/net-snmp@v5.7.3; source=winlibs/net-snmp@net-snmp-5.7.3-5; source-commit=106c51bea5ae2efeb6e6659a5ebc610ffe0e3e89; fixed-vulnerabilities=CVE-2018-18065,CVE-2018-18066,CVE-2020-15861,CVE-2020-15862,CVE-2022-24805,CVE-2022-24806,CVE-2022-24807,CVE-2022-24808,CVE-2022-24809,CVE-2022-24810; fixed-cves=CVE-2018-18065,CVE-2018-18066,CVE-2020-15861,CVE-2020-15862,CVE-2022-24805,CVE-2022-24806,CVE-2022-24807,CVE-2022-24808,CVE-2022-24809,CVE-2022-24810; not-affected-cves=CVE-2014-2285,CVE-2015-8100,CVE-2019-20892,CVE-2022-44793,CVE-2025-68615"
                 }
             ]
         },
         {
             "name": "openldap",
-            "SPDXID": "SPDXRef-Dependency-openldap-2.6.13-1-98",
-            "versionInfo": "2.6.13-1",
-            "packageFileName": "openldap-2.6.13-1-vs16-x64.zip",
-            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/openldap-2.6.13-1-vs16-x64.zip",
+            "SPDXID": "SPDXRef-Dependency-openldap-2.7.0-2-98",
+            "versionInfo": "2.7.0-2",
+            "packageFileName": "openldap-2.7.0-2-vs16-x64.zip",
+            "downloadLocation": "https://downloads.php.net/~windows/php-sdk/deps/vs16/x64/openldap-2.7.0-2-vs16-x64.zip",
             "filesAnalyzed": false,
             "licenseConcluded": "OLDAP-2.8",
             "licenseDeclared": "OLDAP-2.8",
@@ -3075,12 +3080,12 @@
                 {
                     "referenceCategory": "PACKAGE-MANAGER",
                     "referenceType": "purl",
-                    "referenceLocator": "pkg:generic/openldap@2.6.13"
+                    "referenceLocator": "pkg:generic/openldap@2.7.0"
                 },
                 {
                     "referenceCategory": "SECURITY",
                     "referenceType": "cpe23Type",
-                    "referenceLocator": "cpe:2.3:a:openldap:openldap:2.6.13:*:*:*:*:*:*:*"
+                    "referenceLocator": "cpe:2.3:a:openldap:openldap:2.7.0:*:*:*:*:*:*:*"
                 },
                 {
                     "referenceCategory": "OTHER",
@@ -3090,20 +3095,20 @@
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "https://github.com/openldap/openldap/tree/OPENLDAP_REL_ENG_2_6_13"
+                    "referenceLocator": "https://github.com/openldap/openldap/tree/OPENLDAP_REL_ENG_2_7_0"
                 },
                 {
                     "referenceCategory": "OTHER",
                     "referenceType": "website",
-                    "referenceLocator": "git+https://github.com/winlibs/openldap.git@006411230eaf28f3201362f18a0e5903f9772f5c"
+                    "referenceLocator": "git+https://github.com/winlibs/openldap.git@4b2449a2e39d92b3b789ff71350b4bf70ed0713e"
                 }
             ],
             "annotations": [
                 {
                     "annotationType": "OTHER",
                     "annotator": "Tool: winlib-builder-sbom-1.0.0",
-                    "annotationDate": "2026-07-13T03:56:42Z",
-                    "comment": "source-origin=winlibs-fork; upstream=openldap/openldap@OPENLDAP_REL_ENG_2_6_13; source=winlibs/openldap@openldap-2.6.13-1; source-commit=006411230eaf28f3201362f18a0e5903f9772f5c"
+                    "annotationDate": "2026-09-11T21:14:06Z",
+                    "comment": "source-origin=winlibs-fork; upstream=openldap/openldap@OPENLDAP_REL_ENG_2_7_0; source=winlibs/openldap@openldap-2.7.0-2; source-commit=4b2449a2e39d92b3b789ff71350b4bf70ed0713e"
                 }
             ]
         },
@@ -3207,7 +3212,7 @@
         {
             "spdxElementId": "SPDXRef-PHP",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Source-libarchive-tar-format-octal-snapshot-616f7c76c6c0-6"
+            "relatedSpdxElement": "SPDXRef-Source-libarchive-tar-format-octal-snapshot-8c11b69535d7-6"
         },
         {
             "spdxElementId": "SPDXRef-PHP",
@@ -3297,7 +3302,7 @@
         {
             "spdxElementId": "SPDXRef-PHP",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-ICU-71.1-1-24"
+            "relatedSpdxElement": "SPDXRef-Dependency-ICU-71.1-2-24"
         },
         {
             "spdxElementId": "SPDXRef-PHP",
@@ -3387,20 +3392,20 @@
         {
             "spdxElementId": "SPDXRef-PHP",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-glib-2.88.1-1-65"
+            "relatedSpdxElement": "SPDXRef-Dependency-glib-2.88.3-65"
         },
         {
-            "spdxElementId": "SPDXRef-Dependency-glib-2.88.1-1-65",
+            "spdxElementId": "SPDXRef-Dependency-glib-2.88.3-65",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-libffi-3.6.0-66"
+            "relatedSpdxElement": "SPDXRef-Dependency-libffi-3.8.0-66"
         },
         {
-            "spdxElementId": "SPDXRef-Dependency-glib-2.88.1-1-65",
+            "spdxElementId": "SPDXRef-Dependency-glib-2.88.3-65",
             "relationshipType": "DEPENDS_ON",
             "relatedSpdxElement": "SPDXRef-Dependency-libintl-1.0-67"
         },
         {
-            "spdxElementId": "SPDXRef-Dependency-glib-2.88.1-1-65",
+            "spdxElementId": "SPDXRef-Dependency-glib-2.88.3-65",
             "relationshipType": "DEPENDS_ON",
             "relatedSpdxElement": "SPDXRef-Dependency-zlib-1.3.2-68"
         },
@@ -3427,62 +3432,62 @@
         {
             "spdxElementId": "SPDXRef-PHP",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-libcurl-8.21.0-73"
+            "relatedSpdxElement": "SPDXRef-Dependency-libcurl-8.22.0-73"
         },
         {
-            "spdxElementId": "SPDXRef-Dependency-libcurl-8.21.0-73",
+            "spdxElementId": "SPDXRef-Dependency-libcurl-8.22.0-73",
             "relationshipType": "DEPENDS_ON",
             "relatedSpdxElement": "SPDXRef-Dependency-brotli-1.2.0-61"
         },
         {
-            "spdxElementId": "SPDXRef-Dependency-libcurl-8.21.0-73",
+            "spdxElementId": "SPDXRef-Dependency-libcurl-8.22.0-73",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-libssh2-1.11.1-4-74"
+            "relatedSpdxElement": "SPDXRef-Dependency-libssh2-1.11.1-6-74"
         },
         {
-            "spdxElementId": "SPDXRef-Dependency-libssh2-1.11.1-4-74",
+            "spdxElementId": "SPDXRef-Dependency-libssh2-1.11.1-6-74",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-openssl-3.0.21.pl1-75"
+            "relatedSpdxElement": "SPDXRef-Dependency-openssl-3.0.22.pl1-75"
         },
         {
-            "spdxElementId": "SPDXRef-Dependency-libssh2-1.11.1-4-74",
+            "spdxElementId": "SPDXRef-Dependency-libssh2-1.11.1-6-74",
             "relationshipType": "DEPENDS_ON",
             "relatedSpdxElement": "SPDXRef-Dependency-zlib-1.3.2-68"
         },
         {
-            "spdxElementId": "SPDXRef-Dependency-libcurl-8.21.0-73",
+            "spdxElementId": "SPDXRef-Dependency-libcurl-8.22.0-73",
             "relationshipType": "DEPENDS_ON",
             "relatedSpdxElement": "SPDXRef-Dependency-libzstd-1.5.7-76"
         },
         {
-            "spdxElementId": "SPDXRef-Dependency-libcurl-8.21.0-73",
+            "spdxElementId": "SPDXRef-Dependency-libcurl-8.22.0-73",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-nghttp2-1.69.0-1-77"
+            "relatedSpdxElement": "SPDXRef-Dependency-nghttp2-1.70.0-77"
         },
         {
-            "spdxElementId": "SPDXRef-Dependency-libcurl-8.21.0-73",
+            "spdxElementId": "SPDXRef-Dependency-libcurl-8.22.0-73",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-openssl-3.0.21.pl1-75"
+            "relatedSpdxElement": "SPDXRef-Dependency-openssl-3.0.22.pl1-75"
         },
         {
-            "spdxElementId": "SPDXRef-Dependency-libcurl-8.21.0-73",
+            "spdxElementId": "SPDXRef-Dependency-libcurl-8.22.0-73",
             "relationshipType": "DEPENDS_ON",
             "relatedSpdxElement": "SPDXRef-Dependency-zlib-1.3.2-68"
         },
         {
             "spdxElementId": "SPDXRef-PHP",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-libenchant2-2.8.16-1-78"
+            "relatedSpdxElement": "SPDXRef-Dependency-libenchant2-2.8.19-78"
         },
         {
-            "spdxElementId": "SPDXRef-Dependency-libenchant2-2.8.16-1-78",
+            "spdxElementId": "SPDXRef-Dependency-libenchant2-2.8.19-78",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-glib-2.88.1-1-65"
+            "relatedSpdxElement": "SPDXRef-Dependency-glib-2.88.3-65"
         },
         {
             "spdxElementId": "SPDXRef-PHP",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-libffi-3.6.0-66"
+            "relatedSpdxElement": "SPDXRef-Dependency-libffi-3.8.0-66"
         },
         {
             "spdxElementId": "SPDXRef-PHP",
@@ -3497,7 +3502,7 @@
         {
             "spdxElementId": "SPDXRef-PHP",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-libjpeg-turbo-3.1.4.1-80"
+            "relatedSpdxElement": "SPDXRef-Dependency-libjpeg-turbo-3.2.0-80"
         },
         {
             "spdxElementId": "SPDXRef-PHP",
@@ -3507,7 +3512,7 @@
         {
             "spdxElementId": "SPDXRef-PHP",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-liblzma-5.8.3-82"
+            "relatedSpdxElement": "SPDXRef-Dependency-liblzma-5.8.4-82"
         },
         {
             "spdxElementId": "SPDXRef-PHP",
@@ -3527,12 +3532,12 @@
         {
             "spdxElementId": "SPDXRef-PHP",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-libpq-14.23-85"
+            "relatedSpdxElement": "SPDXRef-Dependency-libpq-14.24-85"
         },
         {
-            "spdxElementId": "SPDXRef-Dependency-libpq-14.23-85",
+            "spdxElementId": "SPDXRef-Dependency-libpq-14.24-85",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-openssl-3.0.21.pl1-75"
+            "relatedSpdxElement": "SPDXRef-Dependency-openssl-3.0.22.pl1-75"
         },
         {
             "spdxElementId": "SPDXRef-PHP",
@@ -3552,12 +3557,12 @@
         {
             "spdxElementId": "SPDXRef-Dependency-libsasl-2.1.28-87",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-openssl-3.0.21.pl1-75"
+            "relatedSpdxElement": "SPDXRef-Dependency-openssl-3.0.22.pl1-75"
         },
         {
             "spdxElementId": "SPDXRef-Dependency-libsasl-2.1.28-87",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-sqlite3-3.53.2-88"
+            "relatedSpdxElement": "SPDXRef-Dependency-sqlite3-3.53.4-88"
         },
         {
             "spdxElementId": "SPDXRef-PHP",
@@ -3567,7 +3572,7 @@
         {
             "spdxElementId": "SPDXRef-PHP",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-libssh2-1.11.1-4-74"
+            "relatedSpdxElement": "SPDXRef-Dependency-libssh2-1.11.1-6-74"
         },
         {
             "spdxElementId": "SPDXRef-PHP",
@@ -3582,10 +3587,10 @@
         {
             "spdxElementId": "SPDXRef-PHP",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-libxml2-2.10.4-8-92"
+            "relatedSpdxElement": "SPDXRef-Dependency-libxml2-2.10.4-9-92"
         },
         {
-            "spdxElementId": "SPDXRef-Dependency-libxml2-2.10.4-8-92",
+            "spdxElementId": "SPDXRef-Dependency-libxml2-2.10.4-9-92",
             "relationshipType": "DEPENDS_ON",
             "relatedSpdxElement": "SPDXRef-Dependency-libiconv-1.19-79"
         },
@@ -3607,7 +3612,7 @@
         {
             "spdxElementId": "SPDXRef-Dependency-libxslt-1.1.43-2-94",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-libxml2-2.10.4-8-92"
+            "relatedSpdxElement": "SPDXRef-Dependency-libxml2-2.10.4-9-92"
         },
         {
             "spdxElementId": "SPDXRef-PHP",
@@ -3622,7 +3627,7 @@
         {
             "spdxElementId": "SPDXRef-Dependency-libzip-1.11.4-95",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-liblzma-5.8.3-82"
+            "relatedSpdxElement": "SPDXRef-Dependency-liblzma-5.8.4-82"
         },
         {
             "spdxElementId": "SPDXRef-Dependency-libzip-1.11.4-95",
@@ -3642,47 +3647,47 @@
         {
             "spdxElementId": "SPDXRef-PHP",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-net-snmp-5.7.3-3-97"
+            "relatedSpdxElement": "SPDXRef-Dependency-net-snmp-5.7.3-5-97"
         },
         {
-            "spdxElementId": "SPDXRef-Dependency-net-snmp-5.7.3-3-97",
+            "spdxElementId": "SPDXRef-Dependency-net-snmp-5.7.3-5-97",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-openssl-3.0.21.pl1-75"
+            "relatedSpdxElement": "SPDXRef-Dependency-openssl-3.0.22.pl1-75"
         },
         {
             "spdxElementId": "SPDXRef-PHP",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-nghttp2-1.69.0-1-77"
+            "relatedSpdxElement": "SPDXRef-Dependency-nghttp2-1.70.0-77"
         },
         {
             "spdxElementId": "SPDXRef-PHP",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-openldap-2.6.13-1-98"
+            "relatedSpdxElement": "SPDXRef-Dependency-openldap-2.7.0-2-98"
         },
         {
-            "spdxElementId": "SPDXRef-Dependency-openldap-2.6.13-1-98",
+            "spdxElementId": "SPDXRef-Dependency-openldap-2.7.0-2-98",
             "relationshipType": "DEPENDS_ON",
             "relatedSpdxElement": "SPDXRef-Dependency-rxspencer-3.9.0-99"
         },
         {
-            "spdxElementId": "SPDXRef-Dependency-openldap-2.6.13-1-98",
+            "spdxElementId": "SPDXRef-Dependency-openldap-2.7.0-2-98",
             "relationshipType": "DEPENDS_ON",
             "relatedSpdxElement": "SPDXRef-Dependency-libsasl-2.1.28-87"
         },
         {
-            "spdxElementId": "SPDXRef-Dependency-openldap-2.6.13-1-98",
+            "spdxElementId": "SPDXRef-Dependency-openldap-2.7.0-2-98",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-openssl-3.0.21.pl1-75"
+            "relatedSpdxElement": "SPDXRef-Dependency-openssl-3.0.22.pl1-75"
         },
         {
             "spdxElementId": "SPDXRef-PHP",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-openssl-3.0.21.pl1-75"
+            "relatedSpdxElement": "SPDXRef-Dependency-openssl-3.0.22.pl1-75"
         },
         {
             "spdxElementId": "SPDXRef-PHP",
             "relationshipType": "DEPENDS_ON",
-            "relatedSpdxElement": "SPDXRef-Dependency-sqlite3-3.53.2-88"
+            "relatedSpdxElement": "SPDXRef-Dependency-sqlite3-3.53.4-88"
         },
         {
             "spdxElementId": "SPDXRef-PHP",
