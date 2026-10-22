@@ -7,4 +7,4 @@
 - Apache 2.4
 - PHP 8.2-8.5
 - Redis 7.4, 8.6, 8.10
-- ospanel_sys_prep_tool_.exe
+- ospanel_sys_prep_tool.exe
