@@ -1,20 +1,20 @@
 {
     "@context": "https://openvex.dev/ns/v0.2.0",
-    "@id": "https://php.net/sbom/windows/php/8.5.11/vex/616b8906-8a8b-49ce-8ff4-1ffc5910ec85",
+    "@id": "https://php.net/sbom/windows/php/8.5.12/vex/be57a265-1fb0-4bc5-9fc9-992ae2bab8f5",
     "author": "PHP Group",
-    "timestamp": "2026-09-22T13:56:37Z",
+    "timestamp": "2026-10-20T04:24:48Z",
     "version": 1,
     "statements": [
         {
             "vulnerability": {
                 "name": "CVE-1999-0289"
             },
-            "timestamp": "2026-07-18T08:34:11Z",
+            "timestamp": "2026-10-02T16:07:10Z",
             "products": [
                 {
-                    "@id": "pkg:php-windows-deps/apache@2.4.68",
+                    "@id": "pkg:php-windows-deps/apache@2.4.69",
                     "identifiers": {
-                        "purl": "pkg:generic/apache-httpd@2.4.68"
+                        "purl": "pkg:generic/apache-httpd@2.4.69"
                     }
                 }
             ],
@@ -26,12 +26,12 @@
             "vulnerability": {
                 "name": "CVE-1999-0678"
             },
-            "timestamp": "2026-07-18T08:34:11Z",
+            "timestamp": "2026-10-02T16:07:10Z",
             "products": [
                 {
-                    "@id": "pkg:php-windows-deps/apache@2.4.68",
+                    "@id": "pkg:php-windows-deps/apache@2.4.69",
                     "identifiers": {
-                        "purl": "pkg:generic/apache-httpd@2.4.68"
+                        "purl": "pkg:generic/apache-httpd@2.4.69"
                     }
                 }
             ],
@@ -43,12 +43,12 @@
             "vulnerability": {
                 "name": "CVE-2025-3891"
             },
-            "timestamp": "2026-07-18T08:34:11Z",
+            "timestamp": "2026-10-02T16:07:10Z",
             "products": [
                 {
-                    "@id": "pkg:php-windows-deps/apache@2.4.68",
+                    "@id": "pkg:php-windows-deps/apache@2.4.69",
                     "identifiers": {
-                        "purl": "pkg:generic/apache-httpd@2.4.68"
+                        "purl": "pkg:generic/apache-httpd@2.4.69"
                     }
                 }
             ],
@@ -60,10 +60,10 @@
             "vulnerability": {
                 "name": "CVE-2017-8806"
             },
-            "timestamp": "2026-09-11T21:01:25Z",
+            "timestamp": "2026-10-13T15:19:07Z",
             "products": [
                 {
-                    "@id": "pkg:php-windows-deps/libpq@16.15",
+                    "@id": "pkg:php-windows-deps/libpq@16.15-4",
                     "identifiers": {
                         "purl": "pkg:generic/postgresql@16.15"
                     }
@@ -77,10 +77,10 @@
             "vulnerability": {
                 "name": "CVE-2026-7598"
             },
-            "timestamp": "2026-09-11T21:14:31Z",
+            "timestamp": "2026-10-02T11:34:54Z",
             "products": [
                 {
-                    "@id": "pkg:php-windows-deps/libssh2@1.11.1-7",
+                    "@id": "pkg:php-windows-deps/libssh2@1.11.1-10",
                     "identifiers": {
                         "purl": "pkg:generic/libssh2@1.11.1"
                     }
@@ -93,10 +93,10 @@
             "vulnerability": {
                 "name": "CVE-2025-15661"
             },
-            "timestamp": "2026-09-11T21:14:31Z",
+            "timestamp": "2026-10-02T11:34:54Z",
             "products": [
                 {
-                    "@id": "pkg:php-windows-deps/libssh2@1.11.1-7",
+                    "@id": "pkg:php-windows-deps/libssh2@1.11.1-10",
                     "identifiers": {
                         "purl": "pkg:generic/libssh2@1.11.1"
                     }
@@ -109,10 +109,10 @@
             "vulnerability": {
                 "name": "CVE-2026-55199"
             },
-            "timestamp": "2026-09-11T21:14:31Z",
+            "timestamp": "2026-10-02T11:34:54Z",
             "products": [
                 {
-                    "@id": "pkg:php-windows-deps/libssh2@1.11.1-7",
+                    "@id": "pkg:php-windows-deps/libssh2@1.11.1-10",
                     "identifiers": {
                         "purl": "pkg:generic/libssh2@1.11.1"
                     }
@@ -125,10 +125,10 @@
             "vulnerability": {
                 "name": "CVE-2026-55200"
             },
-            "timestamp": "2026-09-11T21:14:31Z",
+            "timestamp": "2026-10-02T11:34:54Z",
             "products": [
                 {
-                    "@id": "pkg:php-windows-deps/libssh2@1.11.1-7",
+                    "@id": "pkg:php-windows-deps/libssh2@1.11.1-10",
                     "identifiers": {
                         "purl": "pkg:generic/libssh2@1.11.1"
                     }
@@ -141,10 +141,10 @@
             "vulnerability": {
                 "name": "CVE-2026-58050"
             },
-            "timestamp": "2026-09-11T21:14:31Z",
+            "timestamp": "2026-10-02T11:34:54Z",
             "products": [
                 {
-                    "@id": "pkg:php-windows-deps/libssh2@1.11.1-7",
+                    "@id": "pkg:php-windows-deps/libssh2@1.11.1-10",
                     "identifiers": {
                         "purl": "pkg:generic/libssh2@1.11.1"
                     }
@@ -157,10 +157,10 @@
             "vulnerability": {
                 "name": "CVE-2026-58051"
             },
-            "timestamp": "2026-09-11T21:14:31Z",
+            "timestamp": "2026-10-02T11:34:54Z",
             "products": [
                 {
-                    "@id": "pkg:php-windows-deps/libssh2@1.11.1-7",
+                    "@id": "pkg:php-windows-deps/libssh2@1.11.1-10",
                     "identifiers": {
                         "purl": "pkg:generic/libssh2@1.11.1"
                     }
@@ -173,10 +173,10 @@
             "vulnerability": {
                 "name": "CVE-2026-66032"
             },
-            "timestamp": "2026-09-11T21:14:31Z",
+            "timestamp": "2026-10-02T11:34:54Z",
             "products": [
                 {
-                    "@id": "pkg:php-windows-deps/libssh2@1.11.1-7",
+                    "@id": "pkg:php-windows-deps/libssh2@1.11.1-10",
                     "identifiers": {
                         "purl": "pkg:generic/libssh2@1.11.1"
                     }
@@ -189,10 +189,10 @@
             "vulnerability": {
                 "name": "CVE-2026-66033"
             },
-            "timestamp": "2026-09-11T21:14:31Z",
+            "timestamp": "2026-10-02T11:34:54Z",
             "products": [
                 {
-                    "@id": "pkg:php-windows-deps/libssh2@1.11.1-7",
+                    "@id": "pkg:php-windows-deps/libssh2@1.11.1-10",
                     "identifiers": {
                         "purl": "pkg:generic/libssh2@1.11.1"
                     }
@@ -205,10 +205,10 @@
             "vulnerability": {
                 "name": "CVE-2026-66034"
             },
-            "timestamp": "2026-09-11T21:14:31Z",
+            "timestamp": "2026-10-02T11:34:54Z",
             "products": [
                 {
-                    "@id": "pkg:php-windows-deps/libssh2@1.11.1-7",
+                    "@id": "pkg:php-windows-deps/libssh2@1.11.1-10",
                     "identifiers": {
                         "purl": "pkg:generic/libssh2@1.11.1"
                     }
@@ -221,10 +221,10 @@
             "vulnerability": {
                 "name": "CVE-2026-66035"
             },
-            "timestamp": "2026-09-11T21:14:31Z",
+            "timestamp": "2026-10-02T11:34:54Z",
             "products": [
                 {
-                    "@id": "pkg:php-windows-deps/libssh2@1.11.1-7",
+                    "@id": "pkg:php-windows-deps/libssh2@1.11.1-10",
                     "identifiers": {
                         "purl": "pkg:generic/libssh2@1.11.1"
                     }
@@ -719,10 +719,10 @@
             "vulnerability": {
                 "name": "CVE-2026-89147"
             },
-            "timestamp": "2026-09-13T14:39:53Z",
+            "timestamp": "2026-10-02T11:34:55Z",
             "products": [
                 {
-                    "@id": "pkg:php-windows-deps/net-snmp@5.9.4-2",
+                    "@id": "pkg:php-windows-deps/net-snmp@5.9.4-4",
                     "identifiers": {
                         "purl": "pkg:generic/net-snmp@5.9.4"
                     }
@@ -735,10 +735,10 @@
             "vulnerability": {
                 "name": "CVE-2014-2285"
             },
-            "timestamp": "2026-09-13T14:39:53Z",
+            "timestamp": "2026-10-02T11:34:55Z",
             "products": [
                 {
-                    "@id": "pkg:php-windows-deps/net-snmp@5.9.4-2",
+                    "@id": "pkg:php-windows-deps/net-snmp@5.9.4-4",
                     "identifiers": {
                         "purl": "pkg:generic/net-snmp@5.9.4"
                     }
@@ -752,10 +752,10 @@
             "vulnerability": {
                 "name": "CVE-2015-8100"
             },
-            "timestamp": "2026-09-13T14:39:53Z",
+            "timestamp": "2026-10-02T11:34:55Z",
             "products": [
                 {
-                    "@id": "pkg:php-windows-deps/net-snmp@5.9.4-2",
+                    "@id": "pkg:php-windows-deps/net-snmp@5.9.4-4",
                     "identifiers": {
                         "purl": "pkg:generic/net-snmp@5.9.4"
                     }
@@ -769,10 +769,10 @@
             "vulnerability": {
                 "name": "CVE-2019-20892"
             },
-            "timestamp": "2026-09-13T14:39:53Z",
+            "timestamp": "2026-10-02T11:34:55Z",
             "products": [
                 {
-                    "@id": "pkg:php-windows-deps/net-snmp@5.9.4-2",
+                    "@id": "pkg:php-windows-deps/net-snmp@5.9.4-4",
                     "identifiers": {
                         "purl": "pkg:generic/net-snmp@5.9.4"
                     }
@@ -786,10 +786,10 @@
             "vulnerability": {
                 "name": "CVE-2022-44793"
             },
-            "timestamp": "2026-09-13T14:39:53Z",
+            "timestamp": "2026-10-02T11:34:55Z",
             "products": [
                 {
-                    "@id": "pkg:php-windows-deps/net-snmp@5.9.4-2",
+                    "@id": "pkg:php-windows-deps/net-snmp@5.9.4-4",
                     "identifiers": {
                         "purl": "pkg:generic/net-snmp@5.9.4"
                     }
@@ -803,10 +803,10 @@
             "vulnerability": {
                 "name": "CVE-2025-68615"
             },
-            "timestamp": "2026-09-13T14:39:53Z",
+            "timestamp": "2026-10-02T11:34:55Z",
             "products": [
                 {
-                    "@id": "pkg:php-windows-deps/net-snmp@5.9.4-2",
+                    "@id": "pkg:php-windows-deps/net-snmp@5.9.4-4",
                     "identifiers": {
                         "purl": "pkg:generic/net-snmp@5.9.4"
                     }
